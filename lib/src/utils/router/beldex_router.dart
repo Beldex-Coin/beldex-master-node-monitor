@@ -30,7 +30,7 @@ class BeldexRouter {
 
       case BeldexRoutes.addMasterNode:
         return CupertinoPageRoute<void>(
-            builder: (_) => AddNewMasterNodePage());
+            builder: (_) => AddNewMasterNodePage(args as bool));
 
       case BeldexRoutes.editMasterNode:
         return CupertinoPageRoute<void>(

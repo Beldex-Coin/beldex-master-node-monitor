@@ -139,7 +139,7 @@ class SettingsPage extends BasePage {
                   },
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/terms_and_conditions.svg',color: Theme.of(context).primaryTextTheme.headline6.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/help.svg',color: Theme.of(context).primaryTextTheme.headline6.color,width: 23,height: 23,),
                   text: S.of(context).help,
                   onTap: (){
                     _launchUrl(Uri.parse('mailto:support@beldex.io'));

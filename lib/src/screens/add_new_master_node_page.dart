@@ -13,23 +13,33 @@ import 'package:master_node_monitor/src/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
 class AddNewMasterNodePage extends BasePage {
+  AddNewMasterNodePage(this.status);
+
+  final bool status;
 
   @override
   bool get actionBar => true;
 
   @override
-  Widget body(BuildContext context) => AddNewMasterNodePageBody();
+  Widget body(BuildContext context) => AddNewMasterNodePageBody(status);
 }
 
 class AddNewMasterNodePageBody extends StatefulWidget {
+  AddNewMasterNodePageBody(this.status);
+
+  final bool status;
+
   @override
-  State<StatefulWidget> createState() => AddNewMasterNodePageBodyState();
+  State<StatefulWidget> createState() => AddNewMasterNodePageBodyState(status);
 }
 
 class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
   final _nameController = TextEditingController();
   final _publicKeyController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  AddNewMasterNodePageBodyState(this.status);
+  final bool status;
 
   bool _isDuplicatePublicKey(
           String publicKey, Box<MasterNode> masterNodeSource) =>
@@ -80,7 +90,12 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     InkWell(onTap:(){
-                      Navigator.of(context).pop();
+                      if(status) {
+                        Navigator.of(context).pop();
+                        Navigator.pushNamed(context, BeldexRoutes.welcome);
+                      }else{
+                        Navigator.of(context).pop();
+                      }
                     },child: Icon(Icons.arrow_back_ios)),
                     SizedBox(width:50),
                     Text(S.current.title_add_master_node,

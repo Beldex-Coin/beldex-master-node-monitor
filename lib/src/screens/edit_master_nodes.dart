@@ -23,7 +23,7 @@ class EditMasterNodesPage extends BasePage {
       child: MaterialButton(
           padding: EdgeInsets.all(0),
           onPressed: () =>
-              Navigator.of(context).pushNamed(BeldexRoutes.addMasterNode),
+              Navigator.of(context).pushNamed(BeldexRoutes.addMasterNode,arguments: false),
           child: Icon(Icons.add_sharp,
               color: Theme.of(context).primaryTextTheme.caption.color,
               size: 24)),

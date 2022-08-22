@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:master_node_monitor/src/beldex/daemon.dart';
 import 'package:master_node_monitor/src/beldex/master_node.dart';
-import 'package:master_node_monitor/src/screens/add_new_master_node_page.dart';
 import 'package:master_node_monitor/src/screens/dashboard_page.dart';
 import 'package:master_node_monitor/src/screens/welcome_page.dart';
 import 'package:master_node_monitor/src/stores/node_sync_store.dart';
@@ -72,19 +71,8 @@ class _BeldexMasterNodeAppState extends State<BeldexMasterNodeApp> {
   }
 
   Future<void> checkVersion(BuildContext context) async {
-    /// For example: You got status code of 412 from the
-    /// response of HTTP request.
-    /// Let's say the statusCode 412 requires you to force update
-    final statusCode = 412;
-
-    /// This could be kept in our local
-    final localVersion = 9;
-
-    /// This could get from the API
-    final serverLatestVersion = 10;
 
     Future.delayed(Duration.zero, () {
-      if (statusCode == 412) {
         NativeUpdater.displayUpdateAlert(
           context,
           forceUpdate: true,
@@ -95,7 +83,6 @@ class _BeldexMasterNodeAppState extends State<BeldexMasterNodeApp> {
           iOSCloseButtonLabel: 'Exit',
           iOSAlertTitle: 'Mandatory Update',
         );
-      }
     });
   }
 
@@ -120,13 +107,11 @@ class MaterialAppWithTheme extends StatelessWidget {
     final currentLanguage = Provider.of<Language>(context);
     final theme = Provider.of<ThemeChanger>(context);
     final masterNodes = Provider.of<Box<MasterNode>>(context);
-    final statusBarColor =
-        settingsStore.isDarkTheme ? PaletteDark.darkThemeBackgroundDark : Palette.lightThemeBackground;
+    //final statusBarColor = settingsStore.isDarkTheme ? PaletteDark.darkThemeBackgroundDark : Palette.lightThemeBackground;
 
     final isSetup = masterNodes.isEmpty;
 
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: statusBarColor));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.black.withOpacity(0)));
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
