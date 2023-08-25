@@ -49,6 +49,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
   final bool status;
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   Box<MasterNode> masterNodeSource;
   MasterNode node;
@@ -92,6 +93,12 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
         Navigator.pop(context);
       }
     }
+  }
+
+  void setLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
   }
 
   void showConfirmationDialog(BuildContext context, bool status, NodeSyncStore nodeSyncStore){
@@ -199,7 +206,16 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
               hintText: S.of(context).name,
               validator: (value) {
                 final isDuplicate = _isDuplicateName(value);
-                if (isDuplicate) return S.of(context).error_name_taken;
+                if (value.isEmpty) {
+                  setLoading(false);
+                  return S.of(context).pleaseEnterAName;
+                }
+                else if (isDuplicate) {
+                  setLoading(false);
+                  return S
+                      .of(context)
+                      .error_name_taken;
+                }
                 return null;
               },
             ),
@@ -234,8 +250,10 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
           ]),
         ),
       ),
-      bottomSection: PrimaryButton(
+      bottomSection: LoadingPrimaryButton(
+        isLoading:isLoading,
           onPressed: () async {
+            setLoading(true);
             if (!_formKey.currentState.validate()) return;
             await _saveMasterNode();
             await nodeSyncStore.sync();

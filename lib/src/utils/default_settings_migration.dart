@@ -49,10 +49,10 @@ Future<void> changeCurrentNodeToDefault(
 
   if (timeZone >= 1) {
     // Eurasia
-    nodeUri = 'public.loki.foundation:22023';
+    nodeUri = 'publicnode1.rpcnode.stream:29095';
   } else if (timeZone <= -4) {
     // America
-    nodeUri = 'freyr.imaginary.stream:22023';
+    nodeUri = 'publicnode1.rpcnode.stream:29095';
   }
 
   final node =

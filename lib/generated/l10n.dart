@@ -934,6 +934,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Please enter a name`
+  String get pleaseEnterAName {
+    return Intl.message(
+      'Please enter a name',
+      name: 'pleaseEnterAName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a public key`
+  String get enterAPublicKey {
+    return Intl.message(
+      'Enter a public key',
+      name: 'enterAPublicKey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a valid public key`
+  String get enterAValidPublicKey {
+    return Intl.message(
+      'Enter a valid public key',
+      name: 'enterAValidPublicKey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid daemon`
+  String get pleaseEnterAValidDaemon {
+    return Intl.message(
+      'Please enter a valid daemon',
+      name: 'pleaseEnterAValidDaemon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your internet connection`
+  String get checkYourInternetConnection {
+    return Intl.message(
+      'Check your internet connection',
+      name: 'checkYourInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

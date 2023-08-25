@@ -10,6 +10,7 @@ import 'package:master_node_monitor/src/stores/node_sync_store.dart';
 import 'package:master_node_monitor/src/stores/settings_store.dart';
 import 'package:master_node_monitor/src/utils/default_settings_migration.dart';
 import 'package:master_node_monitor/src/utils/language.dart';
+import 'package:master_node_monitor/src/utils/network_service.dart';
 import 'package:master_node_monitor/src/utils/router/beldex_router.dart';
 import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/utils/theme/theme_changer.dart';
@@ -39,6 +40,8 @@ Future<void> main() async {
       await SettingsStoreBase.load(sharedPreferences, daemons);
   final nodeSyncStore = NodeSyncStore(masterNodes, settingsStore);
 
+  final networkService = NetworkService().controller.stream;
+
   if (masterNodes.isNotEmpty) {
     await nodeSyncStore.sync();
     nodeSyncStore.startSync();
@@ -50,6 +53,7 @@ Future<void> main() async {
     Provider(create: (_) => sharedPreferences),
     Provider(create: (_) => settingsStore),
     Provider(create: (_) => nodeSyncStore),
+    StreamProvider(create: (_) => networkService)
   ], child: BeldexMasterNodeApp()));
 }
 

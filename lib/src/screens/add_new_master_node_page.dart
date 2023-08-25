@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:master_node_monitor/generated/l10n.dart';
+import 'package:master_node_monitor/src/beldex/check_master_node.dart';
 import 'package:master_node_monitor/src/beldex/master_node.dart';
 import 'package:master_node_monitor/src/stores/node_sync_store.dart';
+import 'package:master_node_monitor/src/stores/settings_store.dart';
+import 'package:master_node_monitor/src/utils/network_service.dart';
 import 'package:master_node_monitor/src/utils/router/beldex_routes.dart';
 import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/utils/validators.dart';
@@ -37,6 +40,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
   final _nameController = TextEditingController();
   final _publicKeyController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   AddNewMasterNodePageBodyState(this.status);
   final bool status;
@@ -56,16 +60,75 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
   }
 
 
-  Future _saveMasterNode(Box<MasterNode> masterNodeSource) async {
-    final masterNode =
-        MasterNode(_nameController.text, _publicKeyController.text);
-    await masterNodeSource.add(masterNode);
+  Future _saveMasterNode(Box<MasterNode> masterNodeSource, SettingsStore settingsStore, NodeSyncStore nodeSyncStatus, NetworkStatus networkStatus) async {
+    if(networkStatus == NetworkStatus.online) {
+      var checkPublicKey = settingsStore.daemon != null
+          ? CheckMasterNode(settingsStore.daemon.uri, _publicKeyController.text)
+          : CheckMasterNode("", _publicKeyController.text);
+      bool validPublicKey = await checkPublicKey.isOnline();
+      if (validPublicKey) {
+        final masterNode = MasterNode(_nameController.text, _publicKeyController.text);
+        await masterNodeSource.add(masterNode);
+        await nodeSyncStatus.sync();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.check_circle_rounded, color: Colors.white,),
+                SizedBox(width: 10,),
+                Text(S
+                    .of(context)
+                    .success_saved_node,
+                  style: TextStyle(fontSize: 16, color: Colors.white),),
+              ],
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: BeldexPalette.tealWithOpacity));
+        Navigator.of(context).pop();
+        Navigator.pushNamed(context, BeldexRoutes.dashboard);
+      } else {
+        callCommonScaffoldMessenger(S.of(context).enterAValidPublicKey);
+        setLoading(false);
+      }
+    }else{
+      callCommonScaffoldMessenger(S.of(context).checkYourInternetConnection);
+      setLoading(false);
+    }
+  }
+
+  void callCommonScaffoldMessenger(String text){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(text,
+              style: TextStyle(fontSize: 16, color: Colors.white),),
+          ],
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: BeldexPalette.red));
+  }
+
+  void setLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final masterNodeSource = context.read<Box<MasterNode>>();
     final nodeSyncStatus = context.read<NodeSyncStore>();
+    final settingsStore = Provider.of<SettingsStore>(context);
+    final networkStatus = Provider.of<NetworkStatus>(context);
 
     return Container(
       color: Theme.of(context).backgroundColor,
@@ -120,7 +183,16 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                         validator: (value) {
                           final isDuplicate =
                               _isDuplicateName(value, masterNodeSource);
-                          if (isDuplicate) return S.of(context).error_name_taken;
+                          if (value.isEmpty) {
+                            setLoading(false);
+                            return S.of(context).pleaseEnterAName;
+                          }
+                          else if (isDuplicate) {
+                            setLoading(false);
+                            return S
+                                .of(context)
+                                .error_name_taken;
+                          }
                           return null;
                         },
                       ),
@@ -142,15 +214,24 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                                 _publicKeyController.text = clipboard.text;
                             }),
                         validator: (value) {
-                          final validPublicKey = isValidPublicKey(value);
+                          final publicKey = value.trim();
+                          final validPublicKey = isValidPublicKey(publicKey);
                           final isDuplicate =
-                              _isDuplicatePublicKey(value, masterNodeSource);
-                          if (value.isEmpty || validPublicKey == KeyValidity.TOO_SHORT)
-                            return S.of(context).error_public_key_too_short;
-                          else if (validPublicKey == KeyValidity.TOO_LONG)
-                            return S.of(context).error_public_key_too_long;
-                          else if (isDuplicate)
-                            return S.of(context).error_you_are_already_monitoring;
+                              _isDuplicatePublicKey(publicKey, masterNodeSource);
+                          if (publicKey.isEmpty) {
+                            setLoading(false);
+                            return S.of(context).enterAPublicKey;
+                          }
+                          else if(validPublicKey == KeyValidity.TOO_SHORT || validPublicKey == KeyValidity.TOO_LONG) {
+                            setLoading(false);
+                            return S.of(context).enterAValidPublicKey;
+                          }
+                          else if (isDuplicate) {
+                            setLoading(false);
+                            return S
+                                .of(context)
+                                .error_you_are_already_monitoring;
+                          }
                           return null;
                         },
                       ),
@@ -160,28 +241,12 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
               ),
               Container(
                 margin: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 30),
-                child: PrimaryButton(
+                child: LoadingPrimaryButton(
+                  isLoading: isLoading,
                     onPressed: () async {
+                      setLoading(true);
                       if (!_formKey.currentState.validate()) return;
-                      await _saveMasterNode(masterNodeSource);
-                      await nodeSyncStatus.sync();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(Icons.check_circle_rounded,color: Colors.white,),
-                              SizedBox(width: 10,),
-                              Text(S.of(context).success_saved_node,style: TextStyle(fontSize:16,color: Colors.white),),
-                            ],
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          backgroundColor: BeldexPalette.tealWithOpacity));
-                      Navigator.of(context).pop();
-                      Navigator.pushNamed(context, BeldexRoutes.dashboard);
+                      await _saveMasterNode(masterNodeSource,settingsStore,nodeSyncStatus,networkStatus);
                     },
                     text: S.of(context).add_master_node,
                     color: Theme.of(context).primaryTextTheme.button.backgroundColor,

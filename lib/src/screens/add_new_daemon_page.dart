@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:master_node_monitor/generated/l10n.dart';
 import 'package:master_node_monitor/src/beldex/daemon.dart';
+import 'package:master_node_monitor/src/utils/network_service.dart';
 import 'package:master_node_monitor/src/utils/router/beldex_routes.dart';
+import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/widgets/base_page.dart';
 import 'package:master_node_monitor/src/widgets/beldex/beldex_text_field.dart';
 import 'package:master_node_monitor/src/widgets/primary_button.dart';
@@ -25,6 +27,7 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
   final _hostController = TextEditingController();
   final _portController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -33,21 +36,55 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
     super.dispose();
   }
 
-  Future _saveDaemon(Box<Daemon> daemonSource) async {
-    var uri = _hostController.text;
-    final port = _portController.text;
+  Future _saveDaemon(Box<Daemon> daemonSource, NetworkStatus networkStatus) async {
+    if(networkStatus == NetworkStatus.online) {
+      var uri = _hostController.text;
+      final port = _portController.text;
 
-    if (port != null && port.isNotEmpty) uri = '$uri:$port';
+      if (port != null && port.isNotEmpty) uri = '$uri:$port';
+      final daemon = Daemon(uri);
+      bool daemonIsOnline = await daemon.isOnline();
+      if (daemonIsOnline) {
+        await daemonSource.add(daemon);
+        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed(BeldexRoutes.settingsDaemon);
+      }  else {
+        callCommonScaffoldMessenger(S.of(context).pleaseEnterAValidDaemon);
+        setLoading(false);
+      }
+    }else{
+      callCommonScaffoldMessenger(S.of(context).checkYourInternetConnection);
+      setLoading(false);
+    }
+  }
 
-    final daemon = Daemon(uri);
-    await daemonSource.add(daemon);
+  void callCommonScaffoldMessenger(String text){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(text,
+              style: TextStyle(fontSize: 16, color: Colors.white),),
+          ],
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: BeldexPalette.red));
   }
 
   String _validateNodeAddress(String value) {
     const pattern =
         '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\$|^[-0-9a-zA-Z.]{1,253}\$';
     final isValid = RegExp(pattern).hasMatch(value);
-    return isValid ? null : S.current.error_text_daemon_address;
+    if(isValid) {
+      return null;
+    }else {
+      setLoading(false);
+      return S.current.error_text_daemon_address;
+    }
   }
 
   String _validateNodePort(String value) {
@@ -62,7 +99,12 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
       } catch (e) {}
     }
 
-    return isValid ? null : S.current.error_text_daemon_port;
+    if(isValid) {
+      return null;
+    }else{
+      setLoading(false);
+      return S.current.error_text_daemon_port;
+    }
   }
 
   Future<bool> _onBackPressed() async {
@@ -71,9 +113,16 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
     return null;
   }
 
+  void setLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final daemonSource = Provider.of<Box<Daemon>>(context);
+    final networkStatus = Provider.of<NetworkStatus>(context);
 
     return WillPopScope(
       onWillPop: _onBackPressed,
@@ -142,12 +191,12 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 30),
-                  child: PrimaryButton(
+                  child: LoadingPrimaryButton(
+                      isLoading: isLoading,
                       onPressed: () async {
+                        setLoading(true);
                         if (!_formKey.currentState.validate()) return;
-                        await _saveDaemon(daemonSource);
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(BeldexRoutes.settingsDaemon);
+                        await _saveDaemon(daemonSource,networkStatus);
                       },
                       text: S.of(context).add_daemon,
                       color: Theme.of(context).primaryTextTheme.button.backgroundColor,
