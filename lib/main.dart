@@ -22,7 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'generated/l10n.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final appDir = await getApplicationDocumentsDirectory();
