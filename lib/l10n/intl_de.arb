@@ -97,5 +97,10 @@
   "title_faq": "FAQ",
   "termsConditions": "Terms & amp; Bedingungen",
   "help": "Help",
-  "termsAndConditions": "Terms and Conditions"
+  "termsAndConditions": "Terms and Conditions",
+  "pleaseEnterAName": "Please enter a name",
+  "enterAPublicKey": "Enter a public key",
+  "enterAValidPublicKey": "Enter a valid public key",
+  "pleaseEnterAValidDaemon": "Please enter a valid daemon",
+  "checkYourInternetConnection": "Check your internet connection"
 }
