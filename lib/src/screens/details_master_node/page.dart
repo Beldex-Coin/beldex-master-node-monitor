@@ -341,18 +341,19 @@ class DetailsMasterNodePage extends BasePage {
                     ),
                   ),
                 ),
-
-                Padding(
-                  padding: EdgeInsets.only(top: 25, bottom: 25,left: 20,right: 20),
-                  child: PrimaryButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, BeldexRoutes.editMasterNode,
-                          arguments: EditMasterNodeArguments(publicKey, true));
-                    },
-                    text: S.of(context).title_edit_master_node,
-                    color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
-                    borderColor: Theme.of(context).primaryTextTheme.button!.decorationColor!,
-                    textColor: Colors.white,
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 25, bottom: 25,left: 20,right: 20),
+                    child: PrimaryButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, BeldexRoutes.editMasterNode,
+                            arguments: EditMasterNodeArguments(publicKey, true));
+                      },
+                      text: S.of(context).title_edit_master_node,
+                      color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
+                      borderColor: Theme.of(context).primaryTextTheme.button!.decorationColor!,
+                      textColor: Colors.white,
+                    ),
                   ),
                 ),
               ]);

@@ -19,12 +19,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends BasePage {
   @override
-  String get title => "Settings";//S.current.title_settings;
+  String get title => S.current.title_settings;
 
   Future<void> _setDashboardOrderBy(BuildContext context) async {
     final settingsStore = context.read<SettingsStore>();
-    final selectedDashboardOrderBy =
-        await presentPicker(context, DashboardOrderBy.values);
+    final selectedDashboardOrderBy = await presentPicker(context, DashboardOrderBy.values);
 
     if (selectedDashboardOrderBy != null) {
       await settingsStore.setDashboardOrderBy(selectedDashboardOrderBy as DashboardOrderBy);

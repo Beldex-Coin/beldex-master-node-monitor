@@ -121,7 +121,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                         child: Center(
                           child: Text('$lastRewardBlockHeight',
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 20)),
+                              style: TextStyle(fontSize: 16)),
                         ))
                   ]),
             ),
@@ -147,7 +147,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                                 isStorageServerReachable
                                     ? Icons.check_circle_sharp
                                     : Icons.error_sharp,
-                                size: 30),
+                                size: 22),
                           ))
                     ])),
           ),
@@ -172,7 +172,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                                 isLokinetRouterReachable
                                     ? Icons.check_circle_sharp
                                     : Icons.error_sharp,
-                                size: 30),
+                                size: 22),
                           ))
                     ])),
           ),

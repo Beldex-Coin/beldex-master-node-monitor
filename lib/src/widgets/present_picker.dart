@@ -5,7 +5,7 @@ import 'package:master_node_monitor/src/widgets/beldex/beldex_dialog.dart';
 
 import 'primary_button.dart';
 
-Future<T> presentPicker<T extends Object>(
+Future<T?>? presentPicker<T extends Object>(
     BuildContext context, List<T> list) async {
   var _value = list[0];
 
