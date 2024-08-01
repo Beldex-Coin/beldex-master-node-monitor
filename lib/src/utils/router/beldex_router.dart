@@ -35,8 +35,8 @@ class BeldexRouter {
       case BeldexRoutes.editMasterNode:
         return CupertinoPageRoute<void>(
             builder: (_) {
-              EditMasterNodeArguments argument = args;
-              return EditMasterNodePage(argument.publicKey, argument.status);});
+              EditMasterNodeArguments argument = args as EditMasterNodeArguments;
+              return EditMasterNodePage(publicKey: argument.publicKey, status: argument.status);});
 
       case BeldexRoutes.addDaemon:
         return CupertinoPageRoute<void>(builder: (_) => AddNewDaemonPage());
@@ -61,8 +61,8 @@ class BeldexRouter {
 
       case BeldexRoutes.detailsMasterNode:
         return CupertinoPageRoute(builder: (_) {
-          List<String> args = settings.arguments;
-          String nodeName = args.length > 1 ? args[1] : null;
+          List<String> args = settings.arguments as List<String>;
+          String nodeName = args.length > 1 ? args[1] : "";
           return DetailsMasterNodePage(args.first, nodeName: nodeName);
         });
 
@@ -77,7 +77,7 @@ class BeldexRouter {
             builder: (_) => Scaffold(
                   body: Center(
                       child:
-                          Text(S.current.error_router_no_route(settings.name))),
+                          Text(S.current.error_router_no_route(settings.name as Object))),
                 ));
     }
   }

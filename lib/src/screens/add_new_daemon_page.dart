@@ -75,7 +75,7 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
         backgroundColor: BeldexPalette.red));
   }
 
-  String _validateNodeAddress(String value) {
+  String? _validateNodeAddress(String value) {
     const pattern =
         '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\$|^[-0-9a-zA-Z.]{1,253}\$';
     final isValid = RegExp(pattern).hasMatch(value);
@@ -87,7 +87,7 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
     }
   }
 
-  String _validateNodePort(String value) {
+  String? _validateNodePort(String value) {
     const pattern = '^[0-9]{1,5}';
     final regExp = RegExp(pattern);
     bool isValid = false;
@@ -110,7 +110,7 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
   Future<bool> _onBackPressed() async {
     Navigator.of(context).pop();
     Navigator.of(context).pushNamed(BeldexRoutes.settingsDaemon);
-    return null;
+    return true;
   }
 
   void setLoading(bool value) {
@@ -169,21 +169,21 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
                       Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: BeldexTextField(
-                          backgroundColor: Theme.of(context).primaryTextTheme.overline.color,
+                          backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
                           controller: _hostController,
                           hintText: S.of(context).daemon_address,
-                          validator: (value) => _validateNodeAddress(value),
+                          validator: (value) => _validateNodeAddress(value!),
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: BeldexTextField(
-                          backgroundColor: Theme.of(context).primaryTextTheme.overline.color,
+                          backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
                           controller: _portController,
                           keyboardType: TextInputType.numberWithOptions(
                               signed: false, decimal: false),
                           hintText: S.of(context).daemon_port,
-                          validator: (value) => _validateNodePort(value),
+                          validator: (value) => _validateNodePort(value!),
                         ),
                       ),
                     ]),
@@ -195,13 +195,13 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
                       isLoading: isLoading,
                       onPressed: () async {
                         setLoading(true);
-                        if (!_formKey.currentState.validate()) return;
+                        if (!_formKey.currentState!.validate()) return;
                         await _saveDaemon(daemonSource,networkStatus);
                       },
                       text: S.of(context).add_daemon,
-                      color: Theme.of(context).primaryTextTheme.button.backgroundColor,
+                      color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
                       borderColor:
-                      Theme.of(context).primaryTextTheme.button.decorationColor),
+                      Theme.of(context).primaryTextTheme.button!.decorationColor!),
                 )
               ],
             ),

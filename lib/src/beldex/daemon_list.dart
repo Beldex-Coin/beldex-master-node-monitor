@@ -7,13 +7,13 @@ Future<List<Daemon>> loadDefaultNodes() async {
   final nodesRaw = await rootBundle.loadString('assets/daemon_list.yml');
   final nodes = loadYaml(nodesRaw) as YamlList;
 
-  return nodes.map((dynamic raw) {
+  final n = <Daemon>[];
+  nodes.forEach((dynamic raw) {
     if (raw is Map) {
-      return Daemon.fromMap(raw);
+      n.add(Daemon.fromMap(raw));
     }
-
-    return null;
-  }).toList();
+  });
+  return n;
 }
 
 Future resetToDefault(Box<Daemon> nodeSource) async {

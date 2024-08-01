@@ -67,7 +67,7 @@ class DashboardPage extends BasePage {
             nodeSyncStatus.sync();
           },
           child: Icon(Icons.sync,
-              color: Theme.of(context).primaryTextTheme.caption.color,
+              color: Theme.of(context).primaryTextTheme.caption!.color,
               size: 24),
         );
       }),
@@ -82,7 +82,7 @@ class DashboardPage extends BasePage {
           padding: EdgeInsets.all(0),
           onPressed: () => Navigator.of(context).pushNamed(BeldexRoutes.settings),
           child: Icon(Icons.settings_sharp,
-              color: Theme.of(context).primaryTextTheme.caption.color,
+              color: Theme.of(context).primaryTextTheme.caption!.color,
               size: 24)),
     );
   }
@@ -113,12 +113,11 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
   Future _saveMasterNode(Box<MasterNode> masterNodeSource, SettingsStore settingsStore, NodeSyncStore nodeSyncStatus, NetworkStatus networkStatus) async {
     if(networkStatus == NetworkStatus.online) {
       var checkPublicKey = settingsStore.daemon != null
-          ? CheckMasterNode(settingsStore.daemon.uri, _publicKeyController.text)
+          ? CheckMasterNode(settingsStore.daemon!.uri, _publicKeyController.text)
           : CheckMasterNode("", _publicKeyController.text);
       bool validPublicKey = await checkPublicKey.isOnline();
       if (validPublicKey) {
-        final masterNode = MasterNode(
-            _nameController.text, _publicKeyController.text);
+        final masterNode = MasterNode(name: _nameController.text, publicKey: _publicKeyController.text);
         await masterNodeSource.add(masterNode);
         await nodeSyncStatus.sync();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -178,11 +177,11 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
     _publicKeyController.dispose();
     super.dispose();
   }
-  StateSetter _setState;
+  StateSetter? _setState;
   bool isLoading = false;
 
   void setLoading(bool value) {
-    _setState(() {
+    _setState!(() {
       isLoading = value;
     });
   }
@@ -235,7 +234,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                             color: Theme
                                 .of(context)
                                 .primaryTextTheme
-                                .caption
+                                .caption!
                                 .color,)),
                         ],
                       ),
@@ -252,15 +251,15 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                               backgroundColor: Theme
                                   .of(context)
                                   .primaryTextTheme
-                                  .overline
-                                  .color,
+                                  .overline!
+                                  .color!,
                               controller: _nameController,
                               hintText: S
                                   .of(context)
                                   .name,
                               validator: (value) {
                                 final isDuplicate =
-                                _isDuplicateName(value, masterNodeSource);
+                                _isDuplicateName(value!, masterNodeSource);
                                 if (value.isEmpty) {
                                   setLoading(false);
                                   return S.of(context).pleaseEnterAName;
@@ -281,8 +280,8 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                               backgroundColor: Theme
                                   .of(context)
                                   .primaryTextTheme
-                                  .overline
-                                  .color,
+                                  .overline!
+                                  .color!,
                               controller: _publicKeyController,
                               hintText: S
                                   .of(context)
@@ -295,14 +294,14 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                   onPressed: () async {
                                     final clipboard = await Clipboard.getData(
                                         'text/plain');
-                                    if (clipboard.text != null)
+                                    if (clipboard?.text != null)
                                       _publicKeyController.text =
-                                          clipboard.text;
+                                          clipboard!.text!;
                                   }),
                               validator: (value) {
-                                final publicKey = value.trim();
+                                final publicKey = value?.trim();
                                 final validPublicKey = isValidPublicKey(
-                                    publicKey);
+                                    publicKey!);
                                 final isDuplicate =
                                 _isDuplicatePublicKey(
                                     publicKey, masterNodeSource);
@@ -336,7 +335,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                           isLoading: isLoading,
                           onPressed: () async {
                             setLoading(true);
-                            if (!_formKey.currentState.validate()) return;
+                            if (!_formKey.currentState!.validate()) return;
                             await _saveMasterNode(masterNodeSource,settingsStore,nodeSyncStatus,networkStatus);
                           },
                           text: S
@@ -345,14 +344,14 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                           color: Theme
                               .of(context)
                               .primaryTextTheme
-                              .button
-                              .backgroundColor,
+                              .button!
+                              .backgroundColor!,
                           borderColor:
                           Theme
                               .of(context)
                               .primaryTextTheme
-                              .button
-                              .decorationColor),
+                              .button!
+                              .decorationColor!),
                     )
                   ],
                 ),
@@ -455,11 +454,11 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                               valueColor: AlwaysStoppedAnimation<Color>(
                                                   Theme.of(context)
                                                       .primaryTextTheme
-                                                      .bodyText1
-                                                      .color),
+                                                      .bodyText1!
+                                                      .color!),
                                               backgroundColor: Theme.of(context)
                                                   .primaryTextTheme
-                                                  .bodyText1
+                                                  .bodyText1!
                                                   .color,
                                             ),
                                           )),
@@ -523,10 +522,10 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                               RichText(
                                 text: TextSpan(
                                   children: <TextSpan>[
-                                    TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.caption.backgroundColor)),
+                                    TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.caption!.backgroundColor)),
                                     TextSpan(text: '${ nodeSyncStatus.nodes != null
                                         ? nodeSyncStatus.nodes.length
-                                        : 0}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.caption.color)),
+                                        : 0}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.caption!.color)),
                                   ],
                                 ),
                               ),

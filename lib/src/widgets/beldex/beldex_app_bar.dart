@@ -7,11 +7,11 @@ import 'package:provider/provider.dart';
 class BeldexAppBar extends StatelessWidget
     implements ObstructingPreferredSizeWidget {
   factory BeldexAppBar(
-      {BuildContext context,
       Widget leading,
       Widget middle,
       Widget trailing,
-      Color backgroundColor}) {
+      {required BuildContext context,
+      required Color backgroundColor}) {
     final _themeChanger = Provider.of<ThemeChanger>(context);
     final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
 
@@ -25,11 +25,11 @@ class BeldexAppBar extends StatelessWidget
   }
 
   factory BeldexAppBar.withShadow(
-      {BuildContext context,
       Widget leading,
       Widget middle,
       Widget trailing,
-      Color backgroundColor}) {
+      {required BuildContext context,
+      required Color backgroundColor}) {
     final _themeChanger = Provider.of<ThemeChanger>(context);
     final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
 
@@ -57,18 +57,18 @@ class BeldexAppBar extends StatelessWidget
       {this.leading,
       this.middle,
       this.trailing,
-      this.backgroundColor,
+      required this.backgroundColor,
       this.decoration,
       this.height = _height});
 
   static const _originalHeight = 44.0; // iOS nav bar height
   static const _height = 60.0;
 
-  final Widget leading;
-  final Widget middle;
-  final Widget trailing;
+  final Widget? leading;
+  final Widget? middle;
+  final Widget? trailing;
   final Color backgroundColor;
-  final BoxDecoration decoration;
+  final BoxDecoration? decoration;
   final double height;
 
   @override

@@ -57,10 +57,12 @@ class MasterNodeStatus {
     ];
 
     for (final key in keys) {
-      try {
-        map[key] as int;
-      } catch (e) {
-        map[key] = (map[key] as double).truncate();
+      if(map[key] != null) {
+        try {
+          map[key] as int?;
+        } catch (e) {
+          map[key] = (map[key] as double?)?.truncate();
+        }
       }
     }
 
@@ -104,8 +106,8 @@ class MasterNodeInfo {
 
   MasterNodeInfo.fromMap(Map map)
       : operatorAddress = map['operator_address'] as String,
-        registrationHeight = map['registration_height'] as int,
-        registrationHfVersion = map['registration_hf_version'] as int,
+        registrationHeight = (map['registration_height'] ?? 0) as int,
+        registrationHfVersion = (map['registration_hf_version'] ?? 0) as int,
         publicKey = map['master_node_pubkey'] as String,
         ipAddress = map['public_ip'] as String,
         nodeVersion = (map['master_node_version'] as List).join('.'),
@@ -113,14 +115,14 @@ class MasterNodeInfo {
             (map['storage_server_version'] as List).join('.'),
         lokinetVersion = (map['belnet_version'] as List).join('.');
 
-  final String operatorAddress;
+  final String? operatorAddress;
   final int registrationHeight;
   final int registrationHfVersion;
   final String publicKey;
-  final String ipAddress;
-  final String nodeVersion;
-  final String storageServerVersion;
-  final String lokinetVersion;
+  final String? ipAddress;
+  final String? nodeVersion;
+  final String? storageServerVersion;
+  final String? lokinetVersion;
 
   bool equals(MasterNodeInfo masterNodeInfo) {
     return masterNodeInfo.operatorAddress == operatorAddress &&
@@ -139,7 +141,7 @@ class StorageServerStatus {
 
   StorageServerStatus.fromMap(Map map)
       : isReachable = map['storage_server_reachable'] as bool,
-        timestamp = map['storage_server_reachable_timestamp'] as int;
+        timestamp = (map['storage_server_reachable_timestamp'] ?? 0) as int;
 
   final bool isReachable;
   final int timestamp;
@@ -150,7 +152,7 @@ class LokinetRouterStatus {
 
   LokinetRouterStatus.fromMap(Map map)
       : isReachable = map['belnet_reachable'] as bool,
-        timestamp = map['belnet_router_reachable_timestamp'] as int;
+        timestamp = (map['belnet_router_reachable_timestamp'] ?? 0) as int;
 
   final bool isReachable;
   final int timestamp;

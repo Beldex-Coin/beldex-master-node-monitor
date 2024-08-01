@@ -5,25 +5,25 @@ import 'package:master_node_monitor/src/utils/theme/palette.dart';
 class BeldexTextField extends StatelessWidget {
   BeldexTextField(
       {this.enabled = true,
-      this.hintText,
+      required this.hintText,
       this.keyboardType,
-      this.controller,
+      required this.controller,
       this.validator,
       this.inputFormatters,
       this.prefixIcon,
       this.suffixIcon,
       this.focusNode,
-      this.backgroundColor});
+      required this.backgroundColor});
 
   final bool enabled;
   final String hintText;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final TextEditingController controller;
-  final String Function(String) validator;
-  final List<TextInputFormatter> inputFormatters;
-  final Widget prefixIcon;
-  final Widget suffixIcon;
-  final FocusNode focusNode;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final FocusNode? focusNode;
   final Color backgroundColor;
 
   @override
@@ -35,7 +35,7 @@ class BeldexTextField extends StatelessWidget {
         focusNode: focusNode,
         style: TextStyle(
             fontSize: 18.0,
-            color: Theme.of(context).accentTextTheme.overline.color),
+            color: Theme.of(context).textTheme.overline!.color),
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
         decoration: InputDecoration(

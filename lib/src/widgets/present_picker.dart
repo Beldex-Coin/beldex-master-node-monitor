@@ -26,7 +26,7 @@ Future<T> presentPicker<T extends Object>(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.none,
-                    color: Theme.of(context).primaryTextTheme.caption.color,
+                    color: Theme.of(context).primaryTextTheme.caption!.color,
                   ),
                 ),
               ),
@@ -38,7 +38,7 @@ Future<T> presentPicker<T extends Object>(
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: CupertinoPicker(
-                    backgroundColor: Theme.of(context).primaryTextTheme.overline.color,
+                    backgroundColor: Theme.of(context).primaryTextTheme.overline!.color,
                     itemExtent: 45.0,
                     onSelectedItemChanged: (int index) => _value = list[index],
                     children: List.generate(
@@ -49,7 +49,7 @@ Future<T> presentPicker<T extends Object>(
                           style: TextStyle(
                             color: Theme.of(context)
                                 .primaryTextTheme
-                                .caption
+                                .caption!
                                 .color,
                           ),
                         ),
@@ -61,9 +61,9 @@ Future<T> presentPicker<T extends Object>(
               PrimaryButton(
                 text: "Okay",
                 color:
-                    Theme.of(context).primaryTextTheme.button.backgroundColor,
+                    Theme.of(context).primaryTextTheme.button!.backgroundColor!,
                 borderColor:
-                    Theme.of(context).primaryTextTheme.button.decorationColor,
+                    Theme.of(context).primaryTextTheme.button!.decorationColor!,
                 onPressed: () => Navigator.of(context).pop(_value),
               )
             ],

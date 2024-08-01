@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 Future showBeldexDialog(BuildContext context, Widget child,
-    {void Function(BuildContext context) onDismiss}) {
+    {required void Function(BuildContext context) onDismiss}) {
   return showDialog<void>(
     builder: (_) => BeldexDialog(body: child, onDismiss: onDismiss),
     context: context,
@@ -11,16 +11,16 @@ Future showBeldexDialog(BuildContext context, Widget child,
 }
 
 class BeldexDialog extends StatelessWidget {
-  BeldexDialog({this.body, this.onDismiss});
+  BeldexDialog({required this.body, this.onDismiss});
 
-  final void Function(BuildContext context) onDismiss;
+  final void Function(BuildContext context)? onDismiss;
   final Widget body;
 
   void _onDismiss(BuildContext context) {
     if (onDismiss == null) {
       Navigator.of(context).pop();
     } else {
-      onDismiss(context);
+      onDismiss!(context);
     }
   }
 

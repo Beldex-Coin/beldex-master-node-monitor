@@ -17,7 +17,7 @@ import 'package:master_node_monitor/src/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
 class DetailsMasterNodePage extends BasePage {
-  DetailsMasterNodePage(this.publicKey, {this.nodeName});
+  DetailsMasterNodePage(this.publicKey, {required this.nodeName});
 
   final String publicKey;
   final String nodeName;
@@ -28,13 +28,14 @@ class DetailsMasterNodePage extends BasePage {
 
   String get title => this.nodeName;
 
-  void copyToClipboard(String title, String data) {
-    Clipboard.setData(ClipboardData(text: data));
-    ScaffoldMessenger.of(scaffoldKey.currentContext).showSnackBar(
+  void copyToClipboard(String title, String? data) {
+    Clipboard.setData(ClipboardData(text: data!));
+    ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
       SnackBar(
         content: Text(S.current.copied_to_clipboard(title)),
         backgroundColor: BeldexPalette.tealWithOpacity,
         duration: Duration(milliseconds: 1500),
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
@@ -79,7 +80,7 @@ class DetailsMasterNodePage extends BasePage {
                     child: Padding(
                       padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                       child: Card(
-                        elevation: 10,
+                        elevation: 5,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
                         child: Container(
@@ -163,7 +164,7 @@ class DetailsMasterNodePage extends BasePage {
                             NavListMultiHeader(
                               S.of(context).earned_downtime_blocks,
                               '${node.earnedDowntimeBlocks} / $DECOMMISSION_MAX_CREDIT (${estimateDowntimeHours(node.earnedDowntimeBlocks).toStringAsFixed(2)} ${S.of(context).hours})',
-                              subtitleColor: estimateDowntimeHours(node.earnedDowntimeBlocks) < 2 ? Colors.red : null,
+                              subtitleColor: estimateDowntimeHours(node.earnedDowntimeBlocks) < 2 ? Colors.red : Colors.transparent,
                             ),
                             if (node.active)
                               Center(
@@ -279,10 +280,7 @@ class DetailsMasterNodePage extends BasePage {
                                                           '${contribution.contributors[index].address.toShortAddress()}',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Theme.of(context)
-                                                                  .primaryTextTheme
-                                                                  .headline5
-                                                                  .color)));
+                                                              color: Theme.of(context).primaryTextTheme.headline5?.color)));
                                                 },
                                               ),
                                               ListView.builder(
@@ -297,10 +295,7 @@ class DetailsMasterNodePage extends BasePage {
                                                           '${contribution.contributors[index].amount ~/ 1000000000} (${(contribution.contributors[index].amount / 100000000000).toStringAsFixed(2)}%)',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Theme.of(context)
-                                                                  .primaryTextTheme
-                                                                  .headline5
-                                                                  .color)));
+                                                              color: Theme.of(context).primaryTextTheme.headline5?.color)));
                                                 },
                                               ),
                                             ])
@@ -355,8 +350,8 @@ class DetailsMasterNodePage extends BasePage {
                           arguments: EditMasterNodeArguments(publicKey, true));
                     },
                     text: S.of(context).title_edit_master_node,
-                    color: Theme.of(context).primaryTextTheme.button.backgroundColor,
-                    borderColor: Theme.of(context).primaryTextTheme.button.decorationColor,
+                    color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
+                    borderColor: Theme.of(context).primaryTextTheme.button!.decorationColor!,
                     textColor: Colors.white,
                   ),
                 ),
