@@ -140,6 +140,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
             behavior: SnackBarBehavior.floating,
             backgroundColor: BeldexPalette
                 .tealWithOpacity));
+        setLoading(false);
         Navigator.of(context).pop();
         _nameController.text = "";
         _publicKeyController.text = "";
@@ -170,15 +171,16 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
         behavior: SnackBarBehavior.floating,
         backgroundColor: BeldexPalette.red));
   }
+  StateSetter? _setState;
+  bool isLoading = false;
 
   @override
   void dispose() {
     _nameController.dispose();
     _publicKeyController.dispose();
+    isLoading = false;
     super.dispose();
   }
-  StateSetter? _setState;
-  bool isLoading = false;
 
   void setLoading(bool value) {
     _setState!(() {
@@ -257,10 +259,11 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                               hintText: S
                                   .of(context)
                                   .name,
+                              maxLength: 15,
                               validator: (value) {
                                 final isDuplicate =
                                 _isDuplicateName(value!, masterNodeSource);
-                                if (value.isEmpty) {
+                                if (value.trim().isEmpty) {
                                   setLoading(false);
                                   return S.of(context).pleaseEnterAName;
                                 }
@@ -411,165 +414,151 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
       }
 
       return ListView(
-        shrinkWrap: true,
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              //shrinkWrap: true,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 18, bottom: 28),
-                        child: SizedBox(
-                          height: 220.0,
-                          child: Stack(
-                            children: <Widget>[
-                              Center(
-                                child: Container(
-                                  width: 210,
-                                  height: 210,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                          width: 210,
-                                          height: 210,
-                                          margin: EdgeInsets.all(10),
-                                          child: PhysicalShape(
-                                            color: _isDarkTheme
-                                                ? Theme.of(context).backgroundColor
-                                                : Colors.white70,
-                                            shadowColor:
-                                            _isDarkTheme ? Colors.black45 : Colors.grey,
-                                            elevation: 13,
-                                            clipper:
-                                            ShapeBorderClipper(shape: CircleBorder()),
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 25,
-                                              value: 1,
-                                              valueColor: AlwaysStoppedAnimation<Color>(
-                                                  Theme.of(context)
-                                                      .primaryTextTheme
-                                                      .bodyText1!
-                                                      .color!),
-                                              backgroundColor: Theme.of(context)
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 18, bottom: 28),
+                    child: SizedBox(
+                      height: 220.0,
+                      child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: Container(
+                              width: 210,
+                              height: 210,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                      width: 210,
+                                      height: 210,
+                                      margin: EdgeInsets.all(10),
+                                      child: PhysicalShape(
+                                        color: _isDarkTheme
+                                            ? Theme.of(context).backgroundColor
+                                            : Colors.white70,
+                                        shadowColor:
+                                        _isDarkTheme ? Colors.black45 : Colors.grey,
+                                        elevation: 13,
+                                        clipper:
+                                        ShapeBorderClipper(shape: CircleBorder()),
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 25,
+                                          value: 1,
+                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                              Theme.of(context)
                                                   .primaryTextTheme
                                                   .bodyText1!
-                                                  .color,
-                                            ),
-                                          )),
-                                      Center(
-                                        child: Container(
-                                          width: 190,
-                                          height: 190,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 10,
-                                            value: operatorStatus.healthPercentage,
-                                            valueColor: AlwaysStoppedAnimation<Color>(
-                                                BeldexPalette.progressIndicator),
-                                            backgroundColor: BeldexPalette.red,
-                                          ),
+                                                  .color!),
+                                          backgroundColor: Theme.of(context)
+                                              .primaryTextTheme
+                                              .bodyText1!
+                                              .color,
                                         ),
+                                      )),
+                                  Center(
+                                    child: Container(
+                                      width: 190,
+                                      height: 190,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 10,
+                                        value: operatorStatus.healthPercentage,
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            BeldexPalette.progressIndicator),
+                                        backgroundColor: BeldexPalette.red,
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                              Container(
-                                child: Center(
-                                  child: Text(operatorStatusText,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 14.0, color: BeldexPalette.progressCenterText,fontWeight: FontWeight.bold)),
-                                ),
-                              )
-                            ],
+                            ),
                           ),
-                        ),
+                          Container(
+                            child: Center(
+                              child: Text(operatorStatusText,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 14.0, color: BeldexPalette.progressCenterText,fontWeight: FontWeight.bold)),
+                            ),
+                          )
+                        ],
                       ),
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 28),
-                          child: Text(
-                            S.of(context).all_master_nodes(
-                                nodeSyncStatus.networkSize, nodeSyncStatus.currentHeight),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 18.0, color: BeldexPalette.progressCenterText),
-                          )),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Card(
-                    color: Theme.of(context).cardColor,
-                    margin: EdgeInsets.only(left: 10,right: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin:EdgeInsets.only(left: 30,right: 25,top: 20,bottom: 20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.caption!.backgroundColor)),
-                                    TextSpan(text: '${ nodeSyncStatus.nodes != null
-                                        ? nodeSyncStatus.nodes.length
-                                        : 0}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.caption!.color)),
-                                  ],
-                                ),
-                              ),
-                              InkWell(onTap:(){
-                                showDialogBox(context,_nameController,masterNodeSource,nodeSyncStatus,_publicKeyController,_formKey,settingsStore);
-                              },child: Icon(Icons.add_circle))
-                            ],
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(bottom: 28),
+                      child: Text(
+                        S.of(context).all_master_nodes(
+                            nodeSyncStatus.networkSize, nodeSyncStatus.currentHeight),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18.0, color: BeldexPalette.progressCenterText),
+                      )),
+                ],
+              ),
+              Card(
+                color: Theme.of(context).cardColor,
+                margin: EdgeInsets.only(left: 10,right: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:EdgeInsets.only(left: 30,right: 25,top: 20,bottom: 20),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.caption!.backgroundColor)),
+                                TextSpan(text: '${ nodeSyncStatus.nodes != null
+                                    ? nodeSyncStatus.nodes.length
+                                    : 0}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.caption!.color)),
+                              ],
+                            ),
                           ),
-                        ),
-                        Flexible(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
-                              itemCount: nodeSyncStatus.nodes != null
-                                  ? nodeSyncStatus.nodes.length
-                                  : 0,
-                              itemBuilder: (BuildContext context, int index) {
-                                final nodeStatus = nodeSyncStatus.nodes[index];
-                                final masterNodeKey = nodeStatus.nodeInfo.publicKey;
-                                final nodeSource = nodes.values.firstWhere((e) {
-                                  return e.publicKey == masterNodeKey;
-                                });
-                                return MasterNodeCard(
-                                    nodeSource.name,
-                                    masterNodeKey,
-                                    nodeStatus.isUnlocking,
-                                    nodeStatus.active,
-                                    nodeStatus.storageServer.isReachable,
-                                    nodeStatus.lokinetRouter.isReachable,
-                                    nodeStatus.lastReward.blockHeight,
-                                    nodeStatus.earnedDowntimeBlocks,
-                                    nodeStatus.lastUptimeProof,
-                                    nodeStatus.contribution);
-                              }),
-                        ),
-                      ],
+                          InkWell(onTap:(){
+                            showDialogBox(context,_nameController,masterNodeSource,nodeSyncStatus,_publicKeyController,_formKey,settingsStore);
+                          },child: Icon(Icons.add_circle))
+                        ],
+                      ),
                     ),
-                  ),
+                    Container(
+                      margin:EdgeInsets.only(bottom: 150),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: nodeSyncStatus.nodes.map((e) {
+                          final nodeStatus = e;//nodeSyncStatus.nodes[index];
+                          final masterNodeKey = nodeStatus.nodeInfo.publicKey;
+                          final nodeSource = nodes.values.firstWhere((e) {
+                            return e.publicKey == masterNodeKey;
+                          });
+                          return MasterNodeCard(
+                            nodeSource.name,
+                            masterNodeKey,
+                            nodeStatus.isUnlocking,
+                            nodeStatus.active,
+                            nodeStatus.storageServer.isReachable,
+                            nodeStatus.lokinetRouter.isReachable,
+                            nodeStatus.lastReward.blockHeight,
+                            nodeStatus.earnedDowntimeBlocks,
+                            nodeStatus.lastUptimeProof,
+                            nodeStatus.contribution);
+                        }).toList()
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      );
+                ]);
     });
   }
 }

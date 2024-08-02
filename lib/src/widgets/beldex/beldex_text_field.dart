@@ -13,7 +13,8 @@ class BeldexTextField extends StatelessWidget {
       this.prefixIcon,
       this.suffixIcon,
       this.focusNode,
-      required this.backgroundColor});
+      required this.backgroundColor,
+      this.maxLength});
 
   final bool enabled;
   final String hintText;
@@ -25,6 +26,7 @@ class BeldexTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final FocusNode? focusNode;
   final Color backgroundColor;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class BeldexTextField extends StatelessWidget {
             color: Theme.of(context).textTheme.overline!.color),
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
+        maxLength: maxLength,
         decoration: InputDecoration(
           filled: true,
             fillColor: backgroundColor,
@@ -63,7 +66,8 @@ class BeldexTextField extends StatelessWidget {
             focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: BeldexPalette.red, width: 1.0)),
-            errorStyle: TextStyle(color: BeldexPalette.red)),
+            errorStyle: TextStyle(color: BeldexPalette.red),
+        counterText: ""),
         validator: validator);
   }
 }

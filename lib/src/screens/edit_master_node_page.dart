@@ -204,9 +204,10 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
               backgroundColor:Theme.of(context).primaryTextTheme.headline2!.color!,
               controller: _nameController,
               hintText: S.of(context).name,
+              maxLength: 15,
               validator: (value) {
                 final isDuplicate = _isDuplicateName(value!);
-                if (value.isEmpty) {
+                if (value.trim().isEmpty) {
                   setLoading(false);
                   return S.of(context).pleaseEnterAName;
                 }
@@ -216,7 +217,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                       .of(context)
                       .error_name_taken;
                 }
-                //return null;
+                return null;
               },
             ),
             Container(

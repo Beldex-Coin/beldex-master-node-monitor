@@ -180,10 +180,10 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                         backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
                         controller: _nameController,
                         hintText: S.of(context).name,
+                        maxLength: 15,
                         validator: (value) {
-                          final isDuplicate =
-                              _isDuplicateName(value!, masterNodeSource);
-                          if (value.isEmpty) {
+                          final isDuplicate = _isDuplicateName(value!, masterNodeSource);
+                          if (value.trim().isEmpty) {
                             setLoading(false);
                             return S.of(context).pleaseEnterAName;
                           }
@@ -193,7 +193,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                                 .of(context)
                                 .error_name_taken;
                           }
-                          //return null;
+                          return null;
                         },
                       ),
                     ),
