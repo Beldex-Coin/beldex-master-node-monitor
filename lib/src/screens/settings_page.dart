@@ -150,7 +150,7 @@ class SettingsPage extends BasePage {
         ),
         Padding(
           padding: EdgeInsets.only(left: 35, top: 10),
-          child: Text("Version 1.0.1",style: TextStyle(fontSize: 16.0,color: BeldexPalette.progressCenterText),),
+          child: Text("Version 1.0.2",style: TextStyle(fontSize: 16.0,color: BeldexPalette.progressCenterText),),
         )
       ],
     );
