@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:master_node_monitor/generated/l10n.dart';
 import 'package:master_node_monitor/src/beldex/daemon.dart';
@@ -180,6 +181,9 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
                         child: BeldexTextField(
                           backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
                           controller: _portController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+                          ],
                           keyboardType: TextInputType.numberWithOptions(
                               signed: false, decimal: false),
                           hintText: S.of(context).daemon_port,
