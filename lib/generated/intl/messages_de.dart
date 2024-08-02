@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "daemon_address":
             MessageLookupByLibrary.simpleMessage("Daemon Adresse"),
         "daemon_port": MessageLookupByLibrary.simpleMessage("Daemon Port"),
+        "daemons": MessageLookupByLibrary.simpleMessage("Dämonen"),
         "dashboard_order_by_name": MessageLookupByLibrary.simpleMessage("Name"),
         "dashboard_order_by_next_reward":
             MessageLookupByLibrary.simpleMessage("Nächste Belohnung"),
@@ -160,6 +161,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Terms and Conditions"),
         "termsConditions":
             MessageLookupByLibrary.simpleMessage("Terms & amp; Bedingungen"),
+        "theDaemonIsAlreadyExists": MessageLookupByLibrary.simpleMessage(
+            "Der Daemon ist bereits vorhanden"),
         "title_add_daemon":
             MessageLookupByLibrary.simpleMessage("Daemon hinzufügen"),
         "title_add_master_node":

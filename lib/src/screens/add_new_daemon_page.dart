@@ -46,9 +46,21 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
       final daemon = Daemon(uri);
       bool daemonIsOnline = await daemon.isOnline();
       if (daemonIsOnline) {
-        await daemonSource.add(daemon);
-        Navigator.of(context).pop();
-        Navigator.of(context).pushNamed(BeldexRoutes.settingsDaemon);
+        final daemonList = daemonSource.values.toList();
+        var status = false;
+        for(var i=0 ; i < daemonList.length;i++){
+            if(daemonList[i].uri.contains(uri)){
+              status = true;
+            }
+        }
+        if(!status){
+          await daemonSource.add(daemon);
+          Navigator.of(context).pop();
+          Navigator.of(context).pushNamed(BeldexRoutes.settingsDaemon);
+        }else{
+          callCommonScaffoldMessenger(S.of(context).theDaemonIsAlreadyExists);
+          setLoading(false);
+        }
       }  else {
         callCommonScaffoldMessenger(S.of(context).pleaseEnterAValidDaemon);
         setLoading(false);

@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class EditDaemonsPage extends BasePage {
   @override
-  String get title => S.current.title_edit_daemons;
+  String get title => S.current.daemons;
 
   @override
   Widget trailing(BuildContext context) {

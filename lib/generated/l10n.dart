@@ -999,6 +999,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Daemons`
+  String get daemons {
+    return Intl.message(
+      'Daemons',
+      name: 'daemons',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The Daemon is already exists`
+  String get theDaemonIsAlreadyExists {
+    return Intl.message(
+      'The Daemon is already exists',
+      name: 'theDaemonIsAlreadyExists',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
