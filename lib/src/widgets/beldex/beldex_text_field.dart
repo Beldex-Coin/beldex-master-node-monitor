@@ -5,26 +5,28 @@ import 'package:master_node_monitor/src/utils/theme/palette.dart';
 class BeldexTextField extends StatelessWidget {
   BeldexTextField(
       {this.enabled = true,
-      this.hintText,
+      required this.hintText,
       this.keyboardType,
-      this.controller,
+      required this.controller,
       this.validator,
       this.inputFormatters,
       this.prefixIcon,
       this.suffixIcon,
       this.focusNode,
-      this.backgroundColor});
+      required this.backgroundColor,
+      this.maxLength});
 
   final bool enabled;
   final String hintText;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final TextEditingController controller;
-  final String Function(String) validator;
-  final List<TextInputFormatter> inputFormatters;
-  final Widget prefixIcon;
-  final Widget suffixIcon;
-  final FocusNode focusNode;
+  final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final FocusNode? focusNode;
   final Color backgroundColor;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +37,10 @@ class BeldexTextField extends StatelessWidget {
         focusNode: focusNode,
         style: TextStyle(
             fontSize: 18.0,
-            color: Theme.of(context).accentTextTheme.overline.color),
+            color: Theme.of(context).textTheme.overline!.color),
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
+        maxLength: maxLength,
         decoration: InputDecoration(
           filled: true,
             fillColor: backgroundColor,
@@ -63,7 +66,8 @@ class BeldexTextField extends StatelessWidget {
             focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: BeldexPalette.red, width: 1.0)),
-            errorStyle: TextStyle(color: BeldexPalette.red)),
+            errorStyle: TextStyle(color: BeldexPalette.red),
+        counterText: ""),
         validator: validator);
   }
 }

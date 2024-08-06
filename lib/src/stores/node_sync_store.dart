@@ -9,17 +9,17 @@ part 'node_sync_store.g.dart';
 class NodeSyncStore = NodeSyncStoreBase with _$NodeSyncStore;
 
 abstract class NodeSyncStoreBase with Store {
-  NodeSyncStoreBase(this._masterNodes, this._settingsStore) : isSyncing = true;
+  NodeSyncStoreBase({required this.masterNodes, required this.settingsStore}) : isSyncing = true;
 
   @action
   Future sync() async {
     isSyncing = true;
     final masterNodePublicKeys =
-        _masterNodes.values.map((e) => e.publicKey).toList();
+        masterNodes.values.map((e) => e.publicKey).toList();
     try {
       final resultData =
-          await _settingsStore.daemon.sendRPCRequest('get_master_nodes');
-      final results = (resultData['result']['master_node_states'] as List);
+          await settingsStore.daemon?.sendRPCRequest('get_master_nodes');
+      final results = (resultData!['result']['master_node_states'] as List);
       currentHeight = resultData['result']['height'] as int;
       networkSize =
           results.where((element) => element['active'] as bool).length;
@@ -29,11 +29,11 @@ abstract class NodeSyncStoreBase with Store {
         nodes = [];
         for (final result in myNodes) {
           final masterNodeStatus = MasterNodeStatus.load(result);
-          final masterNode = _masterNodes.values.firstWhere((element) =>
+          final masterNode = masterNodes.values.firstWhere((element) =>
               element.publicKey == masterNodeStatus.nodeInfo.publicKey);
           if (!masterNode.nodeInfo.equals(masterNodeStatus.nodeInfo)) {
             masterNode.nodeInfo = masterNodeStatus.nodeInfo;
-            await _masterNodes.put(masterNode.key, masterNode);
+            await masterNodes.put(masterNode.key, masterNode);
           }
           nodes.add(masterNodeStatus);
         }
@@ -70,15 +70,15 @@ abstract class NodeSyncStoreBase with Store {
   bool isSyncing;
 
   @observable
-  int currentHeight;
+  late int currentHeight;
 
   @observable
-  int networkSize;
+  late int networkSize;
 
   @observable
-  List<MasterNodeStatus> nodes;
+  List<MasterNodeStatus> nodes = <MasterNodeStatus> [];
 
-  SettingsStore _settingsStore;
+  SettingsStore settingsStore;
 
-  Box<MasterNode> _masterNodes;
+  Box<MasterNode> masterNodes;
 }

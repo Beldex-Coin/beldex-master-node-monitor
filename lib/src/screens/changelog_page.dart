@@ -14,38 +14,48 @@ class ChangelogPage extends BasePage {
   Widget body(BuildContext context) {
     return FutureBuilder(
         builder: (context, snapshot) {
-          final changelogs = loadYaml(snapshot.data.toString()) as YamlList;
+          if(snapshot.data!=null) {
+            final changelogs = loadYaml(snapshot.data.toString()) as YamlList;
 
-          return ListView.separated(
-              itemBuilder: (BuildContext context, int index) {
-                final versionTitle = changelogs[index]['version'].toString();
-                final versionChanges = changelogs[index]['changes'] as YamlList;
-                final versionChangesText = versionChanges
-                    .map((dynamic element) => '- $element')
-                    .join('\n');
+            return ListView.separated(
+                itemBuilder: (BuildContext context, int index) {
+                  final versionTitle = changelogs[index]['version'].toString();
+                  final versionChanges = changelogs[index]['changes'] as YamlList;
+                  final versionChangesText = versionChanges
+                      .map((dynamic element) => '- $element')
+                      .join('\n');
 
-                return Card(
-                  color: Theme.of(context).cardColor,
-                  child: ExpansionTile(
-                    title: Text(versionTitle),
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                              child: Container(
-                                  padding:
-                                      EdgeInsets.only(left: 15.0, right: 15.0),
-                                  child: Text('$versionChangesText\n')))
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (_, __) => Divider(
-                  color: Theme.of(context).dividerTheme.color, height: 1.0),
-              itemCount: changelogs == null ? 0 : changelogs.length);
+                  return Card(
+                    color: Theme
+                        .of(context)
+                        .cardColor,
+                    child: ExpansionTile(
+                      title: Text(versionTitle),
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                                child: Container(
+                                    padding:
+                                    EdgeInsets.only(left: 15.0, right: 15.0),
+                                    child: Text('$versionChangesText\n')))
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (_, __) =>
+                    Divider(
+                        color: Theme
+                            .of(context)
+                            .dividerTheme
+                            .color, height: 1.0),
+                itemCount: changelogs == null ? 0 : changelogs.length);
+          }else{
+            return Container();
+          }
         },
         future: rootBundle.loadString(changelogPath));
   }

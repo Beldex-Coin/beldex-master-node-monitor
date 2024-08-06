@@ -6,3 +6,9 @@
   version: 1.0.1
   changes:
     - Updated support for Android version 13
+-
+  version: 1.0.2
+  changes:
+    - Targeted latest android version
+    - Minor bug fixes
+    - Updated google play core libraries

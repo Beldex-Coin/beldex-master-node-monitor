@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,13 +14,12 @@ import 'package:master_node_monitor/src/utils/default_settings_migration.dart';
 import 'package:master_node_monitor/src/utils/language.dart';
 import 'package:master_node_monitor/src/utils/network_service.dart';
 import 'package:master_node_monitor/src/utils/router/beldex_router.dart';
-import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/utils/theme/theme_changer.dart';
 import 'package:master_node_monitor/src/utils/theme/themes.dart';
-import 'package:native_updater/native_updater.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'generated/l10n.dart';
 
@@ -38,7 +39,7 @@ void main() async {
 
   final settingsStore =
       await SettingsStoreBase.load(sharedPreferences, daemons);
-  final nodeSyncStore = NodeSyncStore(masterNodes, settingsStore);
+  final nodeSyncStore = NodeSyncStore(masterNodes: masterNodes, settingsStore: settingsStore);
 
   final networkService = NetworkService().controller.stream;
 
@@ -53,7 +54,7 @@ void main() async {
     Provider(create: (_) => sharedPreferences),
     Provider(create: (_) => settingsStore),
     Provider(create: (_) => nodeSyncStore),
-    StreamProvider(create: (_) => networkService)
+    StreamProvider(create: (_) => networkService, initialData: NetworkStatus.online)
   ], child: BeldexMasterNodeApp()));
 }
 
@@ -71,10 +72,10 @@ class _BeldexMasterNodeAppState extends State<BeldexMasterNodeApp> {
   @override
   void initState() {
     super.initState();
-    checkVersion(context);
+    //checkVersion(context);
   }
 
-  Future<void> checkVersion(BuildContext context) async {
+  /*Future<void> checkVersion(BuildContext context) async {
 
     Future.delayed(Duration.zero, () {
         NativeUpdater.displayUpdateAlert(
@@ -88,7 +89,7 @@ class _BeldexMasterNodeAppState extends State<BeldexMasterNodeApp> {
           iOSAlertTitle: 'Mandatory Update',
         );
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +131,12 @@ class MaterialAppWithTheme extends StatelessWidget {
         locale: Locale(currentLanguage.currentLanguage),
         onGenerateRoute: (settings) => BeldexRouter.generateRoute(
             settings, sharedPreferences, settingsStore),
-        home: isSetup ? WelcomePage() : DashboardPage());
+        home: UpgradeAlert(
+            showLater: false,
+            showIgnore: false,
+            dialogStyle: Platform.isIOS
+                ? UpgradeDialogStyle.cupertino
+                : UpgradeDialogStyle.material,
+            child: isSetup ? WelcomePage() : DashboardPage()));
   }
 }

@@ -5,8 +5,8 @@ class Spinner extends StatefulWidget {
   final Duration duration;
 
   const Spinner({
-    Key key,
-    @required this.icon,
+    Key? key,
+    required this.icon,
     this.duration = const Duration(milliseconds: 1800),
   }) : super(key: key);
 
@@ -15,8 +15,8 @@ class Spinner extends StatefulWidget {
 }
 
 class _SpinnerState extends State<Spinner> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Widget _child;
+  AnimationController? _controller;
+  Widget? _child;
 
   @override
   void initState() {
@@ -31,14 +31,14 @@ class _SpinnerState extends State<Spinner> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return RotationTransition(
-      turns: ReverseAnimation(_controller),
+      turns: ReverseAnimation(_controller!),
       child: _child,
     );
   }

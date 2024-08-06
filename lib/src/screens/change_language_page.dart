@@ -16,8 +16,7 @@ class ChangeLanguagePage extends BasePage {
     settingsStore.language = currentLanguage;
 
     final currentColor = Theme.of(context).selectedRowColor;
-    final notCurrentColor =
-        Theme.of(context).accentTextTheme.subtitle1.backgroundColor;
+    final notCurrentColor = Theme.of(context).textTheme.subtitle1?.backgroundColor;
 
     return Container(
         padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -37,7 +36,7 @@ class ChangeLanguagePage extends BasePage {
                   style: TextStyle(
                       fontSize: 16.0,
                       color:
-                          Theme.of(context).primaryTextTheme.headline6.color),
+                          Theme.of(context).primaryTextTheme.headline6!.color),
                 ),
                 onTap: () async {
                   if (!isCurrent) {

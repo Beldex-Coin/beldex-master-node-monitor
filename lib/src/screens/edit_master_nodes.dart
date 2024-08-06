@@ -25,7 +25,7 @@ class EditMasterNodesPage extends BasePage {
           onPressed: () =>
               Navigator.of(context).pushNamed(BeldexRoutes.addMasterNode,arguments: false),
           child: Icon(Icons.add_sharp,
-              color: Theme.of(context).primaryTextTheme.caption.color,
+              color: Theme.of(context).primaryTextTheme.caption!.color,
               size: 24)),
     );
   }
@@ -78,7 +78,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                     style: TextStyle(
                       fontSize: 18,
                       decoration: TextDecoration.none,
-                      color: Theme.of(context).primaryTextTheme.caption.color,
+                      color: Theme.of(context).primaryTextTheme.caption!.color,
                     ),
                   ),
                 ),
@@ -92,10 +92,10 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             Navigator.of(context).pop();
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryTextTheme.headline3.backgroundColor),
+                              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      side: BorderSide(color: Theme.of(context).primaryTextTheme.headline3.backgroundColor),
+                                      side: BorderSide(color: Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
                                       borderRadius: BorderRadius.circular(10.0)
                                   ))
                           ),
@@ -104,7 +104,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             child: Text("Cancel",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.headline3.color)),
+                                    color: Theme.of(context).primaryTextTheme.headline3!.color)),
                           ),
                         )),
                     ButtonTheme(
@@ -127,7 +127,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             child: Text("Delete",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.button.color)),
+                                    color: Theme.of(context).primaryTextTheme.button!.color)),
                           ),
                         )),
                   ],
@@ -165,7 +165,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                         child: ListTile(
                       leading: Icon(CupertinoIcons.chart_bar_fill,color: Theme.of(context)
                           .primaryTextTheme
-                          .headline6
+                          .headline6!
                           .color,),
                       trailing: InkWell(
                         onTap: () {
@@ -183,7 +183,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context)
                                     .primaryTextTheme
-                                    .headline6
+                                    .headline6!
                                     .color),
                           ),
                           SizedBox(height: 10,),
@@ -203,7 +203,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
 
                     return Card(
                         color: Theme.of(context).cardColor,
-                        elevation: 10,
+                        elevation: 1,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)
                         ),

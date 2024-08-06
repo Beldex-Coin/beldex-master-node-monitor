@@ -63,11 +63,11 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
   Future _saveMasterNode(Box<MasterNode> masterNodeSource, SettingsStore settingsStore, NodeSyncStore nodeSyncStatus, NetworkStatus networkStatus) async {
     if(networkStatus == NetworkStatus.online) {
       var checkPublicKey = settingsStore.daemon != null
-          ? CheckMasterNode(settingsStore.daemon.uri, _publicKeyController.text)
+          ? CheckMasterNode(settingsStore.daemon!.uri, _publicKeyController.text)
           : CheckMasterNode("", _publicKeyController.text);
       bool validPublicKey = await checkPublicKey.isOnline();
       if (validPublicKey) {
-        final masterNode = MasterNode(_nameController.text, _publicKeyController.text);
+        final masterNode = MasterNode(name: _nameController.text, publicKey: _publicKeyController.text);
         await masterNodeSource.add(masterNode);
         await nodeSyncStatus.sync();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -177,13 +177,13 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: BeldexTextField(
-                        backgroundColor: Theme.of(context).primaryTextTheme.overline.color,
+                        backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
                         controller: _nameController,
                         hintText: S.of(context).name,
+                        maxLength: 15,
                         validator: (value) {
-                          final isDuplicate =
-                              _isDuplicateName(value, masterNodeSource);
-                          if (value.isEmpty) {
+                          final isDuplicate = _isDuplicateName(value!, masterNodeSource);
+                          if (value.trim().isEmpty) {
                             setLoading(false);
                             return S.of(context).pleaseEnterAName;
                           }
@@ -200,7 +200,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: BeldexTextField(
-                        backgroundColor: Theme.of(context).primaryTextTheme.overline.color,
+                        backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
                         controller: _publicKeyController,
                         hintText: S.of(context).public_key,
                         suffixIcon: IconButton(
@@ -210,12 +210,12 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                             icon: Icon(Icons.content_paste_sharp),
                             onPressed: () async {
                               final clipboard = await Clipboard.getData('text/plain');
-                              if (clipboard.text != null)
-                                _publicKeyController.text = clipboard.text;
+                              if (clipboard?.text != null)
+                                _publicKeyController.text = clipboard!.text!;
                             }),
                         validator: (value) {
-                          final publicKey = value.trim();
-                          final validPublicKey = isValidPublicKey(publicKey);
+                          final publicKey = value?.trim();
+                          final validPublicKey = isValidPublicKey(publicKey!);
                           final isDuplicate =
                               _isDuplicatePublicKey(publicKey, masterNodeSource);
                           if (publicKey.isEmpty) {
@@ -245,13 +245,13 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                   isLoading: isLoading,
                     onPressed: () async {
                       setLoading(true);
-                      if (!_formKey.currentState.validate()) return;
+                      if (!_formKey.currentState!.validate()) return;
                       await _saveMasterNode(masterNodeSource,settingsStore,nodeSyncStatus,networkStatus);
                     },
                     text: S.of(context).add_master_node,
-                    color: Theme.of(context).primaryTextTheme.button.backgroundColor,
+                    color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
                     borderColor:
-                    Theme.of(context).primaryTextTheme.button.decorationColor),
+                    Theme.of(context).primaryTextTheme.button!.decorationColor!),
               )
             ],
           ),

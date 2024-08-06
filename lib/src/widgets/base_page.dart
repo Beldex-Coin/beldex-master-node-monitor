@@ -11,7 +11,7 @@ import 'beldex/beldex_app_bar.dart';
 enum AppBarStyle { regular, withShadow }
 
 abstract class BasePage extends StatelessWidget {
-  String get title => null;
+  String? get title => null;
 
   bool get isModalBackButton => false;
 
@@ -27,8 +27,8 @@ abstract class BasePage extends StatelessWidget {
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  Widget leading(BuildContext context) {
-    if (ModalRoute.of(context).isFirst) {
+  Widget? leading(BuildContext context) {
+    if (ModalRoute.of(context)!.isFirst) {
       return null;
     }
 
@@ -50,21 +50,23 @@ abstract class BasePage extends StatelessWidget {
     );
   }
 
-  Widget middle(BuildContext context) {
+  Widget? middle(BuildContext context) {
     return title == null
         ? null
         : Text(
-            title,
+            title!,
             style: TextStyle(
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryTextTheme.headline6.color),
+                color: Theme.of(context).primaryTextTheme.headline6!.color),
           );
   }
 
-  Widget trailing(BuildContext context) => null;
+  Widget? trailing(BuildContext context) => SizedBox(
+      width: 30,);
 
-  Widget floatingActionButton(BuildContext context) => null;
+  Widget? floatingActionButton(BuildContext context) => SizedBox(
+      width: 30,);
 
   ObstructingPreferredSizeWidget appBar(BuildContext context) {
     final _themeChanger = Provider.of<ThemeChanger>(context);
@@ -73,30 +75,30 @@ abstract class BasePage extends StatelessWidget {
     switch (appBarStyle) {
       case AppBarStyle.regular:
         return BeldexAppBar(
+            leading(context)!,
+            middle(context)!,
+            trailing(context)!,
             context: context,
-            leading: leading(context),
-            middle: middle(context),
-            trailing: trailing(context),
             backgroundColor: _isDarkTheme
                 ? Theme.of(context).backgroundColor
                 : backgroundColor);
 
       case AppBarStyle.withShadow:
         return BeldexAppBar.withShadow(
+            leading(context)!,
+            middle(context)!,
+            trailing(context)!,
             context: context,
-            leading: leading(context),
-            middle: middle(context),
-            trailing: trailing(context),
             backgroundColor: _isDarkTheme
                 ? Theme.of(context).backgroundColor
                 : backgroundColor);
 
       default:
         return BeldexAppBar(
+            leading(context)!,
+            middle(context)!,
+            trailing(context)!,
             context: context,
-            leading: leading(context),
-            middle: middle(context),
-            trailing: trailing(context),
             backgroundColor: _isDarkTheme
                 ? Theme.of(context).backgroundColor
                 : backgroundColor);
@@ -105,7 +107,7 @@ abstract class BasePage extends StatelessWidget {
 
   Widget body(BuildContext context);
 
-  Widget bottomNavigationBar(BuildContext context) => null;
+  Widget? bottomNavigationBar(BuildContext context) => null;
 
   @override
   Widget build(BuildContext context) {

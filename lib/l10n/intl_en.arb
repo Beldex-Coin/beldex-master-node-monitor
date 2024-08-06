@@ -104,5 +104,7 @@
   "enterAPublicKey": "Enter a public key",
   "enterAValidPublicKey": "Enter a valid public key",
   "pleaseEnterAValidDaemon": "Please enter a valid daemon",
-  "checkYourInternetConnection": "Check your internet connection"
+  "checkYourInternetConnection": "Check your internet connection",
+  "daemons": "Daemons",
+  "theDaemonIsAlreadyExists": "The Daemon is already exists"
 }
