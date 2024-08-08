@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:master_node_monitor/src/widgets/nav/nav_list_trailing.dart';
 
 class NavListArrow extends StatelessWidget {
-  NavListArrow({this.text, this.leading, this.onTap});
+  NavListArrow({required this.text, required this.leading, required this.onTap});
 
   final String text;
   final Widget leading;
@@ -14,7 +14,7 @@ class NavListArrow extends StatelessWidget {
         leading: leading,
         text: text,
         trailing: Icon(Icons.arrow_forward_ios_sharp,
-            color: Theme.of(context).primaryTextTheme.headline6.color,
+            color: Theme.of(context).primaryTextTheme.headline6!.color,
             size: 20),
         onTap: onTap);
   }

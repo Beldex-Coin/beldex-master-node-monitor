@@ -5,7 +5,7 @@ part 'master_node.g.dart';
 
 @HiveType(typeId: 1)
 class MasterNode extends HiveObject {
-  MasterNode(this.name, this.publicKey);
+  MasterNode({required this.name, required this.publicKey});
 
   MasterNode.fromMap(Map map)
       : name = (map['name'] ?? '') as String,
@@ -20,25 +20,25 @@ class MasterNode extends HiveObject {
   String publicKey;
 
   @HiveField(2)
-  String operatorAddress;
+  String? operatorAddress;
 
   @HiveField(3)
-  int registrationHeight;
+  int registrationHeight = 0;
 
   @HiveField(4)
-  int registrationHfVersion;
+  int registrationHfVersion = 0;
 
   @HiveField(5)
-  String nodeVersion;
+  String? nodeVersion;
 
   @HiveField(6)
-  String ipAddress;
+  String? ipAddress;
 
   @HiveField(7)
-  String storageServerVersion;
+  String? storageServerVersion;
 
   @HiveField(8)
-  String lokinetVersion;
+  String? lokinetVersion;
 
   MasterNodeInfo get nodeInfo => MasterNodeInfo(
       operatorAddress,

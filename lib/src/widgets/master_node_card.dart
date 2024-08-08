@@ -73,7 +73,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
 		: SvgPicture.asset('assets/images/deactivate.svg',width: 30,height: 30,));//Icon(Icons.error_sharp, color: BeldexPalette.red, size: 30)
 
     return Card(
-      color: active ? Theme.of(context).primaryTextTheme.bodyText2.color : Theme.of(context).primaryTextTheme.headline1.color,
+      color: active ? Theme.of(context).primaryTextTheme.bodyText2!.color : Theme.of(context).primaryTextTheme.headline1!.color,
         child: ExpansionTile(
       leading: Padding(padding: EdgeInsets.all(5), child: statusIcon),
       trailing: Icon(
@@ -81,7 +81,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
               ? Icons.keyboard_arrow_up_sharp
               : Icons.keyboard_arrow_down_sharp,
           size: 30,
-          color: Theme.of(context).primaryTextTheme.caption.color),
+          color: Theme.of(context).primaryTextTheme.caption!.color),
       onExpansionChanged: (bool expanded) {
         setState(() => _tileExpanded = expanded);
       },
@@ -91,7 +91,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.normal,
-                color: Theme.of(context).primaryTextTheme.caption.color)),
+                color: Theme.of(context).primaryTextTheme.caption!.color)),
       ),
       subtitle: Padding(
         padding: EdgeInsets.only(top: 7.0,bottom: 7.0),
@@ -121,7 +121,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                         child: Center(
                           child: Text('$lastRewardBlockHeight',
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 20)),
+                              style: TextStyle(fontSize: 16)),
                         ))
                   ]),
             ),
@@ -147,7 +147,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                                 isStorageServerReachable
                                     ? Icons.check_circle_sharp
                                     : Icons.error_sharp,
-                                size: 30),
+                                size: 22),
                           ))
                     ])),
           ),
@@ -172,7 +172,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                                 isLokinetRouterReachable
                                     ? Icons.check_circle_sharp
                                     : Icons.error_sharp,
-                                size: 30),
+                                size: 22),
                           ))
                     ])),
           ),
@@ -200,7 +200,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                         Expanded(
                             flex: 1,
                             child: Center(
-                              child: SvgPicture.asset('assets/images/more.svg',color:Theme.of(context).primaryTextTheme.headline5.color,width: 25,height: 25,),
+                              child: SvgPicture.asset('assets/images/more.svg',color:Theme.of(context).primaryTextTheme.headline5!.color,width: 25,height: 25,),
                             ))
                       ]),
                 )),

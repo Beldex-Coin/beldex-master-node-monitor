@@ -38,32 +38,37 @@ class Themes {
       selectedRowColor: BeldexPalette.tealWithOpacity,
       dividerColor: Palette.lightGrey,
       dividerTheme: DividerThemeData(color: Palette.lightGrey),
-      accentTextTheme: TextTheme(
+      textTheme: TextTheme(
           headline6: TextStyle(
-              color: Colors.grey, backgroundColor: Palette.creamyGrey),
+              color: Colors.grey,
+              backgroundColor: Colors.transparent),
           caption: TextStyle(
               color: Palette.wildDarkBlue,
-              backgroundColor: Palette.brightBlue,
+              backgroundColor:Colors.transparent,
               decorationColor: Palette.cloudySky),
           button: TextStyle(
-              backgroundColor: Palette.indigo,
+              backgroundColor: Colors.transparent,//Palette.indigo,
               decorationColor: Palette.deepIndigo),
           subtitle2: TextStyle(
-              color: BeldexPalette.black, backgroundColor: Palette.lightLavender),
+              color: BeldexPalette.black,
+              backgroundColor: Colors.transparent),
           headline5: TextStyle(
             color: Palette.lightGrey2,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,//Colors.white,
             decorationColor: Palette.darkGrey,
           ),
           subtitle1: TextStyle(
-              color: Palette.lightBlue, backgroundColor: Palette.lightGrey2),
+              color: Palette.lightBlue,
+              backgroundColor: Colors.transparent//Palette.lightGrey2
+          ),
           overline: TextStyle(
               color: BeldexPalette.black,
-              backgroundColor: BeldexPalette.blue,
+              backgroundColor: Colors.transparent,
               decorationColor: Palette.manatee)),
       buttonTheme: ButtonThemeData(buttonColor: Palette.darkGrey),
       primaryIconTheme: IconThemeData(color: Colors.white),
-      accentIconTheme: IconThemeData(color: Colors.white));
+      //accentIconTheme: IconThemeData(color: Colors.white)
+  );
 
   static final ThemeData darkTheme = ThemeData(
       fontFamily: 'Lato',
@@ -98,34 +103,35 @@ class Themes {
       dividerColor: PaletteDark.darkThemeDarkGrey,
       dividerTheme:
           DividerThemeData(color: PaletteDark.darkThemeGreyWithOpacity),
-      accentTextTheme: TextTheme(
+      textTheme: TextTheme(
           headline6: TextStyle(
               color: PaletteDark.darkThemeTitle,
-              backgroundColor: PaletteDark.darkThemePinDigitButton),
+              backgroundColor: Colors.transparent),
           caption: TextStyle(
               color: PaletteDark.darkThemeTitleViolet,
-              backgroundColor: PaletteDark.darkThemeBlueButton,
+              backgroundColor: Colors.transparent,
               decorationColor: PaletteDark.darkThemeBlueButtonBorder),
           button: TextStyle(
-              backgroundColor: PaletteDark.darkThemeIndigoButton,
+              backgroundColor: Colors.transparent,//PaletteDark.darkThemeIndigoButton,
               decorationColor: PaletteDark.darkThemeIndigoButtonBorder),
           subtitle2: TextStyle(
-              color: PaletteDark.wildDarkBlueWithOpacity,
+              color: Colors.transparent,
               backgroundColor: PaletteDark.darkThemeDarkGrey),
           headline5: TextStyle(
             color: PaletteDark.darkThemeBlack,
-            backgroundColor: PaletteDark.darkThemeMidGrey,
+            backgroundColor: Colors.transparent,//PaletteDark.darkThemeMidGrey,
             decorationColor: PaletteDark.darkThemeDarkGrey,
           ),
           subtitle1: TextStyle(
               color: Palette.wildDarkBlue,
-              backgroundColor: PaletteDark.darkThemeMidGrey),
+              backgroundColor: Colors.transparent//PaletteDark.darkThemeMidGrey
+          ),
           overline: TextStyle(
               color: PaletteDark.darkThemeTitle,
-              backgroundColor: PaletteDark.darkThemeGrey,
+              backgroundColor: Colors.transparent,
               decorationColor: PaletteDark.darkThemeTitle)),
       buttonTheme: ButtonThemeData(buttonColor: PaletteDark.darkThemePinButton),
       primaryIconTheme: IconThemeData(color: PaletteDark.darkThemeViolet),
-      accentIconTheme:
-          IconThemeData(color: PaletteDark.darkThemeIndigoButtonBorder));
+      //accentIconTheme: IconThemeData(color: PaletteDark.darkThemeIndigoButtonBorder)
+  );
 }

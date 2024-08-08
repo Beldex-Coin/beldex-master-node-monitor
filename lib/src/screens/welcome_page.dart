@@ -35,7 +35,7 @@ class WelcomePage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryTextTheme.headline6.color
+                    color: Theme.of(context).primaryTextTheme.headline6!.color
                   ),
                   textScaleFactor: textScaleFactor,
                   textAlign: TextAlign.center,
@@ -47,7 +47,7 @@ class WelcomePage extends StatelessWidget {
                     S.of(context).welcome_first_line,
                     style: TextStyle(
                       fontSize: 22.0,
-                      color:Theme.of(context).primaryTextTheme.subtitle2.color
+                      color:Theme.of(context).primaryTextTheme.subtitle2!.color
                     ),
                     textScaleFactor: textScaleFactor,
                     textAlign: TextAlign.center,
@@ -58,7 +58,7 @@ class WelcomePage extends StatelessWidget {
                     S.of(context).add_node_to_get_started,
                     style: TextStyle(
                       fontSize: 22.0,
-                      color: Theme.of(context).primaryTextTheme.subtitle1.color,
+                      color: Theme.of(context).primaryTextTheme.subtitle1!.color,
                     ),
                     textScaleFactor: textScaleFactor,
                     textAlign: TextAlign.center,
@@ -75,9 +75,9 @@ class WelcomePage extends StatelessWidget {
                 },
                 text: S.of(context).add_master_node,
                 color:
-                    Theme.of(context).primaryTextTheme.button.backgroundColor,
+                    Theme.of(context).primaryTextTheme.button!.backgroundColor!,
                 borderColor:
-                    Theme.of(context).primaryTextTheme.button.decorationColor),
+                    Theme.of(context).primaryTextTheme.button!.decorationColor!),
           ]))
     ]);
   }

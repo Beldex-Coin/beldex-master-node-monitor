@@ -21,7 +21,7 @@ class FaqPage extends BasePage {
             final itemChild = faqItems[index]['answer'].toString();
 
             return Theme(
-              data: Theme.of(context).copyWith(accentColor: Colors.green,textSelectionTheme: TextSelectionThemeData(
+              data: Theme.of(context).copyWith(hintColor: Colors.green,textSelectionTheme: TextSelectionThemeData(
                   selectionColor: Colors.green
               )),
               child: Card(

@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class EditDaemonsPage extends BasePage {
   @override
-  String get title => S.current.title_edit_daemons;
+  String get title => S.current.daemons;
 
   @override
   Widget trailing(BuildContext context) {
@@ -30,7 +30,7 @@ class EditDaemonsPage extends BasePage {
               color: Theme
                   .of(context)
                   .primaryTextTheme
-                  .caption
+                  .caption!
                   .color,
               size: 24)),
     );
@@ -60,7 +60,7 @@ class EditDaemonsPage extends BasePage {
                     return Observer(builder: (_) {
                       final isCurrent = settingsStore.daemon == null
                           ? false
-                          : daemon.key == settingsStore.daemon.key;
+                          : daemon.key == settingsStore.daemon?.key;
 
                       final content = Container(
                           child: ListTile(
@@ -70,7 +70,7 @@ class EditDaemonsPage extends BasePage {
                                   fontSize: 16.0,
                                   color: Theme.of(context)
                                       .primaryTextTheme
-                                      .headline6
+                                      .headline6!
                                       .color),
                             ),
                             trailing: FutureBuilder(
@@ -95,13 +95,13 @@ class EditDaemonsPage extends BasePage {
                       return isCurrent
                           ? Card(
                         color: isCurrent ? currentColor : notCurrentColor,
-                          elevation: 10,
+                          elevation: 1,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)
                           ),
                           child: content)
                           : Card(
-                        elevation: 10,
+                        elevation: 1,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)
                         ),

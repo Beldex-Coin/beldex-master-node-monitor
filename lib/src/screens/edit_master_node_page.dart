@@ -14,7 +14,7 @@ import 'package:master_node_monitor/src/widgets/scrollable_with_bottom_section.d
 import 'package:provider/provider.dart';
 
 class EditMasterNodePage extends BasePage {
-  EditMasterNodePage(this.publicKey, this.status);
+  EditMasterNodePage({required this.publicKey, required this.status});
 
   final String publicKey;
   final bool status;
@@ -28,22 +28,22 @@ class EditMasterNodePage extends BasePage {
   String get title => S.current.title_edit_master_node;
 
   @override
-  Widget body(BuildContext context) => EditMasterNodePageBody(this.publicKey,this.status);
+  Widget body(BuildContext context) => EditMasterNodePageBody(publicKey: this.publicKey,status: this.status);
 }
 
 class EditMasterNodePageBody extends StatefulWidget {
-  EditMasterNodePageBody(this.publicKey,this.status);
+  EditMasterNodePageBody({required this.publicKey,required this.status});
 
   final String publicKey;
   final bool status;
 
   @override
   State<StatefulWidget> createState() =>
-      EditMasterNodePageBodyState(this.publicKey,this.status);
+      EditMasterNodePageBodyState(publicKey: this.publicKey,status: this.status);
 }
 
 class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
-  EditMasterNodePageBodyState(this.publicKey,this.status);
+  EditMasterNodePageBodyState({required this.publicKey,required this.status});
 
   final String publicKey;
   final bool status;
@@ -51,20 +51,20 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  Box<MasterNode> masterNodeSource;
-  MasterNode node;
+  Box<MasterNode>? masterNodeSource;
+  MasterNode? node;
 
-  bool _isDuplicateName(String name) =>
-      masterNodeSource.values.any((element) => element.name == name);
+  bool? _isDuplicateName(String name) =>
+      masterNodeSource?.values.any((element) => element.name == name);
 
   @override
   void initState() {
     super.initState();
     masterNodeSource = context.read<Box<MasterNode>>();
-    node = masterNodeSource.values
+    node = masterNodeSource?.values
         .firstWhere((e) => e.publicKey == this.publicKey);
 
-    _nameController.text = node.name;
+    _nameController.text = node!.name;
   }
 
   @override
@@ -74,14 +74,14 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
   }
 
   Future _saveMasterNode() async {
-    node.name = _nameController.text;
-    await node.save();
+    node?.name = _nameController.text;
+    await node?.save();
   }
 
   Future _deleteMasterNode(bool status, NodeSyncStore nodeSyncStore) async {
-    await node.delete();
+    await node?.delete();
 
-    if (masterNodeSource.isEmpty)
+    if (masterNodeSource!.isEmpty)
       Navigator.pushNamedAndRemoveUntil(context, BeldexRoutes.welcome,
           ModalRoute.withName(BeldexRoutes.dashboard));
     else {
@@ -124,7 +124,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                     style: TextStyle(
                       fontSize: 18,
                       decoration: TextDecoration.none,
-                      color: Theme.of(context).primaryTextTheme.caption.color,
+                      color: Theme.of(context).primaryTextTheme.caption!.color,
                     ),
                   ),
                 ),
@@ -138,10 +138,10 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                            Navigator.of(context).pop();
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryTextTheme.headline3.backgroundColor),
+                              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      side: BorderSide(color: Theme.of(context).primaryTextTheme.headline3.backgroundColor),
+                                      side: BorderSide(color: Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
                                       borderRadius: BorderRadius.circular(10.0)
                                   ))
                           ),
@@ -150,7 +150,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                             child: Text("Cancel",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.headline3.color)),
+                                    color: Theme.of(context).primaryTextTheme.headline3!.color)),
                           ),
                         )),
                     ButtonTheme(
@@ -173,7 +173,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                             child: Text("Delete",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.button.color)),
+                                    color: Theme.of(context).primaryTextTheme.button!.color)),
                           ),
                         )),
                   ],
@@ -201,16 +201,17 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                 margin:EdgeInsets.only(top: 15,bottom: 10),
                 alignment:AlignmentDirectional.centerStart,child: Text(S.of(context).name,style: TextStyle(fontSize:20.0,color: BeldexPalette.progressCenterText),)),
             BeldexTextField(
-              backgroundColor:Theme.of(context).primaryTextTheme.headline2.color,
+              backgroundColor:Theme.of(context).primaryTextTheme.headline2!.color!,
               controller: _nameController,
               hintText: S.of(context).name,
+              maxLength: 15,
               validator: (value) {
-                final isDuplicate = _isDuplicateName(value);
-                if (value.isEmpty) {
+                final isDuplicate = _isDuplicateName(value!);
+                if (value.trim().isEmpty) {
                   setLoading(false);
                   return S.of(context).pleaseEnterAName;
                 }
-                else if (isDuplicate) {
+                else if (isDuplicate!) {
                   setLoading(false);
                   return S
                       .of(context)
@@ -234,7 +235,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                     publicKey,//publicKey.toShortAddress(20),
                     style: TextStyle(
                         fontSize: 20,
-                        color: Theme.of(context).primaryTextTheme.headline5.color),
+                        color: Theme.of(context).primaryTextTheme.headline5?.color),
                   )
                 ],
               ),
@@ -245,7 +246,6 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
               color: BeldexPalette.deleteButton,
               borderColor: BeldexPalette.deleteButton,
               textColor: Colors.white,
-
             ),
           ]),
         ),
@@ -254,7 +254,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
         isLoading:isLoading,
           onPressed: () async {
             setLoading(true);
-            if (!_formKey.currentState.validate()) return;
+            if (!_formKey.currentState!.validate()) return;
             await _saveMasterNode();
             await nodeSyncStore.sync();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -275,8 +275,8 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
             Navigator.pop(context);
           },
           text: S.of(context).save_master_node,
-          color: Theme.of(context).primaryTextTheme.button.backgroundColor,
-          borderColor: Theme.of(context).primaryTextTheme.button.decorationColor),
+          color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
+          borderColor: Theme.of(context).primaryTextTheme.button!.decorationColor!),
     );
   }
 }
