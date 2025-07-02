@@ -5,6 +5,7 @@ import 'package:master_node_monitor/src/utils/language.dart';
 import 'package:master_node_monitor/src/widgets/base_page.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/theme/palette.dart';
 class ChangeLanguagePage extends BasePage {
   @override
   String get title => S.current.settings_language;
@@ -15,8 +16,8 @@ class ChangeLanguagePage extends BasePage {
     final currentLanguage = Provider.of<Language>(context);
     settingsStore.language = currentLanguage;
 
-    final currentColor = Theme.of(context).selectedRowColor;
-    final notCurrentColor = Theme.of(context).textTheme.subtitle1?.backgroundColor;
+    final currentColor = BeldexPalette.tealWithOpacity;
+    final notCurrentColor = Theme.of(context).textTheme.titleSmall?.backgroundColor;
 
     return Container(
         padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -36,7 +37,7 @@ class ChangeLanguagePage extends BasePage {
                   style: TextStyle(
                       fontSize: 16.0,
                       color:
-                          Theme.of(context).primaryTextTheme.headline6!.color),
+                          Theme.of(context).primaryTextTheme.titleLarge!.color),
                 ),
                 onTap: () async {
                   if (!isCurrent) {

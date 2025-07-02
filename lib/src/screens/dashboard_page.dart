@@ -67,7 +67,7 @@ class DashboardPage extends BasePage {
             nodeSyncStatus.sync();
           },
           child: Icon(Icons.sync,
-              color: Theme.of(context).primaryTextTheme.caption!.color,
+              color: Theme.of(context).primaryTextTheme.bodySmall!.color,
               size: 24),
         );
       }),
@@ -82,7 +82,7 @@ class DashboardPage extends BasePage {
           padding: EdgeInsets.all(0),
           onPressed: () => Navigator.of(context).pushNamed(BeldexRoutes.settings),
           child: Icon(Icons.settings_sharp,
-              color: Theme.of(context).primaryTextTheme.caption!.color,
+              color: Theme.of(context).primaryTextTheme.bodySmall!.color,
               size: 24)),
     );
   }
@@ -189,7 +189,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
   }
 
   //SteveJosephh21
-  Future<dynamic> showDialogBox(BuildContext context, TextEditingController _nameController, Box<MasterNode> masterNodeSource, NodeSyncStore nodeSyncStatus, TextEditingController _publicKeyController, GlobalKey<FormState> _formKey, SettingsStore settingsStore){
+  Future<dynamic> showDialogBox(BuildContext context, TextEditingController _nameController, Box<MasterNode> masterNodeSource, NodeSyncStore nodeSyncStatus, TextEditingController _publicKeyController, GlobalKey<FormState> _formKey, SettingsStore settingsStore, bool isDarkTheme){
     return showDialog(
         context:context,
         barrierDismissible: false,
@@ -236,8 +236,8 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                             color: Theme
                                 .of(context)
                                 .primaryTextTheme
-                                .caption!
-                                .color,)),
+                                .bodySmall!
+                                .color)),
                         ],
                       ),
                     ),
@@ -250,11 +250,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                           Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: BeldexTextField(
-                              backgroundColor: Theme
-                                  .of(context)
-                                  .primaryTextTheme
-                                  .overline!
-                                  .color!,
+                              backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                               controller: _nameController,
                               hintText: S
                                   .of(context)
@@ -275,16 +271,13 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                 }
                                 return null;
                               },
+                              isDarkTheme: isDarkTheme
                             ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: BeldexTextField(
-                              backgroundColor: Theme
-                                  .of(context)
-                                  .primaryTextTheme
-                                  .overline!
-                                  .color!,
+                              backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                               controller: _publicKeyController,
                               hintText: S
                                   .of(context)
@@ -326,6 +319,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                 }
                                 return null;
                               },
+                              isDarkTheme: isDarkTheme
                             ),
                           ),
                         ]),
@@ -347,13 +341,13 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                           color: Theme
                               .of(context)
                               .primaryTextTheme
-                              .button!
+                              .labelLarge!
                               .backgroundColor!,
                           borderColor:
                           Theme
                               .of(context)
                               .primaryTextTheme
-                              .button!
+                              .labelLarge!
                               .decorationColor!),
                     )
                   ],
@@ -438,7 +432,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                       margin: EdgeInsets.all(10),
                                       child: PhysicalShape(
                                         color: _isDarkTheme
-                                            ? Theme.of(context).backgroundColor
+                                            ? Theme.of(context).dialogBackgroundColor
                                             : Colors.white70,
                                         shadowColor:
                                         _isDarkTheme ? Colors.black45 : Colors.grey,
@@ -449,14 +443,8 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                           strokeWidth: 25,
                                           value: 1,
                                           valueColor: AlwaysStoppedAnimation<Color>(
-                                              Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .bodyText1!
-                                                  .color!),
-                                          backgroundColor: Theme.of(context)
-                                              .primaryTextTheme
-                                              .bodyText1!
-                                              .color,
+                                              _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground),
+                                          backgroundColor: _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground,
                                         ),
                                       )),
                                   Center(
@@ -516,15 +504,15 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                           RichText(
                             text: TextSpan(
                               children: <TextSpan>[
-                                TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.caption!.backgroundColor)),
+                                TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.bodySmall!.backgroundColor)),
                                 TextSpan(text: '${ nodeSyncStatus.nodes != null
                                     ? nodeSyncStatus.nodes.length
-                                    : 0}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.caption!.color)),
+                                    : 0}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.bodySmall!.color)),
                               ],
                             ),
                           ),
                           InkWell(onTap:(){
-                            showDialogBox(context,_nameController,masterNodeSource,nodeSyncStatus,_publicKeyController,_formKey,settingsStore);
+                            showDialogBox(context,_nameController,masterNodeSource,nodeSyncStatus,_publicKeyController,_formKey,settingsStore, _isDarkTheme);
                           },child: Icon(Icons.add_circle))
                         ],
                       ),
@@ -549,7 +537,8 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                             nodeStatus.lastReward.blockHeight,
                             nodeStatus.earnedDowntimeBlocks,
                             nodeStatus.lastUptimeProof,
-                            nodeStatus.contribution);
+                            nodeStatus.contribution,
+                            _isDarkTheme);
                         }).toList()
                       ),
                     ),

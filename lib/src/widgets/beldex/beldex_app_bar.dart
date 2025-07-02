@@ -21,7 +21,7 @@ class BeldexAppBar extends StatelessWidget
         trailing: trailing,
         height: _height,
         backgroundColor:
-            _isDarkTheme ? Theme.of(context).backgroundColor : backgroundColor);
+            _isDarkTheme ? Theme.of(context).dialogBackgroundColor : backgroundColor);
   }
 
   factory BeldexAppBar.withShadow(
@@ -39,10 +39,10 @@ class BeldexAppBar extends StatelessWidget
       trailing: trailing,
       height: 80,
       backgroundColor:
-          _isDarkTheme ? Theme.of(context).backgroundColor : backgroundColor,
+          _isDarkTheme ? Theme.of(context).dialogBackgroundColor : backgroundColor,
       decoration: BoxDecoration(
           color: _isDarkTheme
-              ? Theme.of(context).backgroundColor
+              ? Theme.of(context).dialogBackgroundColor
               : backgroundColor,
           boxShadow: [
             BoxShadow(

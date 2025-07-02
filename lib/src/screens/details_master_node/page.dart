@@ -280,7 +280,7 @@ class DetailsMasterNodePage extends BasePage {
                                                           '${contribution.contributors[index].address.toShortAddress()}',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Theme.of(context).primaryTextTheme.headline5?.color)));
+                                                              color: Theme.of(context).primaryTextTheme.titleMedium?.color)));
                                                 },
                                               ),
                                               ListView.builder(
@@ -295,7 +295,7 @@ class DetailsMasterNodePage extends BasePage {
                                                           '${contribution.contributors[index].amount ~/ 1000000000} (${(contribution.contributors[index].amount / 100000000000).toStringAsFixed(2)}%)',
                                                           style: TextStyle(
                                                               fontSize: 16,
-                                                              color: Theme.of(context).primaryTextTheme.headline5?.color)));
+                                                              color: Theme.of(context).primaryTextTheme.titleMedium?.color)));
                                                 },
                                               ),
                                             ])
@@ -350,8 +350,8 @@ class DetailsMasterNodePage extends BasePage {
                             arguments: EditMasterNodeArguments(publicKey, true));
                       },
                       text: S.of(context).title_edit_master_node,
-                      color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
-                      borderColor: Theme.of(context).primaryTextTheme.button!.decorationColor!,
+                      color: Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,
+                      borderColor: Theme.of(context).primaryTextTheme.labelLarge!.decorationColor!,
                       textColor: Colors.white,
                     ),
                   ),

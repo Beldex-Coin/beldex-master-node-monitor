@@ -11,6 +11,9 @@ import 'package:master_node_monitor/src/widgets/beldex/beldex_text_field.dart';
 import 'package:master_node_monitor/src/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/theme/theme_changer.dart';
+import '../utils/theme/themes.dart';
+
 class AddNewDaemonPage extends BasePage {
   @override
   bool get actionBar => true;
@@ -134,13 +137,15 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
 
   @override
   Widget build(BuildContext context) {
+    final _themeChanger = Provider.of<ThemeChanger>(context);
+    final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
     final daemonSource = Provider.of<Box<Daemon>>(context);
     final networkStatus = Provider.of<NetworkStatus>(context);
 
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Container(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).dialogBackgroundColor,
         child: Center(
           child: Card(
             elevation: 10,
@@ -182,16 +187,17 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
                       Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: BeldexTextField(
-                          backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
+                          backgroundColor: _isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                           controller: _hostController,
                           hintText: S.of(context).daemon_address,
                           validator: (value) => _validateNodeAddress(value!),
+                          isDarkTheme: _isDarkTheme
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: BeldexTextField(
-                          backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
+                          backgroundColor: _isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                           controller: _portController,
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(RegExp("[0-9]")),
@@ -200,6 +206,7 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
                               signed: false, decimal: false),
                           hintText: S.of(context).daemon_port,
                           validator: (value) => _validateNodePort(value!),
+                          isDarkTheme: _isDarkTheme
                         ),
                       ),
                     ]),
@@ -215,9 +222,9 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
                         await _saveDaemon(daemonSource,networkStatus);
                       },
                       text: S.of(context).add_daemon,
-                      color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
+                      color: Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,
                       borderColor:
-                      Theme.of(context).primaryTextTheme.button!.decorationColor!),
+                      Theme.of(context).primaryTextTheme.labelLarge!.decorationColor!),
                 )
               ],
             ),

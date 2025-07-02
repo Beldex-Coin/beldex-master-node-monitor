@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:master_node_monitor/generated/l10n.dart';
 import 'package:master_node_monitor/src/widgets/beldex/beldex_dialog.dart';
 
+import '../stores/settings_store.dart';
+import '../utils/theme/palette.dart';
 import 'primary_button.dart';
 
 Future<T?>? presentPicker<T extends Object>(
-    BuildContext context, List<T> list) async {
+    BuildContext context, List<T> list, SettingsStore settingsStore) async {
   var _value = list[0];
 
   return await showDialog(
@@ -26,7 +28,7 @@ Future<T?>? presentPicker<T extends Object>(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.none,
-                    color: Theme.of(context).primaryTextTheme.caption!.color,
+                    color: Theme.of(context).primaryTextTheme.bodySmall!.color,
                   ),
                 ),
               ),
@@ -38,7 +40,7 @@ Future<T?>? presentPicker<T extends Object>(
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: CupertinoPicker(
-                    backgroundColor: Theme.of(context).primaryTextTheme.overline!.color,
+                    backgroundColor: settingsStore.isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                     itemExtent: 45.0,
                     onSelectedItemChanged: (int index) => _value = list[index],
                     children: List.generate(
@@ -49,7 +51,7 @@ Future<T?>? presentPicker<T extends Object>(
                           style: TextStyle(
                             color: Theme.of(context)
                                 .primaryTextTheme
-                                .caption!
+                                .bodySmall!
                                 .color,
                           ),
                         ),
@@ -61,9 +63,9 @@ Future<T?>? presentPicker<T extends Object>(
               PrimaryButton(
                 text: "Okay",
                 color:
-                    Theme.of(context).primaryTextTheme.button!.backgroundColor!,
+                    Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,
                 borderColor:
-                    Theme.of(context).primaryTextTheme.button!.decorationColor!,
+                    Theme.of(context).primaryTextTheme.labelLarge!.decorationColor!,
                 onPressed: () => Navigator.of(context).pop(_value),
               )
             ],

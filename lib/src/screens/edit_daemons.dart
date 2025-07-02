@@ -30,7 +30,7 @@ class EditDaemonsPage extends BasePage {
               color: Theme
                   .of(context)
                   .primaryTextTheme
-                  .caption!
+                  .bodySmall!
                   .color,
               size: 24)),
     );
@@ -42,7 +42,7 @@ class EditDaemonsPage extends BasePage {
     final settingsStore = Provider.of<SettingsStore>(context);
 
     final daemons = daemonSources.values.toList();
-    final currentColor = Theme.of(context).selectedRowColor;
+    final currentColor = BeldexPalette.tealWithOpacity;
     final notCurrentColor = Theme.of(context).cardColor;
 
     return Container(
@@ -70,7 +70,7 @@ class EditDaemonsPage extends BasePage {
                                   fontSize: 16.0,
                                   color: Theme.of(context)
                                       .primaryTextTheme
-                                      .headline6!
+                                      .titleLarge!
                                       .color),
                             ),
                             trailing: FutureBuilder(
@@ -114,7 +114,7 @@ class EditDaemonsPage extends BasePage {
                                   padding: EdgeInsets.only(right: 10.0),
                                   alignment: AlignmentDirectional.centerEnd,
                                   color: BeldexPalette.red,
-                                  child:  SvgPicture.asset('assets/images/delete.svg',color:Colors.white,width: 20,height: 20,),
+                                  child:  SvgPicture.asset('assets/images/delete.svg',colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),width: 20,height: 20,),
                                 ),
                                 child: content),
                           );

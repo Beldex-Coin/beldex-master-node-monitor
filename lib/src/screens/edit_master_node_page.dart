@@ -13,6 +13,9 @@ import 'package:master_node_monitor/src/widgets/primary_button.dart';
 import 'package:master_node_monitor/src/widgets/scrollable_with_bottom_section.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/theme/theme_changer.dart';
+import '../utils/theme/themes.dart';
+
 class EditMasterNodePage extends BasePage {
   EditMasterNodePage({required this.publicKey, required this.status});
 
@@ -101,7 +104,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
     });
   }
 
-  void showConfirmationDialog(BuildContext context, bool status, NodeSyncStore nodeSyncStore){
+  void showConfirmationDialog(BuildContext context, bool status, NodeSyncStore nodeSyncStore, bool isDarkTheme){
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -124,7 +127,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                     style: TextStyle(
                       fontSize: 18,
                       decoration: TextDecoration.none,
-                      color: Theme.of(context).primaryTextTheme.caption!.color,
+                      color: Theme.of(context).primaryTextTheme.bodySmall!.color,
                     ),
                   ),
                 ),
@@ -138,10 +141,10 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                            Navigator.of(context).pop();
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
+                              backgroundColor: MaterialStateProperty.all<Color>(isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      side: BorderSide(color: Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
+                                      side: BorderSide(color: isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
                                       borderRadius: BorderRadius.circular(10.0)
                                   ))
                           ),
@@ -150,7 +153,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                             child: Text("Cancel",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.headline3!.color)),
+                                    color: isDarkTheme ?  BeldexPalette.white : Palette.cancelButtonText)),
                           ),
                         )),
                     ButtonTheme(
@@ -173,7 +176,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                             child: Text("Delete",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.button!.color)),
+                                    color: Theme.of(context).primaryTextTheme.labelLarge!.color)),
                           ),
                         )),
                   ],
@@ -188,6 +191,8 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
 
   @override
   Widget build(BuildContext context) {
+    final _themeChanger = Provider.of<ThemeChanger>(context);
+    final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
     final nodeSyncStore = context.watch<NodeSyncStore>();
 
     return ScrollableWithBottomSection(
@@ -201,7 +206,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                 margin:EdgeInsets.only(top: 15,bottom: 10),
                 alignment:AlignmentDirectional.centerStart,child: Text(S.of(context).name,style: TextStyle(fontSize:20.0,color: BeldexPalette.progressCenterText),)),
             BeldexTextField(
-              backgroundColor:Theme.of(context).primaryTextTheme.headline2!.color!,
+              backgroundColor: _isDarkTheme ? PaletteDark.hintBackground : Palette.hintBackground,
               controller: _nameController,
               hintText: S.of(context).name,
               maxLength: 15,
@@ -219,6 +224,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                 }
                 return null;
               },
+              isDarkTheme: _isDarkTheme
             ),
             Container(
               margin: EdgeInsets.only(top: 20,bottom: 30),
@@ -235,13 +241,13 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                     publicKey,//publicKey.toShortAddress(20),
                     style: TextStyle(
                         fontSize: 20,
-                        color: Theme.of(context).primaryTextTheme.headline5?.color),
+                        color: Theme.of(context).primaryTextTheme.titleMedium?.color),
                   )
                 ],
               ),
             ),
             PrimaryIconButton(
-              onPressed:(){ showConfirmationDialog(context,status,nodeSyncStore);},
+              onPressed:(){ showConfirmationDialog(context,status,nodeSyncStore,_isDarkTheme);},
               text: S.of(context).delete_master_node,
               color: BeldexPalette.deleteButton,
               borderColor: BeldexPalette.deleteButton,
@@ -275,8 +281,8 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
             Navigator.pop(context);
           },
           text: S.of(context).save_master_node,
-          color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
-          borderColor: Theme.of(context).primaryTextTheme.button!.decorationColor!),
+          color: Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,
+          borderColor: Theme.of(context).primaryTextTheme.labelLarge!.decorationColor!),
     );
   }
 }

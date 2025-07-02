@@ -19,7 +19,8 @@ class MasterNodeCard extends StatefulWidget {
       this.lastRewardBlockHeight,
       this.earnedDowntimeBlocks,
       this.lastUptimeProof,
-      this.contribution);
+      this.contribution,
+      this.isDarkTheme);
 
   final String name;
   final String masterNodeKey;
@@ -33,6 +34,7 @@ class MasterNodeCard extends StatefulWidget {
   final Contribution contribution;
 
   final localeName = Platform.localeName; // Hack to fix Local 'built' has not been initialized
+  final bool isDarkTheme;
 
   @override
   State<StatefulWidget> createState() => _MasterNodeCardState();
@@ -71,9 +73,10 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
 	    : partiallyStaked
 		? SvgPicture.asset('assets/images/contributor.svg',width: 20,height: 20,)
 		: SvgPicture.asset('assets/images/deactivate.svg',width: 30,height: 30,));//Icon(Icons.error_sharp, color: BeldexPalette.red, size: 30)
+    final isDarkTheme = widget.isDarkTheme;
 
     return Card(
-      color: active ? Theme.of(context).primaryTextTheme.bodyText2!.color : Theme.of(context).primaryTextTheme.headline1!.color,
+      color: active ? isDarkTheme ?  PaletteDark.activeListItemBackground : Palette.activeListItemBackground : isDarkTheme ? PaletteDark.deactivateListItemBackground : Palette.deactivateListItemBackground,
         child: ExpansionTile(
       leading: Padding(padding: EdgeInsets.all(5), child: statusIcon),
       trailing: Icon(
@@ -81,7 +84,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
               ? Icons.keyboard_arrow_up_sharp
               : Icons.keyboard_arrow_down_sharp,
           size: 30,
-          color: Theme.of(context).primaryTextTheme.caption!.color),
+          color: Theme.of(context).primaryTextTheme.bodySmall!.color),
       onExpansionChanged: (bool expanded) {
         setState(() => _tileExpanded = expanded);
       },
@@ -91,7 +94,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.normal,
-                color: Theme.of(context).primaryTextTheme.caption!.color)),
+                color: Theme.of(context).primaryTextTheme.bodySmall!.color)),
       ),
       subtitle: Padding(
         padding: EdgeInsets.only(top: 7.0,bottom: 7.0),
@@ -200,7 +203,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                         Expanded(
                             flex: 1,
                             child: Center(
-                              child: SvgPicture.asset('assets/images/more.svg',color:Theme.of(context).primaryTextTheme.headline5!.color,width: 25,height: 25,),
+                              child: SvgPicture.asset('assets/images/more.svg',color: Theme.of(context).primaryTextTheme.titleMedium!.color,width: 25,height: 25,),
                             ))
                       ]),
                 )),
