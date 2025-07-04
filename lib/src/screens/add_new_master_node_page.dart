@@ -185,6 +185,9 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                         backgroundColor: _isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                         controller: _nameController,
                         hintText: S.of(context).name,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                        ],
                         maxLength: 15,
                         validator: (value) {
                           final isDuplicate = _isDuplicateName(value!, masterNodeSource);

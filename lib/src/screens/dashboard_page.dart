@@ -246,6 +246,9 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                 .of(context)
                                 .name,
                             maxLength: 15,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                            ],
                             validator: (value) {
                               final isDuplicate =
                               _isDuplicateName(value!, masterNodeSource);

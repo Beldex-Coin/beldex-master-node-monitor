@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:master_node_monitor/generated/l10n.dart';
 import 'package:master_node_monitor/src/beldex/master_node.dart';
@@ -210,6 +211,9 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
               controller: _nameController,
               hintText: S.of(context).name,
               maxLength: 15,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+              ],
               validator: (value) {
                 final isDuplicate = _isDuplicateName(value!);
                 if (value.trim().isEmpty) {
