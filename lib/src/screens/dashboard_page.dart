@@ -197,35 +197,27 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
           builder: (BuildContext context, StateSetter setState) {
             final networkStatus = Provider.of<NetworkStatus>(context);
             _setState = setState;
-            return Center(
-              child: Card(
-                elevation: 10,
-                color: Theme
-                    .of(context)
-                    .cardColor,
-                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
-                ),
+            return Dialog(
+              backgroundColor: Theme.of(context).cardColor,
+              insetPadding: EdgeInsets.symmetric(horizontal: 20),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.zero,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 20, right: 20, top: 30, bottom: 0),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 30, 20, 0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(S.current.title_add_master_node,
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold
-                            ),),
-                          SizedBox(width: 50),
+                          Expanded(
+                            child: Text(S.current.title_add_master_node,
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold
+                              ),),
+                          ),
                           InkWell(onTap: () {
                             Navigator.of(context).pop();
                             _nameController.text = "";
@@ -241,93 +233,87 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                         ],
                       ),
                     ),
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            left: 20, right: 20, top: 10, bottom: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Form(
+                        key: _formKey,
                         child: Column(children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: BeldexTextField(
-                              backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
-                              controller: _nameController,
-                              hintText: S
-                                  .of(context)
-                                  .name,
-                              maxLength: 15,
-                              validator: (value) {
-                                final isDuplicate =
-                                _isDuplicateName(value!, masterNodeSource);
-                                if (value.trim().isEmpty) {
-                                  setLoading(false);
-                                  return S.of(context).pleaseEnterAName;
-                                }
-                                else if (isDuplicate) {
-                                  setLoading(false);
-                                  return S
-                                      .of(context)
-                                      .error_name_taken;
-                                }
-                                return null;
-                              },
-                              isDarkTheme: isDarkTheme
-                            ),
+                          SizedBox(height: 20),
+                          BeldexTextField(
+                            backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
+                            controller: _nameController,
+                            hintText: S
+                                .of(context)
+                                .name,
+                            maxLength: 15,
+                            validator: (value) {
+                              final isDuplicate =
+                              _isDuplicateName(value!, masterNodeSource);
+                              if (value.trim().isEmpty) {
+                                setLoading(false);
+                                return S.of(context).pleaseEnterAName;
+                              }
+                              else if (isDuplicate) {
+                                setLoading(false);
+                                return S
+                                    .of(context)
+                                    .error_name_taken;
+                              }
+                              return null;
+                            },
+                            isDarkTheme: isDarkTheme
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: BeldexTextField(
-                              backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
-                              controller: _publicKeyController,
-                              hintText: S
-                                  .of(context)
-                                  .public_key,
-                              suffixIcon: IconButton(
-                                  splashColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  color: BeldexPalette.pasteIcon,
-                                  icon: Icon(Icons.content_paste_sharp),
-                                  onPressed: () async {
-                                    final clipboard = await Clipboard.getData(
-                                        'text/plain');
-                                    if (clipboard?.text != null)
-                                      _publicKeyController.text =
-                                          clipboard!.text!;
-                                  }),
-                              validator: (value) {
-                                final publicKey = value?.trim();
-                                final validPublicKey = isValidPublicKey(
-                                    publicKey!);
-                                final isDuplicate =
-                                _isDuplicatePublicKey(
-                                    publicKey, masterNodeSource);
-                                if (publicKey.isEmpty) {
-                                  setLoading(false);
-                                  return S.of(context).enterAPublicKey;
-                                }
-                                else
-                                if (validPublicKey == KeyValidity.TOO_SHORT ||
-                                    validPublicKey == KeyValidity.TOO_LONG) {
-                                  setLoading(false);
-                                  return S.of(context).enterAValidPublicKey;
-                                }
-                                else if (isDuplicate) {
-                                  setLoading(false);
-                                  return S
-                                      .of(context)
-                                      .error_you_are_already_monitoring;
-                                }
-                                return null;
-                              },
-                              isDarkTheme: isDarkTheme
-                            ),
+                          SizedBox(height: 20),
+                          BeldexTextField(
+                            backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
+                            controller: _publicKeyController,
+                            hintText: S
+                                .of(context)
+                                .public_key,
+                            suffixIcon: IconButton(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                color: BeldexPalette.pasteIcon,
+                                icon: Icon(Icons.content_paste_sharp),
+                                onPressed: () async {
+                                  final clipboard = await Clipboard.getData(
+                                      'text/plain');
+                                  if (clipboard?.text != null)
+                                    _publicKeyController.text =
+                                        clipboard!.text!;
+                                }),
+                            validator: (value) {
+                              final publicKey = value?.trim();
+                              final validPublicKey = isValidPublicKey(
+                                  publicKey!);
+                              final isDuplicate =
+                              _isDuplicatePublicKey(
+                                  publicKey, masterNodeSource);
+                              if (publicKey.isEmpty) {
+                                setLoading(false);
+                                return S.of(context).enterAPublicKey;
+                              }
+                              else
+                              if (validPublicKey == KeyValidity.TOO_SHORT ||
+                                  validPublicKey == KeyValidity.TOO_LONG) {
+                                setLoading(false);
+                                return S.of(context).enterAValidPublicKey;
+                              }
+                              else if (isDuplicate) {
+                                setLoading(false);
+                                return S
+                                    .of(context)
+                                    .error_you_are_already_monitoring;
+                              }
+                              return null;
+                            },
+                            isDarkTheme: isDarkTheme
                           ),
                         ]),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: 20, right: 20, top: 0, bottom: 30),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
                       child: LoadingPrimaryButton(
                           isLoading: isLoading,
                           onPressed: () async {
