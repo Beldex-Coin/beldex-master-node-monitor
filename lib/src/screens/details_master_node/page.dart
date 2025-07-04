@@ -14,19 +14,21 @@ import 'package:master_node_monitor/src/widgets/base_page.dart';
 import 'package:master_node_monitor/src/widgets/nav/nav_list_header.dart';
 import 'package:master_node_monitor/src/widgets/nav/nav_list_multiheader.dart';
 import 'package:master_node_monitor/src/widgets/primary_button.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 class DetailsMasterNodePage extends BasePage {
-  DetailsMasterNodePage(this.publicKey, {required this.nodeName});
-
   final String publicKey;
-  final String nodeName;
+  final Observable<String> nodeName;
+
+  DetailsMasterNodePage(this.publicKey, {required String nodeName})
+      : nodeName = Observable(nodeName);
 
   static const int DECOMMISSION_MAX_CREDIT = 1440;
   static const int MINIMUM_CREDIT = 60;
   static const int AVERAGE_BLOCK_MINUTES = 2;
 
-  String get title => this.nodeName;
+  String get title => this.nodeName.value;
 
   void copyToClipboard(String title, String? data) {
     Clipboard.setData(ClipboardData(text: data!));
@@ -345,9 +347,12 @@ class DetailsMasterNodePage extends BasePage {
                   child: Padding(
                     padding: EdgeInsets.only(top: 25, bottom: 25,left: 20,right: 20),
                     child: PrimaryButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, BeldexRoutes.editMasterNode,
+                      onPressed: () async {
+                        final result = await Navigator.pushNamed(context, BeldexRoutes.editMasterNode,
                             arguments: EditMasterNodeArguments(publicKey, true));
+                        if(result != null) {
+                          nodeName.value = result.toString();
+                        }
                       },
                       text: S.of(context).title_edit_master_node,
                       color: Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,

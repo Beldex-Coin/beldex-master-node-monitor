@@ -278,7 +278,11 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                 ),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: BeldexPalette.tealWithOpacity));
-            Navigator.pop(context);
+            if(status){
+              Navigator.pop(context, _nameController.text);
+            } else {
+              Navigator.pop(context);
+            }
           },
           text: S.of(context).save_master_node,
           color: Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,
