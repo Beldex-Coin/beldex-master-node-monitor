@@ -419,34 +419,37 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                     child: SizedBox(
                       height: 220.0,
                       child: Stack(
+                        alignment: Alignment.center,
                         children: <Widget>[
                           Center(
                             child: Container(
                               width: 210,
                               height: 210,
                               child: Stack(
+                                alignment: Alignment.center,
                                 children: [
-                                  Container(
+                                  PhysicalShape(
+                                    color: _isDarkTheme
+                                        ? Theme.of(context).dialogBackgroundColor
+                                        : Colors.white70,
+                                    shadowColor:
+                                    _isDarkTheme ? Colors.black45 : Colors.grey,
+                                    elevation: 13,
+                                    clipper:
+                                    ShapeBorderClipper(shape: CircleBorder()),
+                                    child: Container(
                                       width: 210,
                                       height: 210,
                                       margin: EdgeInsets.all(10),
-                                      child: PhysicalShape(
-                                        color: _isDarkTheme
-                                            ? Theme.of(context).dialogBackgroundColor
-                                            : Colors.white70,
-                                        shadowColor:
-                                        _isDarkTheme ? Colors.black45 : Colors.grey,
-                                        elevation: 13,
-                                        clipper:
-                                        ShapeBorderClipper(shape: CircleBorder()),
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 25,
-                                          value: 1,
-                                          valueColor: AlwaysStoppedAnimation<Color>(
-                                              _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground),
-                                          backgroundColor: _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground,
-                                        ),
-                                      )),
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 25,
+                                        value: 1,
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground),
+                                        backgroundColor: _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground,
+                                      ),
+                                    ),
+                                  ),
                                   Center(
                                     child: Container(
                                       width: 190,
@@ -465,12 +468,12 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                             ),
                           ),
                           Container(
-                            child: Center(
-                              child: Text(operatorStatusText,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 14.0, color: BeldexPalette.progressCenterText,fontWeight: FontWeight.bold)),
-                            ),
+                            width: 160,
+                            child: Text(operatorStatusText,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    fontSize: 14.0, color: BeldexPalette.progressCenterText,fontWeight: FontWeight.bold)),
                           )
                         ],
                       ),
