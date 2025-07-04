@@ -182,6 +182,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: BeldexTextField(
+                        enabled: !isLoading,
                         backgroundColor: _isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                         controller: _nameController,
                         hintText: S.of(context).name,
@@ -209,6 +210,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: BeldexTextField(
+                        enabled: !isLoading,
                         backgroundColor: _isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                         controller: _publicKeyController,
                         hintText: S.of(context).public_key,
@@ -217,11 +219,11 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                             highlightColor: Colors.transparent,
                             color: BeldexPalette.pasteIcon,
                             icon: Icon(Icons.content_paste_sharp),
-                            onPressed: () async {
+                            onPressed: !isLoading ? () async {
                               final clipboard = await Clipboard.getData('text/plain');
                               if (clipboard?.text != null)
                                 _publicKeyController.text = clipboard!.text!;
-                            }),
+                            } : null),
                         validator: (value) {
                           final publicKey = value?.trim();
                           final validPublicKey = isValidPublicKey(publicKey!);

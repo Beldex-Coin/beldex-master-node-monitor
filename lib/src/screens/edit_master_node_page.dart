@@ -207,6 +207,7 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                 margin:EdgeInsets.only(top: 15,bottom: 10),
                 alignment:AlignmentDirectional.centerStart,child: Text(S.of(context).name,style: TextStyle(fontSize:20.0,color: BeldexPalette.progressCenterText),)),
             BeldexTextField(
+              enabled: !isLoading,
               backgroundColor: _isDarkTheme ? PaletteDark.hintBackground : Palette.hintBackground,
               controller: _nameController,
               hintText: S.of(context).name,

@@ -240,6 +240,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                         child: Column(children: <Widget>[
                           SizedBox(height: 20),
                           BeldexTextField(
+                            enabled: !isLoading,
                             backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                             controller: _nameController,
                             hintText: S
@@ -268,6 +269,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                           ),
                           SizedBox(height: 20),
                           BeldexTextField(
+                            enabled: !isLoading,
                             backgroundColor: isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                             controller: _publicKeyController,
                             hintText: S
@@ -278,13 +280,13 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                 highlightColor: Colors.transparent,
                                 color: BeldexPalette.pasteIcon,
                                 icon: Icon(Icons.content_paste_sharp),
-                                onPressed: () async {
+                                onPressed: !isLoading ? () async {
                                   final clipboard = await Clipboard.getData(
                                       'text/plain');
                                   if (clipboard?.text != null)
                                     _publicKeyController.text =
                                         clipboard!.text!;
-                                }),
+                                } : null) ,
                             validator: (value) {
                               final publicKey = value?.trim();
                               final validPublicKey = isValidPublicKey(
