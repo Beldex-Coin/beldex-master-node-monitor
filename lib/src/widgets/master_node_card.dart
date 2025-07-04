@@ -105,111 +105,97 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
                 color: BeldexPalette.progressCenterText)),
       ),
       children: [
-        Row(children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              width: (MediaQuery.of(context).size.width - 1) * 0.25,
-              height: 70,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                        child: Text(S.of(context).last_reward,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16,color: BeldexPalette.progressCenterText))),
-                    Expanded(
-                        flex: 1,
-                        child: Center(
-                          child: Text('$lastRewardBlockHeight',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16)),
-                        ))
-                  ]),
+        Row(
+          children: [
+            buildColumnWidget(
+              context,
+              title: S.of(context).last_reward,
+              child: Flexible(
+                child: Text(
+                  '$lastRewardBlockHeight',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
             ),
-          ),
-          Center(child: Container(width: 1,height: 60,color: Colors.grey,margin: EdgeInsets.only(bottom: 30,top: 20),)),
-          Expanded(
-            flex: 1,
-            child: Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                height: 70,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 5),
-                          child: Text(S.of(context).storage_server,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16,color: BeldexPalette.progressCenterText))),
-                      Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: Icon(
-                                isStorageServerReachable
-                                    ? Icons.check_circle_sharp
-                                    : Icons.error_sharp,
-                                size: 22),
-                          ))
-                    ])),
-          ),
-          Center(child: Container(width: 1,height: 60,color: Colors.grey,margin: EdgeInsets.only(bottom: 30,top: 20),)),
-          Expanded(
-            flex: 1,
-            child: Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                height: 70,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 5),
-                          child: Text(S.of(context).lokinet_router,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16,color: BeldexPalette.progressCenterText))),
-                      Expanded(
-                          flex: 1,
-                          child: Center(
-                            child: Icon(
-                                isLokinetRouterReachable
-                                    ? Icons.check_circle_sharp
-                                    : Icons.error_sharp,
-                                size: 22),
-                          ))
-                    ])),
-          ),
-          Center(child: Container(width: 1,height: 60,color: Colors.grey,margin: EdgeInsets.only(bottom: 30,top: 20),)),
-          Expanded(
-            flex: 1,
-            child: Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                height: 70,
-                child: MaterialButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () => Navigator.of(context).pushNamed(
-                      BeldexRoutes.detailsMasterNode,
-                      arguments: [masterNodeKey, name]),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.only(bottom: 5),
-                            child: Text('${S.of(context).more}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.normal,color: BeldexPalette.progressCenterText))),
-                        Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: SvgPicture.asset('assets/images/more.svg',color: Theme.of(context).primaryTextTheme.titleMedium!.color,width: 25,height: 25,),
-                            ))
-                      ]),
-                )),
-          )
-        ])
+            buildVerticalDivider(),
+            buildColumnWidget(
+              context,
+              title: S.of(context).storage_server,
+              child: Icon(
+                isStorageServerReachable
+                    ? Icons.check_circle_sharp
+                    : Icons.error_sharp,
+                size: 20,
+              ),
+            ),
+            buildVerticalDivider(),
+            buildColumnWidget(
+              context,
+              title: S.of(context).lokinet_router,
+              child: Icon(
+                isLokinetRouterReachable
+                    ? Icons.check_circle_sharp
+                    : Icons.error_sharp,
+                size: 20,
+              ),
+            ),
+            buildVerticalDivider(),
+            buildColumnWidget(
+              context,
+              title: S.of(context).more,
+              child: Icon(
+                Icons.more,
+                size: 20,
+              ),
+              onTap: () => Navigator.of(context).pushNamed(
+                BeldexRoutes.detailsMasterNode,
+                arguments: [masterNodeKey, name],
+              ),
+            ),
+          ],
+        )
       ],
     ));
+  }
+
+  Widget buildColumnWidget(BuildContext context,
+      {required String title,
+        required Widget child,
+        VoidCallback? onTap}) {
+    Widget column = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: 5),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: BeldexPalette.progressCenterText,
+            ),
+          ),
+        ),
+        Flexible(child: child),
+        SizedBox(height: 10,),
+      ],
+    );
+
+    return Expanded(
+      flex: 1,
+      child: onTap != null
+          ? MaterialButton(padding: EdgeInsets.zero, onPressed: onTap, child: column)
+          : Center(child: column),
+    );
+  }
+
+  Widget buildVerticalDivider() {
+    return Container(
+      width: 1,
+      height: 70,
+      color: Colors.grey,
+    );
   }
 }
