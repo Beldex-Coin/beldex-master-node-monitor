@@ -14,7 +14,8 @@ class BeldexTextField extends StatelessWidget {
       this.suffixIcon,
       this.focusNode,
       required this.backgroundColor,
-      this.maxLength});
+      this.maxLength,
+      required this.isDarkTheme});
 
   final bool enabled;
   final String hintText;
@@ -27,6 +28,7 @@ class BeldexTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final Color backgroundColor;
   final int? maxLength;
+  final bool isDarkTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class BeldexTextField extends StatelessWidget {
         focusNode: focusNode,
         style: TextStyle(
             fontSize: 18.0,
-            color: Theme.of(context).textTheme.overline!.color),
+            color: isDarkTheme ? PaletteDark.darkThemeTitle : BeldexPalette.black),
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
         maxLength: maxLength,

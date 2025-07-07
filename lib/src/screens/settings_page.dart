@@ -23,7 +23,7 @@ class SettingsPage extends BasePage {
 
   Future<void> _setDashboardOrderBy(BuildContext context) async {
     final settingsStore = context.read<SettingsStore>();
-    final selectedDashboardOrderBy = await presentPicker(context, DashboardOrderBy.values);
+    final selectedDashboardOrderBy = await presentPicker(context, DashboardOrderBy.values, settingsStore);
 
     if (selectedDashboardOrderBy != null) {
       await settingsStore.setDashboardOrderBy(selectedDashboardOrderBy as DashboardOrderBy);
@@ -49,7 +49,7 @@ class SettingsPage extends BasePage {
             child: Column(
               children: [
                 NavListTrailing(
-                  leading: SvgPicture.asset('assets/images/daemon.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/daemon.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
                   text: S.of(context).settings_daemon,
                   trailing: Observer(builder: (_) {
                     return Text(
@@ -65,13 +65,13 @@ class SettingsPage extends BasePage {
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsDaemon),
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/master_nodes.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 20,height: 20,),
+                  leading: SvgPicture.asset('assets/images/master_nodes.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 20,height: 20,),
                   text: S.of(context).settings_master_nodes,
                   onTap: () =>
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsMasterNode),
                 ),
                 NavListTrailing(
-                  leading: SvgPicture.asset('assets/images/order.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 20,height: 20,),
+                  leading: SvgPicture.asset('assets/images/order.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 20,height: 20,),
                   text: S.of(context).settings_order_by,
                   trailing: Observer(builder: (_) {
                     return Text(
@@ -101,7 +101,7 @@ class SettingsPage extends BasePage {
               children: [
                 Observer(builder: (_) {
                   return NavListTrailing(
-                    leading: SvgPicture.asset('assets/images/theme.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 23,height: 23,),
+                    leading: SvgPicture.asset('assets/images/theme.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 23,height: 23,),
                     text: settingsStore.isDarkTheme
                         ? S.of(context).settings_light_theme
                         : S.of(context).settings_dark_theme,
@@ -112,33 +112,33 @@ class SettingsPage extends BasePage {
                   );
                 }),
                 /*NavListArrow(
-                  leading: SvgPicture.asset('assets/images/daemon.svg',color: Theme.of(context).primaryTextTheme.headline6.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/daemon.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
                   text: S.of(context).settings_language,
                   onTap: () =>
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsLanguage),
                 ),*/
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/change_log.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/change_log.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
                   text: S.of(context).title_changelog,
                   onTap: () =>
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsChangelog),
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/faq.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/faq.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
                   text: S.of(context).title_faq,
                   onTap: (){
                     Navigator.of(context).pushNamed(BeldexRoutes.faq);
                   },
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/terms_and_conditions.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/terms_and_conditions.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
                   text: S.of(context).termsConditions,
                   onTap: (){
                     Navigator.of(context).pushNamed(BeldexRoutes.termsAndConditions);
                   },
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/help.svg',color: Theme.of(context).primaryTextTheme.headline6!.color,width: 23,height: 23,),
+                  leading: SvgPicture.asset('assets/images/help.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 23,height: 23,),
                   text: S.of(context).help,
                   onTap: (){
                     _launchUrl(Uri.parse('mailto:support@beldex.io'));
@@ -150,7 +150,7 @@ class SettingsPage extends BasePage {
         ),
         Padding(
           padding: EdgeInsets.only(left: 35, top: 10),
-          child: Text("Version 1.0.2",style: TextStyle(fontSize: 16.0,color: BeldexPalette.progressCenterText),),
+          child: Text("Version 1.0.3",style: TextStyle(fontSize: 16.0,color: BeldexPalette.progressCenterText),),
         )
       ],
     );

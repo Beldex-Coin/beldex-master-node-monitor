@@ -58,7 +58,7 @@ abstract class BasePage extends StatelessWidget {
             style: TextStyle(
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryTextTheme.headline6!.color),
+                color: Theme.of(context).primaryTextTheme.titleLarge!.color),
           );
   }
 
@@ -80,7 +80,7 @@ abstract class BasePage extends StatelessWidget {
             trailing(context)!,
             context: context,
             backgroundColor: _isDarkTheme
-                ? Theme.of(context).backgroundColor
+                ? Theme.of(context).dialogBackgroundColor
                 : backgroundColor);
 
       case AppBarStyle.withShadow:
@@ -90,7 +90,7 @@ abstract class BasePage extends StatelessWidget {
             trailing(context)!,
             context: context,
             backgroundColor: _isDarkTheme
-                ? Theme.of(context).backgroundColor
+                ? Theme.of(context).dialogBackgroundColor
                 : backgroundColor);
 
       default:
@@ -100,7 +100,7 @@ abstract class BasePage extends StatelessWidget {
             trailing(context)!,
             context: context,
             backgroundColor: _isDarkTheme
-                ? Theme.of(context).backgroundColor
+                ? Theme.of(context).dialogBackgroundColor
                 : backgroundColor);
     }
   }
@@ -117,7 +117,7 @@ abstract class BasePage extends StatelessWidget {
     return Scaffold(
         key: scaffoldKey,
         backgroundColor:
-            _isDarkTheme ? Theme.of(context).backgroundColor : backgroundColor,
+            _isDarkTheme ? Theme.of(context).dialogBackgroundColor : backgroundColor,
         resizeToAvoidBottomInset: resizeToAvoidBottomPadding,
         appBar: actionBar ? null:appBar(context),
         body: SafeArea(child: body(context)),
