@@ -12,3 +12,8 @@
     - Targeted latest android version
     - Minor bug fixes
     - Updated google play core libraries
+-
+  version: 1.0.3
+  changes:
+    - Targeted latest android version
+    - Minor bug fixes
