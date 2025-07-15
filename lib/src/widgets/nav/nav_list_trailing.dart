@@ -18,7 +18,7 @@ class NavListTrailing extends StatelessWidget {
             style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryTextTheme.headline6!.color)),
+                color: Theme.of(context).primaryTextTheme.titleLarge!.color)),
         trailing: trailing,
         onTap: onTap,
       ),

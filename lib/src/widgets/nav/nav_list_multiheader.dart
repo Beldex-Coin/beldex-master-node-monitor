@@ -41,7 +41,7 @@ class NavListMultiHeader extends StatelessWidget {
                     style: TextStyle(
                         fontSize: subtitleSize,
                         color: subtitleColor ??
-                            Theme.of(context).primaryTextTheme.headline5!.color),
+                            Theme.of(context).primaryTextTheme.titleMedium!.color),
                   )
                 ],
               ),

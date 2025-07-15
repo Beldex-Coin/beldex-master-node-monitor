@@ -24,7 +24,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor =
-        this.textColor ?? Theme.of(context).primaryTextTheme.button!.color;
+        this.textColor ?? Theme.of(context).primaryTextTheme.labelLarge!.color;
 
     return ButtonTheme(
         minWidth: double.infinity,
@@ -79,7 +79,7 @@ class LoadingPrimaryButton extends StatelessWidget {
               : Text(text,
                   style: TextStyle(
                       fontSize: 16.0,
-                      color: Theme.of(context).primaryTextTheme.button!.color)),
+                      color: Theme.of(context).primaryTextTheme.labelLarge!.color)),
         ));
   }
 }
@@ -106,7 +106,7 @@ class PrimaryIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor =
-        this.textColor ?? Theme.of(context).primaryTextTheme.button!.color;
+        this.textColor ?? Theme.of(context).primaryTextTheme.labelLarge!.color;
 
     return ButtonTheme(
         minWidth: double.infinity,

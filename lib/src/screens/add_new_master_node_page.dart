@@ -15,6 +15,9 @@ import 'package:master_node_monitor/src/widgets/beldex/beldex_text_field.dart';
 import 'package:master_node_monitor/src/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/theme/theme_changer.dart';
+import '../utils/theme/themes.dart';
+
 class AddNewMasterNodePage extends BasePage {
   AddNewMasterNodePage(this.status);
 
@@ -125,13 +128,15 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
 
   @override
   Widget build(BuildContext context) {
+    final _themeChanger = Provider.of<ThemeChanger>(context);
+    final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
     final masterNodeSource = context.read<Box<MasterNode>>();
     final nodeSyncStatus = context.read<NodeSyncStore>();
     final settingsStore = Provider.of<SettingsStore>(context);
     final networkStatus = Provider.of<NetworkStatus>(context);
 
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).dialogBackgroundColor,
       child: Center(
         child: Card(
           elevation: 10,
@@ -177,9 +182,13 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: BeldexTextField(
-                        backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
+                        enabled: !isLoading,
+                        backgroundColor: _isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                         controller: _nameController,
                         hintText: S.of(context).name,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                        ],
                         maxLength: 15,
                         validator: (value) {
                           final isDuplicate = _isDuplicateName(value!, masterNodeSource);
@@ -195,12 +204,14 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                           }
                           return null;
                         },
+                        isDarkTheme: _isDarkTheme
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: BeldexTextField(
-                        backgroundColor: Theme.of(context).primaryTextTheme.overline!.color!,
+                        enabled: !isLoading,
+                        backgroundColor: _isDarkTheme ? PaletteDark.textFieldBackground : Palette.textFieldBackground,
                         controller: _publicKeyController,
                         hintText: S.of(context).public_key,
                         suffixIcon: IconButton(
@@ -208,11 +219,11 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                             highlightColor: Colors.transparent,
                             color: BeldexPalette.pasteIcon,
                             icon: Icon(Icons.content_paste_sharp),
-                            onPressed: () async {
+                            onPressed: !isLoading ? () async {
                               final clipboard = await Clipboard.getData('text/plain');
                               if (clipboard?.text != null)
                                 _publicKeyController.text = clipboard!.text!;
-                            }),
+                            } : null),
                         validator: (value) {
                           final publicKey = value?.trim();
                           final validPublicKey = isValidPublicKey(publicKey!);
@@ -234,6 +245,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                           }
                           return null;
                         },
+                        isDarkTheme: _isDarkTheme
                       ),
                     ),
                   ]),
@@ -249,9 +261,9 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                       await _saveMasterNode(masterNodeSource,settingsStore,nodeSyncStatus,networkStatus);
                     },
                     text: S.of(context).add_master_node,
-                    color: Theme.of(context).primaryTextTheme.button!.backgroundColor!,
+                    color: Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,
                     borderColor:
-                    Theme.of(context).primaryTextTheme.button!.decorationColor!),
+                    Theme.of(context).primaryTextTheme.labelLarge!.decorationColor!),
               )
             ],
           ),

@@ -12,6 +12,9 @@ import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/widgets/base_page.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/theme/theme_changer.dart';
+import '../utils/theme/themes.dart';
+
 class EditMasterNodesPage extends BasePage {
   @override
   String get title => S.current.title_edit_master_nodes;
@@ -25,7 +28,7 @@ class EditMasterNodesPage extends BasePage {
           onPressed: () =>
               Navigator.of(context).pushNamed(BeldexRoutes.addMasterNode,arguments: false),
           child: Icon(Icons.add_sharp,
-              color: Theme.of(context).primaryTextTheme.caption!.color,
+              color: Theme.of(context).primaryTextTheme.bodySmall!.color,
               size: 24)),
     );
   }
@@ -55,7 +58,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
     }
   }
 
-  void showConfirmationDialog(BuildContext context, NodeSyncStore nodeSyncStore, Box<MasterNode> masterNodeSources, MasterNode masterNode){
+  void showConfirmationDialog(BuildContext context, NodeSyncStore nodeSyncStore, Box<MasterNode> masterNodeSources, MasterNode masterNode, bool isDarkTheme){
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -78,7 +81,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                     style: TextStyle(
                       fontSize: 18,
                       decoration: TextDecoration.none,
-                      color: Theme.of(context).primaryTextTheme.caption!.color,
+                      color: Theme.of(context).primaryTextTheme.bodySmall!.color,
                     ),
                   ),
                 ),
@@ -92,10 +95,10 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             Navigator.of(context).pop();
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
+                              backgroundColor: MaterialStateProperty.all<Color>(isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      side: BorderSide(color: Theme.of(context).primaryTextTheme.headline3!.backgroundColor!),
+                                      side: BorderSide(color: isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
                                       borderRadius: BorderRadius.circular(10.0)
                                   ))
                           ),
@@ -104,7 +107,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             child: Text("Cancel",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.headline3!.color)),
+                                    color: isDarkTheme ?  BeldexPalette.white : Palette.cancelButtonText)),
                           ),
                         )),
                     ButtonTheme(
@@ -127,7 +130,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             child: Text("Delete",
                                 style: TextStyle(
                                     fontSize: 20.0,
-                                    color: Theme.of(context).primaryTextTheme.button!.color)),
+                                    color: Theme.of(context).primaryTextTheme.labelLarge!.color)),
                           ),
                         )),
                   ],
@@ -142,6 +145,8 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
 
   @override
   Widget build(BuildContext context) {
+    final _themeChanger = Provider.of<ThemeChanger>(context);
+    final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
     final masterNodeSources = context.watch<Box<MasterNode>>();
     final nodeSyncStore = context.watch<NodeSyncStore>();
 
@@ -165,13 +170,13 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                         child: ListTile(
                       leading: Icon(CupertinoIcons.chart_bar_fill,color: Theme.of(context)
                           .primaryTextTheme
-                          .headline6!
+                          .titleLarge!
                           .color,),
                       trailing: InkWell(
                         onTap: () {
-                          showConfirmationDialog(context,nodeSyncStore,masterNodeSources,masterNode);
+                          showConfirmationDialog(context,nodeSyncStore,masterNodeSources,masterNode,_isDarkTheme);
                         },
-                        child: SvgPicture.asset('assets/images/delete.svg',color:BeldexPalette.deleteButton,width: 20,height: 20,),
+                        child: SvgPicture.asset('assets/images/delete.svg',colorFilter: ColorFilter.mode(BeldexPalette.deleteButton, BlendMode.srcIn),width: 20,height: 20,),
                       ),
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,7 +188,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context)
                                     .primaryTextTheme
-                                    .headline6!
+                                    .titleLarge!
                                     .color),
                           ),
                           SizedBox(height: 10,),
@@ -223,7 +228,7 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                           padding: EdgeInsets.only(right: 10.0),
                           alignment: AlignmentDirectional.centerEnd,
                           color: BeldexPalette.red,
-                          child: SvgPicture.asset('assets/images/delete.svg',color:Colors.white,width: 20,height: 20,),
+                          child: SvgPicture.asset('assets/images/delete.svg',colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),width: 20,height: 20,),
                         ),
                         child: Card(
                             color: Theme.of(context).cardColor,

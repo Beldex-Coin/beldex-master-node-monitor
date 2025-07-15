@@ -9,11 +9,18 @@ class NetworkService{
 
   NetworkService(){
     Connectivity().onConnectivityChanged.listen((event) {
-      controller.add(_networkStatus(event));
+      if (event is List<ConnectivityResult> && event.isNotEmpty) {
+        final ConnectivityResult result = event.first;
+        controller.add(_networkStatus(result));
+      } else {
+        controller.add(NetworkStatus.offline);
+      }
     });
   }
 
-  NetworkStatus _networkStatus(ConnectivityResult connectivityResult){
-    return connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi ? NetworkStatus.online: NetworkStatus.offline;
+  NetworkStatus _networkStatus(ConnectivityResult result) {
+    return (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi)
+        ? NetworkStatus.online
+        : NetworkStatus.offline;
   }
 }

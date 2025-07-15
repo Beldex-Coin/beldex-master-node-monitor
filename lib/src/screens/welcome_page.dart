@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:master_node_monitor/generated/l10n.dart';
 import 'package:master_node_monitor/src/utils/router/beldex_routes.dart';
 import 'package:master_node_monitor/src/widgets/primary_button.dart';
+import 'package:provider/provider.dart';
+
+import '../utils/theme/palette.dart';
+import '../utils/theme/theme_changer.dart';
+import '../utils/theme/themes.dart';
 
 class WelcomePage extends StatelessWidget {
   static const _baseWidth = 411.43;
@@ -9,12 +14,14 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
         resizeToAvoidBottomInset: false,
         body: SafeArea(child: body(context)));
   }
 
   Widget body(BuildContext context) {
+    final _themeChanger = Provider.of<ThemeChanger>(context);
+    final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
     final _screenWidth = MediaQuery.of(context).size.width;
     final textScaleFactor = _screenWidth < _baseWidth ? 0.76 : 1.0;
 
@@ -35,7 +42,7 @@ class WelcomePage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryTextTheme.headline6!.color
+                    color: Theme.of(context).primaryTextTheme.titleLarge!.color
                   ),
                   textScaleFactor: textScaleFactor,
                   textAlign: TextAlign.center,
@@ -47,7 +54,7 @@ class WelcomePage extends StatelessWidget {
                     S.of(context).welcome_first_line,
                     style: TextStyle(
                       fontSize: 22.0,
-                      color:Theme.of(context).primaryTextTheme.subtitle2!.color
+                      color:_isDarkTheme ? PaletteDark.subTitleHead : Palette.subTitleHead
                     ),
                     textScaleFactor: textScaleFactor,
                     textAlign: TextAlign.center,
@@ -58,7 +65,7 @@ class WelcomePage extends StatelessWidget {
                     S.of(context).add_node_to_get_started,
                     style: TextStyle(
                       fontSize: 22.0,
-                      color: Theme.of(context).primaryTextTheme.subtitle1!.color,
+                      color: Palette.subTitle,
                     ),
                     textScaleFactor: textScaleFactor,
                     textAlign: TextAlign.center,
@@ -75,9 +82,9 @@ class WelcomePage extends StatelessWidget {
                 },
                 text: S.of(context).add_master_node,
                 color:
-                    Theme.of(context).primaryTextTheme.button!.backgroundColor!,
+                    Theme.of(context).primaryTextTheme.labelLarge!.backgroundColor!,
                 borderColor:
-                    Theme.of(context).primaryTextTheme.button!.decorationColor!),
+                    Theme.of(context).primaryTextTheme.labelLarge!.decorationColor!),
           ]))
     ]);
   }
