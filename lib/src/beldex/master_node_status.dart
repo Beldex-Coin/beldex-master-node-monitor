@@ -13,7 +13,7 @@ class MasterNodeStatus {
       this.nodeInfo,
       this.stateHeight,
       this.storageServer,
-      this.lokinetRouter,
+      this.belnetRouter,
       this.swarmId,
       {this.stakingRequirement = 10000000000000});
 
@@ -29,7 +29,7 @@ class MasterNodeStatus {
   final int stakingRequirement;
   final int stateHeight;
   final StorageServerStatus storageServer;
-  final LokinetRouterStatus lokinetRouter;
+  final BelnetRouterStatus belnetRouter;
   final int requestedUnlockHeight;
   final String swarmId;
   final int _lastUptimeProof;
@@ -68,7 +68,7 @@ class MasterNodeStatus {
 
     final contribution = Contribution.fromMap(map);
     final storageServerStatus = StorageServerStatus.fromMap(map);
-    final lokinetRouterStatus = LokinetRouterStatus.fromMap(map);
+    final belnetRouterStatus = BelnetRouterStatus.fromMap(map);
     final lastReward = LastReward.fromMap(map);
     final masterNodeInfo = MasterNodeInfo.fromMap(map);
     final checkpointBlocks = CheckpointParticipation.fromMap(map);
@@ -88,7 +88,7 @@ class MasterNodeStatus {
         masterNodeInfo,
         map['state_height'] as int,
         storageServerStatus,
-        lokinetRouterStatus,
+        belnetRouterStatus,
         map['swarm_id'] as String);
   }
 }
@@ -102,7 +102,7 @@ class MasterNodeInfo {
       this.ipAddress,
       this.nodeVersion,
       this.storageServerVersion,
-      this.lokinetVersion);
+      this.belnetVersion);
 
   MasterNodeInfo.fromMap(Map map)
       : operatorAddress = map['operator_address'] as String,
@@ -113,7 +113,7 @@ class MasterNodeInfo {
         nodeVersion = (map['master_node_version'] as List).join('.'),
         storageServerVersion =
             (map['storage_server_version'] as List).join('.'),
-        lokinetVersion = (map['belnet_version'] as List).join('.');
+        belnetVersion = (map['belnet_version'] as List).join('.');
 
   final String? operatorAddress;
   final int registrationHeight;
@@ -122,7 +122,7 @@ class MasterNodeInfo {
   final String? ipAddress;
   final String? nodeVersion;
   final String? storageServerVersion;
-  final String? lokinetVersion;
+  final String? belnetVersion;
 
   bool equals(MasterNodeInfo masterNodeInfo) {
     return masterNodeInfo.operatorAddress == operatorAddress &&
@@ -132,7 +132,7 @@ class MasterNodeInfo {
         masterNodeInfo.ipAddress == ipAddress &&
         masterNodeInfo.nodeVersion == nodeVersion &&
         masterNodeInfo.storageServerVersion == storageServerVersion &&
-        masterNodeInfo.lokinetVersion == lokinetVersion;
+        masterNodeInfo.belnetVersion == belnetVersion;
   }
 }
 
@@ -147,10 +147,10 @@ class StorageServerStatus {
   final int timestamp;
 }
 
-class LokinetRouterStatus {
-  LokinetRouterStatus(this.isReachable, this.timestamp);
+class BelnetRouterStatus {
+  BelnetRouterStatus(this.isReachable, this.timestamp);
 
-  LokinetRouterStatus.fromMap(Map map)
+  BelnetRouterStatus.fromMap(Map map)
       : isReachable = (map['belnet_reachable'] as bool?) ?? false,
         timestamp = (map['belnet_router_reachable_timestamp'] as int?) ?? 0;
 

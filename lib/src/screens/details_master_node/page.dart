@@ -335,7 +335,7 @@ class DetailsMasterNodePage extends BasePage {
                             NavListMultiHeader(S.of(context).registration_hf_version,
                                 '${node.nodeInfo.registrationHfVersion}'),
                             NavListMultiHeader(S.of(context).software_versions,
-                                '${node.nodeInfo.nodeVersion} / ${node.nodeInfo.storageServerVersion} / ${node.nodeInfo.lokinetVersion}'),
+                                '${node.nodeInfo.nodeVersion} / ${node.nodeInfo.storageServerVersion} / ${node.nodeInfo.belnetVersion}'),
                             SizedBox(height: 10,)
                           ],
                         ),

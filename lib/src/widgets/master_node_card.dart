@@ -15,7 +15,7 @@ class MasterNodeCard extends StatefulWidget {
       this.isUnlocking,
       this.active,
       this.isStorageServerReachable,
-      this.isLokinetRouterReachable,
+      this.isBelnetRouterReachable,
       this.lastRewardBlockHeight,
       this.earnedDowntimeBlocks,
       this.lastUptimeProof,
@@ -27,7 +27,7 @@ class MasterNodeCard extends StatefulWidget {
   final bool isUnlocking;
   final bool active;
   final bool isStorageServerReachable;
-  final bool isLokinetRouterReachable;
+  final bool isBelnetRouterReachable;
   final int lastRewardBlockHeight;
   final int earnedDowntimeBlocks;
   final DateTime lastUptimeProof;
@@ -55,7 +55,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
     final lastUptimeProof = widget.lastUptimeProof;
     final lastRewardBlockHeight = widget.lastRewardBlockHeight;
     final isStorageServerReachable = widget.isStorageServerReachable;
-    final isLokinetRouterReachable = widget.isLokinetRouterReachable;
+    final isBelnetRouterReachable = widget.isBelnetRouterReachable;
     final contribution = widget.contribution;
 
     final masterNodeKeyShort = masterNodeKey.toShortAddress();
@@ -132,9 +132,9 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
             buildVerticalDivider(),
             buildColumnWidget(
               context,
-              title: S.of(context).lokinet_router,
+              title: S.of(context).belnet_router,
               child: Icon(
-                isLokinetRouterReachable
+                isBelnetRouterReachable
                     ? Icons.check_circle_sharp
                     : Icons.error_sharp,
                 size: 20,
