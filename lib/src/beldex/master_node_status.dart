@@ -140,8 +140,8 @@ class StorageServerStatus {
   StorageServerStatus(this.isReachable, this.timestamp);
 
   StorageServerStatus.fromMap(Map map)
-      : isReachable = map['storage_server_reachable'] as bool,
-        timestamp = (map['storage_server_reachable_timestamp'] ?? 0) as int;
+      : isReachable = (map['storage_server_reachable'] as bool?) ?? false,
+        timestamp = (map['storage_server_reachable_timestamp'] as int?) ?? 0;
 
   final bool isReachable;
   final int timestamp;
@@ -151,8 +151,8 @@ class LokinetRouterStatus {
   LokinetRouterStatus(this.isReachable, this.timestamp);
 
   LokinetRouterStatus.fromMap(Map map)
-      : isReachable = map['belnet_reachable'] as bool,
-        timestamp = (map['belnet_router_reachable_timestamp'] ?? 0) as int;
+      : isReachable = (map['belnet_reachable'] as bool?) ?? false,
+        timestamp = (map['belnet_router_reachable_timestamp'] as int?) ?? 0;
 
   final bool isReachable;
   final int timestamp;
