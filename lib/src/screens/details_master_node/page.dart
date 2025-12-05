@@ -24,7 +24,7 @@ class DetailsMasterNodePage extends BasePage {
   DetailsMasterNodePage(this.publicKey, {required String nodeName})
       : nodeName = Observable(nodeName);
 
-  static const int DECOMMISSION_MAX_CREDIT = 1440;
+  static const int DECOMMISSION_MAX_CREDIT = 5760;
   static const int MINIMUM_CREDIT = 60;
   static const int AVERAGE_BLOCK_MINUTES = 2;
 
@@ -165,8 +165,8 @@ class DetailsMasterNodePage extends BasePage {
                                     : '${DateFormat.yMMMd(localeName).add_jms().format(node.lastUptimeProof)} (${S.of(context).minutes_ago(DateTime.now().difference(node.lastUptimeProof).inMinutes)})'),
                             NavListMultiHeader(
                               S.of(context).earned_downtime_blocks,
-                              '${node.earnedDowntimeBlocks} / $DECOMMISSION_MAX_CREDIT (${estimateDowntimeHours(node.earnedDowntimeBlocks).toStringAsFixed(2)} ${S.of(context).hours})',
-                              subtitleColor: estimateDowntimeHours(node.earnedDowntimeBlocks) < 2 ? Colors.red : Colors.transparent,
+                              '(${node.earnedDowntimeBlocks} / $DECOMMISSION_MAX_CREDIT ${S.of(context).blocks})',
+                              subtitleColor: node.earnedDowntimeBlocks < 5760 ? Colors.red : Colors.green,
                             ),
                             if (node.active)
                               Center(
