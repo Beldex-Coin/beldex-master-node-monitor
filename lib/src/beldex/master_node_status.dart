@@ -25,7 +25,7 @@ class MasterNodeStatus {
   final int earnedDowntimeBlocks;
   final bool funded;
   final LastReward lastReward;
-  final PosParticipation posBlocks;
+  final PosVotesParticipation posBlocks;
   final int stakingRequirement;
   final int stateHeight;
   final StorageServerStatus storageServer;
@@ -72,7 +72,7 @@ class MasterNodeStatus {
     final lastReward = LastReward.fromMap(map);
     final masterNodeInfo = MasterNodeInfo.fromMap(map);
     final checkpointBlocks = CheckpointParticipation.fromMap(map);
-    final posBlocks = PosParticipation.fromMap(map);
+    final posBlocks = PosVotesParticipation.fromMap(map);
 
     return MasterNodeStatus(
         map['active'] as bool,
@@ -161,6 +161,8 @@ class BelnetRouterStatus {
 class Checkpoint {
   Checkpoint(this.height, this.voted);
 
+  // This fromMap is no longer used with the new JSON format,
+  // but we can keep it in case of future map-based data.
   Checkpoint.fromMap(Map map)
       : height = map['height'] as int,
         voted = map['voted'] as bool;
@@ -173,19 +175,48 @@ class CheckpointParticipation {
   CheckpointParticipation(this.checkpoints);
 
   CheckpointParticipation.fromMap(Map map)
-      : checkpoints = (map.containsKey('checkpoint_participation')
-            ? (map['checkpoint_participation'] as List)
-                .map((e) => Checkpoint.fromMap(e))
-                .toList()
-            : []);
+      : checkpoints = _parseCheckpoints(map);
 
   final List<Checkpoint> checkpoints;
+
+  // Helper to parse the new structure:
+  // "checkpoint_votes": { "missed": [...], "voted": [...] }
+  static List<Checkpoint> _parseCheckpoints(Map map) {
+    final List<Checkpoint> result = [];
+
+    if (!map.containsKey('checkpoint_votes')) {
+      return result;
+    }
+
+    final votes = map['checkpoint_votes'] as Map;
+
+    // missed: [height, height, ...]  -> voted = false
+    final missed = (votes['missed'] as List?) ?? [];
+    for (final m in missed) {
+      if (m != null) {
+        result.add(Checkpoint(m as int, false));
+      }
+    }
+
+    // voted: [height, height, ...]  -> voted = true
+    final voted = (votes['voted'] as List?) ?? [];
+    for (final v in voted) {
+      if (v != null) {
+        result.add(Checkpoint(v as int, true));
+      }
+    }
+
+    // sort by height ascending
+    result.sort((a, b) => a.height.compareTo(b.height));
+
+    return result;
+  }
 }
 
-class Pos {
-  Pos(this.height, this.voted);
+class PosVote {
+  PosVote(this.height, this.voted);
 
-  Pos.fromMap(Map map)
+  PosVote.fromMap(Map map)
       : height = map['height'] as int,
         voted = map['voted'] as bool;
 
@@ -193,17 +224,46 @@ class Pos {
   final bool voted;
 }
 
-class PosParticipation {
-  PosParticipation(this.pos);
+class PosVotesParticipation {
+  PosVotesParticipation(this.votes);
 
-  PosParticipation.fromMap(Map map)
-      : pos = (map.containsKey('pos_participation')
-            ? (map['pos_participation'] as List)
-                .map((e) => Pos.fromMap(e))
-                .toList()
-            : []);
+  PosVotesParticipation.fromMap(Map map)
+      : votes = _parsePosVotes(map);
 
-  final List<Pos> pos;
+  final List<PosVote> votes;
+
+  static List<PosVote> _parsePosVotes(Map map) {
+    final List<PosVote> result = [];
+
+    if (!map.containsKey('POS_votes')) {
+      return result;
+    }
+
+    final votesMap = map['POS_votes'] as Map;
+
+    // missed -> [[height, _]]  -> voted = false
+    final missed = votesMap['missed'] as List? ?? [];
+    for (final entry in missed) {
+      if (entry is List && entry.isNotEmpty) {
+        final height = entry[0] as int;
+        result.add(PosVote(height, false));
+      }
+    }
+
+    // voted -> [[height, _]]  -> voted = true
+    final voted = votesMap['voted'] as List? ?? [];
+    for (final entry in voted) {
+      if (entry is List && entry.isNotEmpty) {
+        final height = entry[0] as int;
+        result.add(PosVote(height, true));
+      }
+    }
+
+    // sort by height ascending
+    result.sort((a, b) => a.height.compareTo(b.height));
+
+    return result;
+  }
 }
 
 class Contributor {

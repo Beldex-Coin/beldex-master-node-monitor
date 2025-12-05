@@ -69,9 +69,7 @@ class DetailsMasterNodePage extends BasePage {
           final nextReward = nodeSyncStatus.networkSize -
               (nodeSyncStatus.currentHeight - node.lastReward.blockHeight);
           final checkpoints = node.checkpointBlocks.checkpoints;
-          checkpoints.sort((a, b) => b.height.compareTo(a.height));
-          final pos = node.posBlocks.pos;
-          pos.sort((a, b) => b.height.compareTo(a.height));
+          final pos = node.posBlocks.votes;
           final contribution = node.contribution;
 
           return Column(
