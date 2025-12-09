@@ -527,7 +527,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                             nodeStatus.isUnlocking,
                             nodeStatus.active,
                             nodeStatus.storageServer.isReachable,
-                            nodeStatus.lokinetRouter.isReachable,
+                            nodeStatus.belnetRouter.isReachable,
                             nodeStatus.lastReward.blockHeight,
                             nodeStatus.earnedDowntimeBlocks,
                             nodeStatus.lastUptimeProof,

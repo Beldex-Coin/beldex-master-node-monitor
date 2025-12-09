@@ -13,7 +13,7 @@ class MasterNodeStatus {
       this.nodeInfo,
       this.stateHeight,
       this.storageServer,
-      this.lokinetRouter,
+      this.belnetRouter,
       this.swarmId,
       {this.stakingRequirement = 10000000000000});
 
@@ -25,11 +25,11 @@ class MasterNodeStatus {
   final int earnedDowntimeBlocks;
   final bool funded;
   final LastReward lastReward;
-  final PosParticipation posBlocks;
+  final PosVotesParticipation posBlocks;
   final int stakingRequirement;
   final int stateHeight;
   final StorageServerStatus storageServer;
-  final LokinetRouterStatus lokinetRouter;
+  final BelnetRouterStatus belnetRouter;
   final int requestedUnlockHeight;
   final String swarmId;
   final int _lastUptimeProof;
@@ -68,11 +68,11 @@ class MasterNodeStatus {
 
     final contribution = Contribution.fromMap(map);
     final storageServerStatus = StorageServerStatus.fromMap(map);
-    final lokinetRouterStatus = LokinetRouterStatus.fromMap(map);
+    final belnetRouterStatus = BelnetRouterStatus.fromMap(map);
     final lastReward = LastReward.fromMap(map);
     final masterNodeInfo = MasterNodeInfo.fromMap(map);
     final checkpointBlocks = CheckpointParticipation.fromMap(map);
-    final posBlocks = PosParticipation.fromMap(map);
+    final posBlocks = PosVotesParticipation.fromMap(map);
 
     return MasterNodeStatus(
         map['active'] as bool,
@@ -88,7 +88,7 @@ class MasterNodeStatus {
         masterNodeInfo,
         map['state_height'] as int,
         storageServerStatus,
-        lokinetRouterStatus,
+        belnetRouterStatus,
         map['swarm_id'] as String);
   }
 }
@@ -102,7 +102,7 @@ class MasterNodeInfo {
       this.ipAddress,
       this.nodeVersion,
       this.storageServerVersion,
-      this.lokinetVersion);
+      this.belnetVersion);
 
   MasterNodeInfo.fromMap(Map map)
       : operatorAddress = map['operator_address'] as String,
@@ -113,7 +113,7 @@ class MasterNodeInfo {
         nodeVersion = (map['master_node_version'] as List).join('.'),
         storageServerVersion =
             (map['storage_server_version'] as List).join('.'),
-        lokinetVersion = (map['belnet_version'] as List).join('.');
+        belnetVersion = (map['belnet_version'] as List).join('.');
 
   final String? operatorAddress;
   final int registrationHeight;
@@ -122,7 +122,7 @@ class MasterNodeInfo {
   final String? ipAddress;
   final String? nodeVersion;
   final String? storageServerVersion;
-  final String? lokinetVersion;
+  final String? belnetVersion;
 
   bool equals(MasterNodeInfo masterNodeInfo) {
     return masterNodeInfo.operatorAddress == operatorAddress &&
@@ -132,7 +132,7 @@ class MasterNodeInfo {
         masterNodeInfo.ipAddress == ipAddress &&
         masterNodeInfo.nodeVersion == nodeVersion &&
         masterNodeInfo.storageServerVersion == storageServerVersion &&
-        masterNodeInfo.lokinetVersion == lokinetVersion;
+        masterNodeInfo.belnetVersion == belnetVersion;
   }
 }
 
@@ -140,19 +140,19 @@ class StorageServerStatus {
   StorageServerStatus(this.isReachable, this.timestamp);
 
   StorageServerStatus.fromMap(Map map)
-      : isReachable = map['storage_server_reachable'] as bool,
-        timestamp = (map['storage_server_reachable_timestamp'] ?? 0) as int;
+      : isReachable = (map['storage_server_reachable'] as bool?) ?? false,
+        timestamp = (map['storage_server_reachable_timestamp'] as int?) ?? 0;
 
   final bool isReachable;
   final int timestamp;
 }
 
-class LokinetRouterStatus {
-  LokinetRouterStatus(this.isReachable, this.timestamp);
+class BelnetRouterStatus {
+  BelnetRouterStatus(this.isReachable, this.timestamp);
 
-  LokinetRouterStatus.fromMap(Map map)
-      : isReachable = map['belnet_reachable'] as bool,
-        timestamp = (map['belnet_router_reachable_timestamp'] ?? 0) as int;
+  BelnetRouterStatus.fromMap(Map map)
+      : isReachable = (map['belnet_reachable'] as bool?) ?? false,
+        timestamp = (map['belnet_router_reachable_timestamp'] as int?) ?? 0;
 
   final bool isReachable;
   final int timestamp;
@@ -161,6 +161,8 @@ class LokinetRouterStatus {
 class Checkpoint {
   Checkpoint(this.height, this.voted);
 
+  // This fromMap is no longer used with the new JSON format,
+  // but we can keep it in case of future map-based data.
   Checkpoint.fromMap(Map map)
       : height = map['height'] as int,
         voted = map['voted'] as bool;
@@ -173,19 +175,48 @@ class CheckpointParticipation {
   CheckpointParticipation(this.checkpoints);
 
   CheckpointParticipation.fromMap(Map map)
-      : checkpoints = (map.containsKey('checkpoint_participation')
-            ? (map['checkpoint_participation'] as List)
-                .map((e) => Checkpoint.fromMap(e))
-                .toList()
-            : []);
+      : checkpoints = _parseCheckpoints(map);
 
   final List<Checkpoint> checkpoints;
+
+  // Helper to parse the new structure:
+  // "checkpoint_votes": { "missed": [...], "voted": [...] }
+  static List<Checkpoint> _parseCheckpoints(Map map) {
+    final List<Checkpoint> result = [];
+
+    if (!map.containsKey('checkpoint_votes')) {
+      return result;
+    }
+
+    final votes = map['checkpoint_votes'] as Map;
+
+    // missed: [height, height, ...]  -> voted = false
+    final missed = (votes['missed'] as List?) ?? [];
+    for (final m in missed) {
+      if (m != null) {
+        result.add(Checkpoint(m as int, false));
+      }
+    }
+
+    // voted: [height, height, ...]  -> voted = true
+    final voted = (votes['voted'] as List?) ?? [];
+    for (final v in voted) {
+      if (v != null) {
+        result.add(Checkpoint(v as int, true));
+      }
+    }
+
+    // sort by height ascending
+    result.sort((a, b) => a.height.compareTo(b.height));
+
+    return result;
+  }
 }
 
-class Pos {
-  Pos(this.height, this.voted);
+class PosVote {
+  PosVote(this.height, this.voted);
 
-  Pos.fromMap(Map map)
+  PosVote.fromMap(Map map)
       : height = map['height'] as int,
         voted = map['voted'] as bool;
 
@@ -193,17 +224,46 @@ class Pos {
   final bool voted;
 }
 
-class PosParticipation {
-  PosParticipation(this.pos);
+class PosVotesParticipation {
+  PosVotesParticipation(this.votes);
 
-  PosParticipation.fromMap(Map map)
-      : pos = (map.containsKey('pos_participation')
-            ? (map['pos_participation'] as List)
-                .map((e) => Pos.fromMap(e))
-                .toList()
-            : []);
+  PosVotesParticipation.fromMap(Map map)
+      : votes = _parsePosVotes(map);
 
-  final List<Pos> pos;
+  final List<PosVote> votes;
+
+  static List<PosVote> _parsePosVotes(Map map) {
+    final List<PosVote> result = [];
+
+    if (!map.containsKey('POS_votes')) {
+      return result;
+    }
+
+    final votesMap = map['POS_votes'] as Map;
+
+    // missed -> [[height, _]]  -> voted = false
+    final missed = votesMap['missed'] as List? ?? [];
+    for (final entry in missed) {
+      if (entry is List && entry.isNotEmpty) {
+        final height = entry[0] as int;
+        result.add(PosVote(height, false));
+      }
+    }
+
+    // voted -> [[height, _]]  -> voted = true
+    final voted = votesMap['voted'] as List? ?? [];
+    for (final entry in voted) {
+      if (entry is List && entry.isNotEmpty) {
+        final height = entry[0] as int;
+        result.add(PosVote(height, true));
+      }
+    }
+
+    // sort by height ascending
+    result.sort((a, b) => a.height.compareTo(b.height));
+
+    return result;
+  }
 }
 
 class Contributor {

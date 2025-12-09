@@ -41,7 +41,12 @@ class CheckMasterNode extends HiveObject {
     final headers = {'Content-type': 'application/json'};
     final body = json.encode(requestBody);
     final response = await http.post(url, headers: headers, body: body);
-    final newBody = response.body.replaceAllMapped(
+    // Validate JSON
+    final raw = response.body.trim();
+    if (!raw.startsWith('{')) {
+      throw FormatException("Invalid JSON response: $raw");
+    }
+    final newBody = raw.replaceAllMapped(
         RegExp(r'("swarm_id":)(\d+)'),
             (match) => '${match.group(1)}"${match.group(2)}"');
 

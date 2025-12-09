@@ -311,10 +311,10 @@ class S {
   }
 
   /// `Belnet\nRouter`
-  String get lokinet_router {
+  String get belnet_router {
     return Intl.message(
       'Belnet\nRouter',
-      name: 'lokinet_router',
+      name: 'belnet_router',
       desc: '',
       args: [],
     );
