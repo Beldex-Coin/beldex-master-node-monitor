@@ -82,6 +82,7 @@ class BeldexAppBar extends StatelessWidget
       padding:
           EdgeInsetsDirectional.only(bottom: _paddingBottom, top: paddingTop),
       child: CupertinoNavigationBar(
+        transitionBetweenRoutes: false,
         leading: leading,
         middle: middle,
         trailing: trailing,

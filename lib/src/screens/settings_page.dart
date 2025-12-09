@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:master_node_monitor/generated/l10n.dart';
@@ -15,7 +16,6 @@ import 'package:master_node_monitor/src/widgets/nav/nav_list_trailing.dart';
 import 'package:master_node_monitor/src/widgets/present_picker.dart';
 import 'package:master_node_monitor/src/widgets/standard_switch.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends BasePage {
   @override
@@ -30,11 +30,14 @@ class SettingsPage extends BasePage {
     }
   }
 
+  static const methodChannelPlatform = MethodChannel("io.beldex.master_node_monitor/beldex_master_node_monitor_channel");
+
   @override
   Widget body(BuildContext context) {
     final settingsStore = Provider.of<SettingsStore>(context);
     final themeChanger = Provider.of<ThemeChanger>(context);
     settingsStore.themeChanger = themeChanger;
+    final _emailId = 'support@beldex.io';
 
     return ListView(
       children: <Widget>[
@@ -140,8 +143,10 @@ class SettingsPage extends BasePage {
                 NavListArrow(
                   leading: SvgPicture.asset('assets/images/help.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 23,height: 23,),
                   text: S.of(context).help,
-                  onTap: (){
-                    _launchUrl(Uri.parse('mailto:support@beldex.io'));
+                  onTap: () async {
+                    await methodChannelPlatform.invokeMethod("email",<String, dynamic>{
+                      'email_id': _emailId,
+                    });
                   },
                 )
               ],
@@ -150,20 +155,9 @@ class SettingsPage extends BasePage {
         ),
         Padding(
           padding: EdgeInsets.only(left: 35, top: 10),
-          child: Text("Version 1.0.3",style: TextStyle(fontSize: 16.0,color: BeldexPalette.progressCenterText),),
+          child: Text("Version 1.0.4",style: TextStyle(fontSize: 16.0,color: BeldexPalette.progressCenterText),),
         )
       ],
     );
-  }
-
-  /*void _launchUrl(String url) async {
-    print('call _launchURL');
-    if (await canLaunch(url)) await launch(url);
-  }*/
-
-  Future<void> _launchUrl(Uri _url) async {
-    if (!await launchUrl(_url)) {
-      throw 'Could not launch $_url';
-    }
   }
 }

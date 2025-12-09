@@ -29,7 +29,7 @@
   "health_no_nodes": "Kein Node ist\nbetriebsbereit!",
 
   "storage_server": "Storage\nServer",
-  "lokinet_router": "Belnet\nRouter",
+  "belnet_router": "Belnet\nRouter",
   "last_reward": "Letzte\nBelohung",
   "more": "More\nInfo",
   "ok": "OK",

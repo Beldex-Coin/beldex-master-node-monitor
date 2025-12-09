@@ -38,7 +38,7 @@ class MasterNode extends HiveObject {
   String? storageServerVersion;
 
   @HiveField(8)
-  String? lokinetVersion;
+  String? belnetVersion;
 
   MasterNodeInfo get nodeInfo => MasterNodeInfo(
       operatorAddress,
@@ -48,7 +48,7 @@ class MasterNode extends HiveObject {
       ipAddress,
       nodeVersion,
       storageServerVersion,
-      lokinetVersion);
+      belnetVersion);
 
   set nodeInfo(MasterNodeInfo value) {
     operatorAddress = value.operatorAddress;
@@ -56,7 +56,7 @@ class MasterNode extends HiveObject {
     registrationHfVersion = value.registrationHfVersion;
     nodeVersion = value.nodeVersion;
     storageServerVersion = value.storageServerVersion;
-    lokinetVersion = value.lokinetVersion;
+    belnetVersion = value.belnetVersion;
     ipAddress = value.ipAddress;
   }
 }

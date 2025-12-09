@@ -50,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "amount": MessageLookupByLibrary.simpleMessage("Amount"),
         "awaiting_contributions":
             MessageLookupByLibrary.simpleMessage("Awaiting Contributions"),
+        "belnet_router": MessageLookupByLibrary.simpleMessage("Belnet\nRouter"),
         "blocks": MessageLookupByLibrary.simpleMessage("blocks"),
         "checkYourInternetConnection": MessageLookupByLibrary.simpleMessage(
             "Check your internet connection"),
@@ -98,8 +99,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Last Reward Height"),
         "last_uptime_proof":
             MessageLookupByLibrary.simpleMessage("Last Uptime Proof"),
-        "lokinet_router":
-            MessageLookupByLibrary.simpleMessage("Belnet\nRouter"),
         "master_node_operator":
             MessageLookupByLibrary.simpleMessage("Node Operator"),
         "master_node_version":
