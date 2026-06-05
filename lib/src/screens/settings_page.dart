@@ -16,6 +16,7 @@ import 'package:master_node_monitor/src/widgets/nav/nav_list_trailing.dart';
 import 'package:master_node_monitor/src/widgets/present_picker.dart';
 import 'package:master_node_monitor/src/widgets/standard_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends BasePage {
   @override
@@ -154,8 +155,24 @@ class SettingsPage extends BasePage {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 35, top: 10),
-          child: Text("Version 1.0.4",style: TextStyle(fontSize: 16.0,color: BeldexPalette.progressCenterText),),
+          padding: const EdgeInsets.only(left: 35, top: 10),
+          child: FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
+              }
+
+              final info = snapshot.data!;
+
+              return Text(
+                'Version ${info.version}',
+                style: const TextStyle(
+                  fontSize: 16.0,
+                ),
+              );
+            },
+          ),
         )
       ],
     );
