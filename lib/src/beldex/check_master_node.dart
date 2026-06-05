@@ -3,6 +3,8 @@ import 'dart:ffi';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
+part 'check_master_node.g.dart';
+
 @HiveType(typeId: 1)
 class CheckMasterNode extends HiveObject {
   CheckMasterNode(this.uri,this.publicKey);
