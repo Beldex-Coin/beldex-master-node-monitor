@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:master_node_monitor/generated/l10n.dart';
 import 'package:master_node_monitor/src/widgets/beldex/beldex_dialog.dart';
 
 import '../stores/settings_store.dart';

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,7 +34,7 @@ class CheckMasterNode extends HiveObject {
   Future<Map<String, dynamic>> sendRPCRequest(String method, Map<String, dynamic> params) async {
     Map<String, dynamic> resultBody;
 
-    final requestBody = params != null
+    final requestBody = params.isNotEmpty
         ? {'jsonrpc': '2.0', 'id': '0', 'method': method, 'params': params}
         : {'jsonrpc': '2.0', 'id': '0', 'method': method};
 

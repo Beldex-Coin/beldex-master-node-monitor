@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobx/mobx.dart';
 import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/utils/theme/theme_changer.dart';
 import 'package:master_node_monitor/src/utils/theme/themes.dart';
@@ -80,7 +79,7 @@ abstract class BasePage extends StatelessWidget {
             trailing(context)!,
             context: context,
             backgroundColor: _isDarkTheme
-                ? Theme.of(context).dialogBackgroundColor
+                ? Theme.of(context).dialogTheme.backgroundColor!
                 : backgroundColor);
 
       case AppBarStyle.withShadow:
@@ -90,17 +89,7 @@ abstract class BasePage extends StatelessWidget {
             trailing(context)!,
             context: context,
             backgroundColor: _isDarkTheme
-                ? Theme.of(context).dialogBackgroundColor
-                : backgroundColor);
-
-      default:
-        return BeldexAppBar(
-            leading(context)!,
-            middle(context)!,
-            trailing(context)!,
-            context: context,
-            backgroundColor: _isDarkTheme
-                ? Theme.of(context).dialogBackgroundColor
+                ? Theme.of(context).dialogTheme.backgroundColor!
                 : backgroundColor);
     }
   }
@@ -113,14 +102,25 @@ abstract class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _themeChanger = Provider.of<ThemeChanger>(context);
     final _isDarkTheme = _themeChanger.theme == Themes.darkTheme;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
 
     return Scaffold(
         key: scaffoldKey,
         backgroundColor:
-            _isDarkTheme ? Theme.of(context).dialogBackgroundColor : backgroundColor,
+            _isDarkTheme ? Theme.of(context).dialogTheme.backgroundColor! : backgroundColor,
         resizeToAvoidBottomInset: resizeToAvoidBottomPadding,
         appBar: actionBar ? null:appBar(context),
-        body: SafeArea(child: body(context)),
+        body: SafeArea(
+          child: isTablet
+            ? Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 600),
+                  child: body(context),
+                ),
+              )
+            : body(context),
+        ),
         floatingActionButton: floatingActionButton(context),
         bottomNavigationBar: bottomNavigationBar(context),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);

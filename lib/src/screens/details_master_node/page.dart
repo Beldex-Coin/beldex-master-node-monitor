@@ -85,7 +85,7 @@ class DetailsMasterNodePage extends BasePage {
                             borderRadius: BorderRadius.circular(10.0)),
                         child: Container(
                           padding: EdgeInsets.all(20),
-                          width: 600,
+                          width: double.infinity,
                           child: Column(
                             children: [
                               Text(S.of(context).unlocking_node,
@@ -114,7 +114,7 @@ class DetailsMasterNodePage extends BasePage {
                           borderRadius: BorderRadius.circular(10.0)),
                       child: Container(
                         padding: EdgeInsets.all(20),
-                        width: 600,
+                        width: double.infinity,
                         child: Column(
                             children: contribution.totalContributed /
                                         1000000000 <
@@ -149,8 +149,9 @@ class DetailsMasterNodePage extends BasePage {
                       color: Theme.of(context).cardColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0)),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        width: double.infinity,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -238,8 +239,9 @@ class DetailsMasterNodePage extends BasePage {
                       color: Theme.of(context).cardColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0)),
-                      child: Padding(
+                      child: Container(
                         padding: const EdgeInsets.all(10.0),
+                        width: double.infinity,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -321,8 +323,9 @@ class DetailsMasterNodePage extends BasePage {
                       color: Theme.of(context).cardColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0)),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        width: double.infinity,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

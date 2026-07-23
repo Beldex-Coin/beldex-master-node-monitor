@@ -40,7 +40,7 @@ class StandardSwitchState extends State<StandardSwitch> {
                   padding: EdgeInsets.all(3),
                   child: SvgPicture.asset(
                     'assets/images/white_theme_icon.svg',
-                    color: Colors.white,
+                    colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     width: 16.0,
                     height: 16.0,
                   ))
@@ -48,7 +48,7 @@ class StandardSwitchState extends State<StandardSwitch> {
                   padding: EdgeInsets.all(3),
                   child: SvgPicture.asset(
                     'assets/images/dark_theme_icon.svg',
-                    color: Colors.white,
+                    colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     width: 16.0,
                     height: 16.0,
                   )), /*widget.value ? Padding(padding:EdgeInsets.all(10),child: SvgPicture.asset('assets/images/white_theme_icon.svg',width: 16.0, height: 16.0,)):SvgPicture.asset('assets/images/dark_theme_icon.svg',width: 16.0, height: 16.0,),*/ /*Icon(

@@ -10,7 +10,6 @@ import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/utils/theme/theme_changer.dart';
 import 'package:master_node_monitor/src/widgets/base_page.dart';
 import 'package:master_node_monitor/src/widgets/nav/nav_list_arrow.dart';
-import 'package:master_node_monitor/src/widgets/nav/nav_list_header.dart';
 import 'package:master_node_monitor/src/widgets/nav/nav_list_settings_header.dart';
 import 'package:master_node_monitor/src/widgets/nav/nav_list_trailing.dart';
 import 'package:master_node_monitor/src/widgets/present_picker.dart';
@@ -53,7 +52,7 @@ class SettingsPage extends BasePage {
             child: Column(
               children: [
                 NavListTrailing(
-                  leading: SvgPicture.asset('assets/images/daemon.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/daemon.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 25,height: 25,),
                   text: S.of(context).settings_daemon,
                   trailing: Observer(builder: (_) {
                     return Text(
@@ -69,13 +68,13 @@ class SettingsPage extends BasePage {
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsDaemon),
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/master_nodes.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 20,height: 20,),
+                  leading: SvgPicture.asset('assets/images/master_nodes.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 20,height: 20,),
                   text: S.of(context).settings_master_nodes,
                   onTap: () =>
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsMasterNode),
                 ),
                 NavListTrailing(
-                  leading: SvgPicture.asset('assets/images/order.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 20,height: 20,),
+                  leading: SvgPicture.asset('assets/images/order.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 20,height: 20,),
                   text: S.of(context).settings_order_by,
                   trailing: Observer(builder: (_) {
                     return Text(
@@ -105,7 +104,7 @@ class SettingsPage extends BasePage {
               children: [
                 Observer(builder: (_) {
                   return NavListTrailing(
-                    leading: SvgPicture.asset('assets/images/theme.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 23,height: 23,),
+                    leading: SvgPicture.asset('assets/images/theme.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 23,height: 23,),
                     text: settingsStore.isDarkTheme
                         ? S.of(context).settings_light_theme
                         : S.of(context).settings_dark_theme,
@@ -122,27 +121,27 @@ class SettingsPage extends BasePage {
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsLanguage),
                 ),*/
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/change_log.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/change_log.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 25,height: 25,),
                   text: S.of(context).title_changelog,
                   onTap: () =>
                       Navigator.of(context).pushNamed(BeldexRoutes.settingsChangelog),
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/faq.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/faq.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 25,height: 25,),
                   text: S.of(context).title_faq,
                   onTap: (){
                     Navigator.of(context).pushNamed(BeldexRoutes.faq);
                   },
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/terms_and_conditions.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 25,height: 25,),
+                  leading: SvgPicture.asset('assets/images/terms_and_conditions.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 25,height: 25,),
                   text: S.of(context).termsConditions,
                   onTap: (){
                     Navigator.of(context).pushNamed(BeldexRoutes.termsAndConditions);
                   },
                 ),
                 NavListArrow(
-                  leading: SvgPicture.asset('assets/images/help.svg',color: Theme.of(context).primaryTextTheme.titleLarge?.color,width: 23,height: 23,),
+                  leading: SvgPicture.asset('assets/images/help.svg',colorFilter: ColorFilter.mode(Theme.of(context).primaryTextTheme.titleLarge?.color ?? Colors.black, BlendMode.srcIn),width: 23,height: 23,),
                   text: S.of(context).help,
                   onTap: () async {
                     await methodChannelPlatform.invokeMethod("email",<String, dynamic>{
