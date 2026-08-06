@@ -33,13 +33,11 @@ class OperatorStatus {
     var healthyNodes = 0;
     var unhealthyNodes = 0;
 
-    if (nodes != null) {
-      for (final node in nodes) {
-        if ((node.active && node.funded) || (!node.active && !node.funded))
-          healthyNodes++;
-        else
-          unhealthyNodes++;
-      }
+    for (final node in nodes) {
+      if ((node.active && node.funded) || (!node.active && !node.funded))
+        healthyNodes++;
+      else
+        unhealthyNodes++;
     }
 
     return OperatorStatus(healthyNodes, unhealthyNodes);
@@ -113,11 +111,11 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
   Future _saveMasterNode(Box<MasterNode> masterNodeSource, SettingsStore settingsStore, NodeSyncStore nodeSyncStatus, NetworkStatus networkStatus) async {
     if(networkStatus == NetworkStatus.online) {
       var checkPublicKey = settingsStore.daemon != null
-          ? CheckMasterNode(settingsStore.daemon!.uri, _publicKeyController.text)
-          : CheckMasterNode("", _publicKeyController.text);
+          ? CheckMasterNode(settingsStore.daemon!.uri, _publicKeyController.text.trim())
+          : CheckMasterNode("", _publicKeyController.text.trim());
       bool validPublicKey = await checkPublicKey.isOnline();
       if (validPublicKey) {
-        final masterNode = MasterNode(name: _nameController.text, publicKey: _publicKeyController.text);
+        final masterNode = MasterNode(name: _nameController.text, publicKey: _publicKeyController.text.trim());
         await masterNodeSource.add(masterNode);
         await nodeSyncStatus.sync();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -225,11 +223,11 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                           }, child: SvgPicture.asset(
                             'assets/images/close.svg', width: 25,
                             height: 25,
-                            color: Theme
+                            colorFilter: ColorFilter.mode(Theme
                                 .of(context)
                                 .primaryTextTheme
                                 .bodySmall!
-                                .color)),
+                                .color!, BlendMode.srcIn))),
                         ],
                       ),
                     ),
@@ -285,7 +283,7 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
                                       'text/plain');
                                   if (clipboard?.text != null)
                                     _publicKeyController.text =
-                                        clipboard!.text!;
+                                        clipboard!.text!.trim();
                                 } : null) ,
                             validator: (value) {
                               final publicKey = value?.trim();
@@ -373,10 +371,9 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
               : S.of(context).health_out_of_nodes(
                   operatorStatus.healthyNodes, operatorStatus.totalNodes));
 
-      if (nodeSyncStatus.nodes != null) {
-        switch (settingsStore.dashboardOrderBy) {
-          case DashboardOrderBy.NAME:
-            nodeSyncStatus.nodes.sort((a, b) {
+      switch (settingsStore.dashboardOrderBy) {
+        case DashboardOrderBy.NAME:
+          nodeSyncStatus.nodes.sort((a, b) {
               var aN = nodes.values
                   .firstWhere((e) => e.publicKey == b.nodeInfo.publicKey)
                   .name
@@ -395,153 +392,158 @@ class DashboardPageBodyState extends State<DashboardPageBody> {
           case DashboardOrderBy.NEXT_REWARD:
             nodeSyncStatus.nodes.sort((a, b) =>
                 a.lastReward.blockHeight.compareTo(b.lastReward.blockHeight));
-        }
       }
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+    final circleSize = isTablet ? 260.0 : 210.0;
+    final innerCircleSize = isTablet ? 240.0 : 190.0;
+    final statusTextWidth = isTablet ? 220.0 : 160.0;
+    final cardMargin = isTablet ? EdgeInsets.symmetric(horizontal: 20) : EdgeInsets.only(left: 10, right: 10);
+    final cardInternalMargin = isTablet ? EdgeInsets.only(left: 40, right: 35, top: 25, bottom: 25) : EdgeInsets.only(left: 30, right: 25, top: 20, bottom: 20);
+
       return ListView(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 18, bottom: 28),
-                    child: SizedBox(
-                      height: 220.0,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          Center(
-                            child: Container(
-                              width: 210,
-                              height: 210,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  PhysicalShape(
-                                    color: _isDarkTheme
-                                        ? Theme.of(context).dialogBackgroundColor
-                                        : Colors.white70,
-                                    shadowColor:
-                                    _isDarkTheme ? Colors.black45 : Colors.grey,
-                                    elevation: 13,
-                                    clipper:
-                                    ShapeBorderClipper(shape: CircleBorder()),
-                                    child: Container(
-                                      width: 210,
-                                      height: 210,
-                                      margin: EdgeInsets.all(10),
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 25,
-                                        value: 1,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground),
-                                        backgroundColor: _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground,
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 18, bottom: 28),
+                        child: SizedBox(
+                          height: circleSize + 10,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: <Widget>[
+                              Center(
+                                child: Container(
+                                  width: circleSize,
+                                  height: circleSize,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      PhysicalShape(
+                                        color: _isDarkTheme
+                                            ? Theme.of(context).dialogTheme.backgroundColor!
+                                            : Colors.white70,
+                                        shadowColor:
+                                        _isDarkTheme ? Colors.black45 : Colors.grey,
+                                        elevation: 13,
+                                        clipper:
+                                        ShapeBorderClipper(shape: CircleBorder()),
+                                        child: Container(
+                                          width: circleSize,
+                                          height: circleSize,
+                                          margin: EdgeInsets.all(10),
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: isTablet ? 30 : 25,
+                                            value: 1,
+                                            valueColor: AlwaysStoppedAnimation<Color>(
+                                                _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground),
+                                            backgroundColor: _isDarkTheme ? PaletteDark.progressBarBackground : Palette.progressBarBackground,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Container(
-                                      width: 190,
-                                      height: 190,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 10,
-                                        value: operatorStatus.healthPercentage,
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            BeldexPalette.progressIndicator),
-                                        backgroundColor: BeldexPalette.red,
+                                      Center(
+                                        child: Container(
+                                          width: innerCircleSize,
+                                          height: innerCircleSize,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: isTablet ? 14 : 10,
+                                            value: operatorStatus.healthPercentage,
+                                            valueColor: AlwaysStoppedAnimation<Color>(
+                                                BeldexPalette.progressIndicator),
+                                            backgroundColor: BeldexPalette.red,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                              Container(
+                                width: statusTextWidth,
+                                child: Text(operatorStatusText,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        fontSize: isTablet ? 16.0 : 14.0, color: BeldexPalette.progressCenterText,fontWeight: FontWeight.bold)),
+                              )
+                            ],
                           ),
-                          Container(
-                            width: 160,
-                            child: Text(operatorStatusText,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                style: TextStyle(
-                                    fontSize: 14.0, color: BeldexPalette.progressCenterText,fontWeight: FontWeight.bold)),
-                          )
-                        ],
+                        ),
                       ),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 28),
+                          child: Text(
+                            S.of(context).all_master_nodes(
+                                nodeSyncStatus.networkSize, nodeSyncStatus.currentHeight),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: isTablet ? 20.0 : 18.0, color: BeldexPalette.progressCenterText),
+                          )),
+                    ],
+                  ),
+                  Card(
+                    color: Theme.of(context).cardColor,
+                    margin: cardMargin,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: cardInternalMargin,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  children: <TextSpan>[
+                                    TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: isTablet ? 22.0 : 20.0,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.bodySmall!.backgroundColor)),
+                                    TextSpan(text: '${nodeSyncStatus.nodes.length}', style: TextStyle(fontSize: isTablet ? 22.0 : 20.0,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.bodySmall!.color)),
+                                  ],
+                                ),
+                              ),
+                              InkWell(onTap:(){
+                                showDialogBox(context,_nameController,masterNodeSource,nodeSyncStatus,_publicKeyController,_formKey,settingsStore, _isDarkTheme);
+                              },child: Icon(Icons.add_circle, size: isTablet ? 30 : 24))
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin:EdgeInsets.only(bottom: isTablet ? 50 : 150),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: nodeSyncStatus.nodes.map((e) {
+                              final nodeStatus = e;
+                              final masterNodeKey = nodeStatus.nodeInfo.publicKey;
+                              final nodeSource = nodes.values.firstWhere((e) {
+                                return e.publicKey == masterNodeKey;
+                              });
+                              return MasterNodeCard(
+                                nodeSource.name,
+                                masterNodeKey,
+                                nodeStatus.isUnlocking,
+                                nodeStatus.active,
+                                nodeStatus.storageServer.isReachable,
+                                nodeStatus.belnetRouter.isReachable,
+                                nodeStatus.lastReward.blockHeight,
+                                nodeStatus.earnedDowntimeBlocks,
+                                nodeStatus.lastUptimeProof,
+                                nodeStatus.contribution,
+                                _isDarkTheme);
+                            }).toList()
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                      padding: EdgeInsets.only(bottom: 28),
-                      child: Text(
-                        S.of(context).all_master_nodes(
-                            nodeSyncStatus.networkSize, nodeSyncStatus.currentHeight),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18.0, color: BeldexPalette.progressCenterText),
-                      )),
                 ],
               ),
-              Card(
-                color: Theme.of(context).cardColor,
-                margin: EdgeInsets.only(left: 10,right: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin:EdgeInsets.only(left: 30,right: 25,top: 20,bottom: 20),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(text: '${S.of(context).your_master_nodes} ', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Theme.of(context).primaryTextTheme.bodySmall!.backgroundColor)),
-                                TextSpan(text: '${ nodeSyncStatus.nodes != null
-                                    ? nodeSyncStatus.nodes.length
-                                    : 0}', style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color:Theme.of(context).primaryTextTheme.bodySmall!.color)),
-                              ],
-                            ),
-                          ),
-                          InkWell(onTap:(){
-                            showDialogBox(context,_nameController,masterNodeSource,nodeSyncStatus,_publicKeyController,_formKey,settingsStore, _isDarkTheme);
-                          },child: Icon(Icons.add_circle))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin:EdgeInsets.only(bottom: 150),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: nodeSyncStatus.nodes.map((e) {
-                          final nodeStatus = e;//nodeSyncStatus.nodes[index];
-                          final masterNodeKey = nodeStatus.nodeInfo.publicKey;
-                          final nodeSource = nodes.values.firstWhere((e) {
-                            return e.publicKey == masterNodeKey;
-                          });
-                          return MasterNodeCard(
-                            nodeSource.name,
-                            masterNodeKey,
-                            nodeStatus.isUnlocking,
-                            nodeStatus.active,
-                            nodeStatus.storageServer.isReachable,
-                            nodeStatus.belnetRouter.isReachable,
-                            nodeStatus.lastReward.blockHeight,
-                            nodeStatus.earnedDowntimeBlocks,
-                            nodeStatus.lastUptimeProof,
-                            nodeStatus.contribution,
-                            _isDarkTheme);
-                        }).toList()
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-                ]);
+                    ]);
     });
   }
 }

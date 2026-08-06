@@ -9,7 +9,7 @@ class NetworkService{
 
   NetworkService(){
     Connectivity().onConnectivityChanged.listen((event) {
-      if (event is List<ConnectivityResult> && event.isNotEmpty) {
+      if (event.isNotEmpty) {
         final ConnectivityResult result = event.first;
         controller.add(_networkStatus(result));
       } else {

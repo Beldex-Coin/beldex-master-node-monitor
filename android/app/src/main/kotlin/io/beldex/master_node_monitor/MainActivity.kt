@@ -2,8 +2,6 @@ package io.beldex.master_node_monitor
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -11,7 +9,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 class MainActivity: FlutterFragmentActivity() {
 
     private val channel = "io.beldex.master_node_monitor/beldex_master_node_monitor_channel";
-    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
         MethodChannel(flutterEngine.dartExecutor, channel)
             .setMethodCallHandler{

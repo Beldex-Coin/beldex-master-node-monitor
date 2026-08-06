@@ -66,11 +66,11 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
   Future _saveMasterNode(Box<MasterNode> masterNodeSource, SettingsStore settingsStore, NodeSyncStore nodeSyncStatus, NetworkStatus networkStatus) async {
     if(networkStatus == NetworkStatus.online) {
       var checkPublicKey = settingsStore.daemon != null
-          ? CheckMasterNode(settingsStore.daemon!.uri, _publicKeyController.text)
-          : CheckMasterNode("", _publicKeyController.text);
+          ? CheckMasterNode(settingsStore.daemon!.uri, _publicKeyController.text.trim())
+          : CheckMasterNode("", _publicKeyController.text.trim());
       bool validPublicKey = await checkPublicKey.isOnline();
       if (validPublicKey) {
-        final masterNode = MasterNode(name: _nameController.text, publicKey: _publicKeyController.text);
+        final masterNode = MasterNode(name: _nameController.text, publicKey: _publicKeyController.text.trim());
         await masterNodeSource.add(masterNode);
         await nodeSyncStatus.sync();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -136,7 +136,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
     final networkStatus = Provider.of<NetworkStatus>(context);
 
     return Container(
-      color: Theme.of(context).dialogBackgroundColor,
+      color: Theme.of(context).dialogTheme.backgroundColor,
       child: Center(
         child: Card(
           elevation: 10,
@@ -222,7 +222,7 @@ class AddNewMasterNodePageBodyState extends State<AddNewMasterNodePageBody> {
                             onPressed: !isLoading ? () async {
                               final clipboard = await Clipboard.getData('text/plain');
                               if (clipboard?.text != null)
-                                _publicKeyController.text = clipboard!.text!;
+                                _publicKeyController.text = clipboard!.text!.trim();
                             } : null),
                         validator: (value) {
                           final publicKey = value?.trim();

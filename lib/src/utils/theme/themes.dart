@@ -6,7 +6,7 @@ class Themes {
   static final ThemeData lightTheme = ThemeData(
       fontFamily: 'Lato',
       brightness: Brightness.light,
-      dialogBackgroundColor: Palette.lightThemeBackground,
+      dialogTheme: DialogThemeData(backgroundColor: Palette.lightThemeBackground),
       scaffoldBackgroundColor: Palette.lightThemeBackground,
       hintColor: Palette.hintColor,
       focusColor: Palette.lightGrey,
@@ -59,7 +59,7 @@ class Themes {
   static final ThemeData darkTheme = ThemeData(
       fontFamily: 'Lato',
       brightness: Brightness.dark,
-      dialogBackgroundColor: PaletteDark.darkThemeBackgroundDark,
+      dialogTheme: DialogThemeData(backgroundColor: PaletteDark.darkThemeBackgroundDark),
       scaffoldBackgroundColor: PaletteDark.darkThemeBlack,
       hintColor: PaletteDark.hintColor,
       focusColor: PaletteDark.darkThemeGreyWithOpacity,

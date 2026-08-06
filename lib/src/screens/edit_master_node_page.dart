@@ -5,10 +5,8 @@ import 'package:master_node_monitor/generated/l10n.dart';
 import 'package:master_node_monitor/src/beldex/master_node.dart';
 import 'package:master_node_monitor/src/stores/node_sync_store.dart';
 import 'package:master_node_monitor/src/utils/router/beldex_routes.dart';
-import 'package:master_node_monitor/src/utils/short_address.dart';
 import 'package:master_node_monitor/src/utils/theme/palette.dart';
 import 'package:master_node_monitor/src/widgets/base_page.dart';
-import 'package:master_node_monitor/src/widgets/nav/nav_list_multiheader.dart';
 import 'package:master_node_monitor/src/widgets/beldex/beldex_text_field.dart';
 import 'package:master_node_monitor/src/widgets/primary_button.dart';
 import 'package:master_node_monitor/src/widgets/scrollable_with_bottom_section.dart';
@@ -142,8 +140,8 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                            Navigator.of(context).pop();
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              backgroundColor: WidgetStateProperty.all<Color>(isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       side: BorderSide(color: isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
                                       borderRadius: BorderRadius.circular(10.0)
@@ -165,8 +163,8 @@ class EditMasterNodePageBodyState extends State<EditMasterNodePageBody> {
                             Navigator.pop(context);
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(BeldexPalette.deleteButton),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              backgroundColor: WidgetStateProperty.all<Color>(BeldexPalette.deleteButton),
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       side: BorderSide(color: BeldexPalette.deleteButton),
                                       borderRadius: BorderRadius.circular(10.0)

@@ -45,7 +45,7 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
       var uri = _hostController.text;
       final port = _portController.text;
 
-      if (port != null && port.isNotEmpty) uri = '$uri:$port';
+      if (port.isNotEmpty) uri = '$uri:$port';
       final daemon = Daemon(uri);
       bool daemonIsOnline = await daemon.isOnline();
       if (daemonIsOnline) {
@@ -142,10 +142,15 @@ class AddNewDaemonPageBodyState extends State<AddNewDaemonPageBody> {
     final daemonSource = Provider.of<Box<Daemon>>(context);
     final networkStatus = Provider.of<NetworkStatus>(context);
 
-    return WillPopScope(
-      onWillPop: _onBackPressed,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _onBackPressed();
+        }
+      },
       child: Container(
-        color: Theme.of(context).dialogBackgroundColor,
+        color: Theme.of(context).dialogTheme.backgroundColor,
         child: Center(
           child: Card(
             elevation: 10,
