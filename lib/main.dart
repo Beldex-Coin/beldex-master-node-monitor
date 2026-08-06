@@ -116,7 +116,7 @@ class MaterialAppWithTheme extends StatelessWidget {
 
     final isSetup = masterNodes.isEmpty;
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.black.withOpacity(0)));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.black.withValues(alpha: 0)));
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,

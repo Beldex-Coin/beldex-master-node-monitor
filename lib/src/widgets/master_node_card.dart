@@ -41,7 +41,7 @@ class MasterNodeCard extends StatefulWidget {
 }
 
 class _MasterNodeCardState extends State<MasterNodeCard> {
-  static const int DECOMMISSION_MAX_CREDIT = 1440;
+  //static const int DECOMMISSION_MAX_CREDIT = 1440;
 
   var _tileExpanded = false;
 
@@ -51,7 +51,7 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
     final name = widget.name;
     final isUnlocking = widget.isUnlocking;
     final active = widget.active;
-    final earnedDowntimeBlocks = widget.earnedDowntimeBlocks;
+    //final earnedDowntimeBlocks = widget.earnedDowntimeBlocks;
     final lastUptimeProof = widget.lastUptimeProof;
     final lastRewardBlockHeight = widget.lastRewardBlockHeight;
     final isStorageServerReachable = widget.isStorageServerReachable;
@@ -172,6 +172,8 @@ class _MasterNodeCardState extends State<MasterNodeCard> {
           child: Text(
             title,
             textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 16,
               color: BeldexPalette.progressCenterText,

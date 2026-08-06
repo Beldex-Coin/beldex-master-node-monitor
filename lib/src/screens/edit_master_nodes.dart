@@ -95,8 +95,8 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             Navigator.of(context).pop();
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              backgroundColor: WidgetStateProperty.all<Color>(isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       side: BorderSide(color: isDarkTheme ? PaletteDark.cancelButton : Palette.cancelButton),
                                       borderRadius: BorderRadius.circular(10.0)
@@ -118,8 +118,8 @@ class EditMasterNodesPageBodyState extends State<EditMasterNodesPageBody> {
                             Navigator.pop(context);
                           },
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(BeldexPalette.deleteButton),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              backgroundColor: WidgetStateProperty.all<Color>(BeldexPalette.deleteButton),
+                              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       side: BorderSide(color: BeldexPalette.deleteButton),
                                       borderRadius: BorderRadius.circular(10.0)

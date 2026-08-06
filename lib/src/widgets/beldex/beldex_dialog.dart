@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 Future showBeldexDialog(BuildContext context, Widget child,
@@ -30,7 +28,7 @@ class BeldexDialog extends StatelessWidget {
       onTap: () => _onDismiss(context),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
+          color: Colors.white.withValues(alpha: 0.1),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,

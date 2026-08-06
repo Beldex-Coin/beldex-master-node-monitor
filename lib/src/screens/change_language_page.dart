@@ -24,9 +24,7 @@ class ChangeLanguagePage extends BasePage {
         child: ListView.builder(
           itemCount: languages.values.length,
           itemBuilder: (BuildContext context, int index) {
-            final isCurrent = settingsStore.languageCode == null
-                ? false
-                : languages.keys.elementAt(index) == settingsStore.languageCode;
+            final isCurrent = languages.keys.elementAt(index) == settingsStore.languageCode;
 
             return Container(
               margin: EdgeInsets.only(top: 10.0, bottom: 10.0),

@@ -52,7 +52,7 @@ class ChangelogPage extends BasePage {
                             .of(context)
                             .dividerTheme
                             .color, height: 1.0),
-                itemCount: changelogs == null ? 0 : changelogs.length);
+                itemCount: changelogs.length);
           }else{
             return Container();
           }

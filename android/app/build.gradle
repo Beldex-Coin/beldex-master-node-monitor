@@ -1,4 +1,4 @@
-    plugins {
+plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
@@ -29,7 +29,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    compileSdkVersion 35
+    compileSdkVersion 36
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -46,8 +46,8 @@ android {
 
     defaultConfig {
         applicationId "io.beldex.master_node_monitor"
-        minSdkVersion 23
-        targetSdkVersion 35
+        minSdkVersion 26
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -77,4 +77,6 @@ flutter {
 }
 
 dependencies {
+    implementation "androidx.fragment:fragment:1.8.9"
+    implementation "androidx.fragment:fragment-ktx:1.8.9"
 }

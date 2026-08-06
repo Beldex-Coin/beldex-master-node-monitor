@@ -28,7 +28,7 @@ abstract class SettingsStoreBase with Store {
         sharedPreferences.getString(currentLanguageCodeKey) ??
             await Language.localeDetection();
 
-    final savedDashboardOrderBy = DashboardOrderBy.parse(sharedPreferences.getString(currentDashboardOrderBy) ?? 'Name') ?? DashboardOrderBy.NAME;
+    final savedDashboardOrderBy = DashboardOrderBy.parse(sharedPreferences.getString(currentDashboardOrderBy) ?? 'Name');
 
     final store = SettingsStore(sharedPreferences: sharedPreferences, daemons: daemons, isDarkTheme: savedDarkTheme,
         languageCode: savedLanguageCode, dashboardOrderBy: savedDashboardOrderBy);

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:master_node_monitor/src/beldex/daemon.dart';
 import 'package:master_node_monitor/src/beldex/daemon_list.dart';
@@ -55,10 +54,8 @@ Future<void> changeCurrentNodeToDefault(
     nodeUri = 'publicnode1.rpcnode.stream:29095';
   }
 
-  final node =
-      nodes.values.firstWhere((Daemon daemon) => daemon.uri == nodeUri) ??
-          nodes.values.first;
-  final nodeId = node != null ? node.key as int : 0; // 0 - England
+  final node = nodes.values.firstWhere((Daemon daemon) => daemon.uri == nodeUri, orElse: () => nodes.values.first);
+  final nodeId = node.key as int;
 
   await sharedPreferences.setInt('current_node_id', nodeId);
 }
